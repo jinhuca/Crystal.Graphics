@@ -327,9 +327,9 @@ namespace ScatterPlot3DControl
       
       scatterModel.BackMaterial = scatterModel.Material;
 
-      var axesMeshBuilder = new MeshBuilder();
-
       #region Create bounding box with axes indications
+
+      var axesMeshBuilder = new MeshBuilder();
 
       for(double x = minX; x <= Math.Ceiling(maxX) + 1; x += IntervalX)
       {

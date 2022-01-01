@@ -4,6 +4,19 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Jin Hu</Authors>
+    <Description>A collection of 3D components for .NET.</Description>
+    <PackageProjectUrl>https://github.com/jinhuca/Crystal.Graphics</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jinhuca/Crystal.Graphics</RepositoryUrl>
+    <PackageTags>.NET</PackageTags>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
