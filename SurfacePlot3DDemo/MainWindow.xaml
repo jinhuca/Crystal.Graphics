@@ -1,0 +1,26 @@
+﻿<Window x:Class="SurfacePlot3DDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:crystal="clr-namespace:Crystal.Graphics;assembly=Crystal.Graphics"
+        xmlns:ctrl="clr-namespace:SurfacePlot3DControl;assembly=SurfacePlot3DControl"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SurfacePlot3DDemo"
+        mc:Ignorable="d"
+        Title="MainWindow">
+
+  <ctrl:SurfacePlotVisual3D Points="{Binding Data}" ColorValues="{Binding ColorValues}" SurfaceBrush="{Binding SurfaceBrush}"
+                            ZoomExtentsWhenLoaded="True" ShowCameraInfo="True" 
+                            ShowCoordinateSystem="True" CoordinateSystemHorizontalPosition="Right" CoordinateSystemVerticalPosition="Top"
+                            >
+    
+    <ModelVisual3D Content="{Binding Lights}"/>
+    
+    <ctrl:SurfacePlotVisual3D.Camera>
+      <PerspectiveCamera Position="13, 23, -23" LookDirection="-100, -100, -100" UpDirection="0,0,1"/>
+    </ctrl:SurfacePlotVisual3D.Camera>
+    
+  </ctrl:SurfacePlotVisual3D>
+  
+
+</Window>

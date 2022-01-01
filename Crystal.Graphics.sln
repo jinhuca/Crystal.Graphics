@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crystal.Graphics", "Crystal.Toolkit\Crystal.Graphics.csproj", "{158E9579-5CD3-4A91-B3CA-ABEB069FD559}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScatterPlot", "ScatterPlot\ScatterPlot.csproj", "{F570F7CF-CE41-4B54-80AF-41994F32104B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScatterPlot3DControl", "ScatterPlot3DControl\ScatterPlot3DControl.csproj", "{2C9D08F0-F7B2-49EE-B994-73EF135EB126}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScatterPlotDemo", "ScatterPlotDemo\ScatterPlotDemo.csproj", "{05FEDB46-96A6-4E7E-A51F-81740F13FF5E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurfacePlot3DControl", "SurfacePlot3DControl\SurfacePlot3DControl.csproj", "{C1EC6D00-7463-4A92-A1C2-9A3D970B9A5B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurfacePlot3DDemo", "SurfacePlot3DDemo\SurfacePlot3DDemo.csproj", "{59B52A0E-9602-47D6-9D9D-ECFCE63BFE0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{158E9579-5CD3-4A91-B3CA-ABEB069FD559}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{158E9579-5CD3-4A91-B3CA-ABEB069FD559}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{158E9579-5CD3-4A91-B3CA-ABEB069FD559}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{158E9579-5CD3-4A91-B3CA-ABEB069FD559}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F570F7CF-CE41-4B54-80AF-41994F32104B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F570F7CF-CE41-4B54-80AF-41994F32104B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F570F7CF-CE41-4B54-80AF-41994F32104B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F570F7CF-CE41-4B54-80AF-41994F32104B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C9D08F0-F7B2-49EE-B994-73EF135EB126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C9D08F0-F7B2-49EE-B994-73EF135EB126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C9D08F0-F7B2-49EE-B994-73EF135EB126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C9D08F0-F7B2-49EE-B994-73EF135EB126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05FEDB46-96A6-4E7E-A51F-81740F13FF5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05FEDB46-96A6-4E7E-A51F-81740F13FF5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05FEDB46-96A6-4E7E-A51F-81740F13FF5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05FEDB46-96A6-4E7E-A51F-81740F13FF5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1EC6D00-7463-4A92-A1C2-9A3D970B9A5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1EC6D00-7463-4A92-A1C2-9A3D970B9A5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1EC6D00-7463-4A92-A1C2-9A3D970B9A5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1EC6D00-7463-4A92-A1C2-9A3D970B9A5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59B52A0E-9602-47D6-9D9D-ECFCE63BFE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B52A0E-9602-47D6-9D9D-ECFCE63BFE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B52A0E-9602-47D6-9D9D-ECFCE63BFE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59B52A0E-9602-47D6-9D9D-ECFCE63BFE0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9BBAEA4-6C0E-426F-AFFC-93B420C84EDA}
+	EndGlobalSection
+EndGlobal
