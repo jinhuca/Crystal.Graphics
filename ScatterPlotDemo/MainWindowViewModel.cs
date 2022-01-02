@@ -13,7 +13,7 @@ namespace ScatterPlotDemo
 {
   public class MainWindowViewModel : INotifyPropertyChanged
   {
-    private int totalPoints = 500;
+    private int totalPoints = 1_000;
     private Random random = new Random();
 
     public Point3D[] Data { get; set; }
@@ -29,7 +29,7 @@ namespace ScatterPlotDemo
     public MainWindowViewModel()
     {
       GenerateModel();
-      timer = new Timer(UpdateData, null, 1000, 750);
+      //timer = new Timer(UpdateData, null, 1000, 750);
     }
 
     private void UpdateData(object? state)

@@ -76,14 +76,14 @@ namespace SurfacePlot3DDemo
 
     public MainWindowViewModel()
     {
-      MinX = 0;
+      MinX = -4;
       MaxX = 4;
-      MinY = 0;
+      MinY = -4;
       MaxY = 4;
       Rows = 91;
       Columns = 91;
 
-      Function = (x, y) => Math.Cos(x * y) * 0.3;
+      Function = (x, y) => Math.Sin(x * y)*Math.Cos(x*y)*.5;
       ColorCoding = ColorCoding.ByGradientY;
       UpdateModel();
     }

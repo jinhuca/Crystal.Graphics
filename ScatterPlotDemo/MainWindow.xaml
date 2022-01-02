@@ -10,14 +10,13 @@
         Title="MainWindow" WindowState="Maximized">
 
   <ctrl:ScatterPlot3D Points="{Binding Data}" Values="{Binding Values}" SurfaceBrush="{Binding SurfaceBrush}"
-                      BoundingBoxThickness="0.005"
-                      
-                      ZoomExtentsWhenLoaded="True" SphereSize=".03"
+                      BoundingBoxThickness="0.004"
+                      ZoomExtentsWhenLoaded="True" SphereSize=".05"
                       ShowCameraInfo="True"
                       ShowCameraTarget="True" 
                       ShowFieldOfView="True"
                       ShowCoordinateSystem="True" CoordinateSystemHorizontalPosition="Right" CoordinateSystemVerticalPosition="Top"
-                      
+                      PanGesture="LeftClick" 
                       XAxisTitleContent="X-Axis" XAxisTitleBrush="Red" 
                       XAxisLabelBrush="Red" 
                       
@@ -41,7 +40,7 @@
     </crystal:GridLinesVisual3D>
       
     <ctrl:ScatterPlot3D.Camera>
-      <PerspectiveCamera Position="3,3,3" LookDirection="-100,-100,-100" UpDirection="0,0,1"/>
+      <PerspectiveCamera Position="22,-11,16" LookDirection="-20,14,-13" UpDirection="0.5,-0.3,0.8"/>
     </ctrl:ScatterPlot3D.Camera>
 
   </ctrl:ScatterPlot3D>
