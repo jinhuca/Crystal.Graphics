@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Crystal.Graphics\Crystal.Graphics.csproj" />
+    <PackageReference Include="Crystal.Graphics" Version="1.0.0.3" />
   </ItemGroup>
 
 </Project>

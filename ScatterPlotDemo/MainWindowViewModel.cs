@@ -1,11 +1,7 @@
 ﻿using Crystal.Graphics;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -13,7 +9,7 @@ namespace ScatterPlotDemo
 {
   public class MainWindowViewModel : INotifyPropertyChanged
   {
-    private int totalPoints = 1_000;
+    private int totalPoints = 100;
     private Random random = new Random();
 
     public Point3D[] Data { get; set; }
