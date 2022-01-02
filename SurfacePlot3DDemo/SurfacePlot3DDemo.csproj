@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SurfacePlot3DControl\SurfacePlot3DControl.csproj" />
+    <ProjectReference Include="..\Crystal.Graphics\Crystal.Graphics.csproj" />
   </ItemGroup>
 
 </Project>

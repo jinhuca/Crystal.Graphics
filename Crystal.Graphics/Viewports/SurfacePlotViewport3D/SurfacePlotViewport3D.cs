@@ -1,17 +1,10 @@
-﻿using Crystal.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-
-namespace SurfacePlot3DControl
+﻿namespace Crystal.Graphics
 {
-  public class SurfacePlotVisual3D : CrystalViewport3D
+  public class SurfacePlotViewport3D : CrystalViewport3D
   {
-    static SurfacePlotVisual3D()
+    static SurfacePlotViewport3D()
     {
-      DefaultStyleKeyProperty.OverrideMetadata(typeof(SurfacePlotVisual3D), new FrameworkPropertyMetadata(typeof(SurfacePlotVisual3D)));
+      DefaultStyleKeyProperty.OverrideMetadata(typeof(SurfacePlotViewport3D), new FrameworkPropertyMetadata(typeof(SurfacePlotViewport3D)));
     }
 
     #region Dependency Properties
@@ -26,7 +19,7 @@ namespace SurfacePlot3DControl
     }
 
     public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-      nameof(Points), typeof(Point3D[,]), typeof(SurfacePlotVisual3D), new UIPropertyMetadata(null, ModelChanged));
+      nameof(Points), typeof(Point3D[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
 
     /// <summary>
     /// Gets or sets the color values corresponding to the Points array.
@@ -41,7 +34,7 @@ namespace SurfacePlot3DControl
     }
 
     public static readonly DependencyProperty ColorValuesProperty = DependencyProperty.Register(
-      nameof(ColorValues), typeof(double[,]), typeof(SurfacePlotVisual3D), new UIPropertyMetadata(null, ModelChanged));
+      nameof(ColorValues), typeof(double[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
 
     /// <summary>
     /// Gets or sets the brush used for the surface.
@@ -53,7 +46,7 @@ namespace SurfacePlot3DControl
     }
 
     public static readonly DependencyProperty SurfaceBrushProperty = DependencyProperty.Register(
-      nameof(SurfaceBrush), typeof(Brush), typeof(SurfacePlotVisual3D), new UIPropertyMetadata(null, ModelChanged));
+      nameof(SurfaceBrush), typeof(Brush), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
 
     private readonly ModelVisual3D visualChild;
 
@@ -64,7 +57,7 @@ namespace SurfacePlot3DControl
     }
 
     public static readonly DependencyProperty IntervalXProperty = DependencyProperty.Register(
-      nameof(IntervalX), typeof(double), typeof(SurfacePlotVisual3D), new UIPropertyMetadata(1.0d, ModelChanged));
+      nameof(IntervalX), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(1.0d, ModelChanged));
 
     public double IntervalY
     {
@@ -73,7 +66,7 @@ namespace SurfacePlot3DControl
     }
 
     public static readonly DependencyProperty IntervalYProperty = DependencyProperty.Register(
-      nameof(IntervalY), typeof(double), typeof(SurfacePlotVisual3D), new UIPropertyMetadata(1.0d, ModelChanged));
+      nameof(IntervalY), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(1.0d, ModelChanged));
 
     public double IntervalZ
     {
@@ -82,7 +75,7 @@ namespace SurfacePlot3DControl
     }
 
     public static readonly DependencyProperty IntervalZProperty = DependencyProperty.Register(
-      nameof(IntervalZ), typeof(double), typeof(SurfacePlotVisual3D), new UIPropertyMetadata(1.0d, ModelChanged));
+      nameof(IntervalZ), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(1.0d, ModelChanged));
 
     public new double FontSize
     {
@@ -91,7 +84,7 @@ namespace SurfacePlot3DControl
     }
 
     public static new readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
-      nameof(FontSize), typeof(double), typeof(SurfacePlotVisual3D), new UIPropertyMetadata(1.0d, ModelChanged));
+      nameof(FontSize), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(1.0d, ModelChanged));
 
     public double LineThickness
     {
@@ -100,11 +93,11 @@ namespace SurfacePlot3DControl
     }
 
     public static readonly DependencyProperty LineThicknessProperty = DependencyProperty.Register(
-      nameof(LineThickness), typeof(double), typeof(SurfacePlotVisual3D), new UIPropertyMetadata(0.005d, ModelChanged));
+      nameof(LineThickness), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(0.005d, ModelChanged));
 
     #endregion Dependency Properties
 
-    public SurfacePlotVisual3D()
+    public SurfacePlotViewport3D()
     {
       IntervalX = 1;
       IntervalY = 1;
@@ -118,7 +111,7 @@ namespace SurfacePlot3DControl
 
     private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-      ((SurfacePlotVisual3D)d).UpdateModel();
+      ((SurfacePlotViewport3D)d).UpdateModel();
     }
 
     private void UpdateModel()

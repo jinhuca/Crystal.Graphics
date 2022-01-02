@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ctrl="clr-namespace:ScatterPlot3DControl;assembly=ScatterPlot3DControl"
+        
         xmlns:crystal="clr-namespace:Crystal.Graphics;assembly=Crystal.Graphics"
         xmlns:local="clr-namespace:ScatterPlotDemo"
         mc:Ignorable="d"
         Title="MainWindow" WindowState="Maximized">
 
-  <ctrl:ScatterPlot3D Points="{Binding Data}" Values="{Binding Values}" SurfaceBrush="{Binding SurfaceBrush}"
+  <crystal:PointPlotViewport3D Points="{Binding Data}" Values="{Binding Values}" SurfaceBrush="{Binding SurfaceBrush}"
                       BoundingBoxThickness="0.004"
                       ZoomExtentsWhenLoaded="True" SphereSize=".05"
                       ShowCameraInfo="True"
@@ -27,9 +27,9 @@
                       ZAxisLabelBrush="CadetBlue" 
                       
                       >
-    <ctrl:ScatterPlot3D.BoundingBoxMaterial>
+    <crystal:PointPlotViewport3D.BoundingBoxMaterial>
       <DiffuseMaterial Brush="DarkRed"/>
-    </ctrl:ScatterPlot3D.BoundingBoxMaterial>
+    </crystal:PointPlotViewport3D.BoundingBoxMaterial>
 
     <ModelVisual3D Content="{Binding Lights}"/>
     
@@ -38,11 +38,11 @@
         <Point3D X="3" Y="3" Z="0"/>
       </crystal:GridLinesVisual3D.Center>
     </crystal:GridLinesVisual3D>
-      
-    <ctrl:ScatterPlot3D.Camera>
-      <PerspectiveCamera Position="22,-11,16" LookDirection="-20,14,-13" UpDirection="0.5,-0.3,0.8"/>
-    </ctrl:ScatterPlot3D.Camera>
 
-  </ctrl:ScatterPlot3D>
+    <crystal:PointPlotViewport3D.Camera>
+      <PerspectiveCamera Position="22,-11,16" LookDirection="-20,14,-13" UpDirection="0.5,-0.3,0.8"/>
+    </crystal:PointPlotViewport3D.Camera>
+
+  </crystal:PointPlotViewport3D>
 
 </Window>
