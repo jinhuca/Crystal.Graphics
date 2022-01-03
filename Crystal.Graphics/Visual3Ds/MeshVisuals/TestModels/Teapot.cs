@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows the Utah teapot test model.
   /// </summary>
-  public class Teapot : MeshElement3D
+  public class Teapot : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="Position"/> dependency property.

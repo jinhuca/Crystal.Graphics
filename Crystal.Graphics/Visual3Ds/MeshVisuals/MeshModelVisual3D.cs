@@ -8,37 +8,73 @@ namespace Crystal.Graphics
   /// <remarks>
   /// Derived classes should override the Tessellate method to generate the geometry.
   /// </remarks>
-  public abstract class MeshElement3D : ModelVisual3D, IEditableObject
+  public abstract class MeshModelVisual3D : ModelVisual3D, IEditableObject
   {
     /// <summary>
-    /// Identifies the <see cref="BackMaterial"/> dependency property.
+    /// Gets or sets the material.
     /// </summary>
-    public static readonly DependencyProperty BackMaterialProperty = DependencyProperty.Register(
-        "BackMaterial", typeof(Material), typeof(MeshElement3D), new UIPropertyMetadata(MaterialHelper.CreateMaterial(Brushes.LightBlue), MaterialChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Fill"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-        "Fill", typeof(Brush), typeof(MeshElement3D), new UIPropertyMetadata(null, FillChanged));
+    /// <value>The material.</value>
+    public Material Material
+    {
+      get => (Material)GetValue(MaterialProperty);
+      set => SetValue(MaterialProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="Material"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty MaterialProperty = DependencyProperty.Register(
-        "Material",
-        typeof(Material),
-        typeof(MeshElement3D),
-        new UIPropertyMetadata(MaterialHelper.CreateMaterial(Brushes.Blue), MaterialChanged));
+      nameof(Material), typeof(Material), typeof(MeshModelVisual3D), new UIPropertyMetadata(MaterialHelper.CreateMaterial(Brushes.Blue), MaterialChanged));
 
     /// <summary>
-    ///   The visibility property.
+    /// Gets or sets the back material.
+    /// </summary>
+    /// <value>The back material.</value>
+    public Material BackMaterial
+    {
+      get => (Material)GetValue(BackMaterialProperty);
+      set => SetValue(BackMaterialProperty, value);
+    }
+
+    /// <summary>
+    /// Identifies the <see cref="BackMaterial"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty BackMaterialProperty = DependencyProperty.Register(
+      nameof(BackMaterial), typeof(Material), typeof(MeshModelVisual3D), new UIPropertyMetadata(MaterialHelper.CreateMaterial(Brushes.LightBlue), MaterialChanged));
+
+    /// <summary>
+    /// Gets or sets the fill brush. This brush will be used for both the Material and BackMaterial.
+    /// </summary>
+    /// <value>The fill brush.</value>
+    public Brush Fill
+    {
+      get => (Brush)GetValue(FillProperty);
+      set => SetValue(FillProperty, value);
+    }
+
+    /// <summary>
+    /// Identifies the <see cref="Fill"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
+      nameof(Fill), typeof(Brush), typeof(MeshModelVisual3D), new UIPropertyMetadata(null, FillChanged));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this <see cref="MeshModelVisual3D"/> is visible.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if the element is visible; otherwise, <c>false</c>.
+    /// </value>
+    public bool Visible
+    {
+      get => (bool)GetValue(VisibleProperty);
+      set => SetValue(VisibleProperty, value);
+    }
+
+    /// <summary>
+    /// The visibility property.
     /// </summary>
     public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register(
-        "Visible",
-        typeof(bool),
-        typeof(MeshElement3D),
-        new UIPropertyMetadata(true, VisibleChanged));
+      nameof(Visible), typeof(bool), typeof(MeshModelVisual3D), new UIPropertyMetadata(true, VisibleChanged));
 
     /// <summary>
     /// A flag that is set when the element is in editing mode (<see cref="IEditableObject"/>, <see cref="M:System.ComponentModel.IEditableObject.BeginEdit"/> and <see cref="M:System.ComponentModel.IEditableObject.EndEdit"/>).
@@ -56,58 +92,12 @@ namespace Crystal.Graphics
     private bool isMaterialChanged;
 
     /// <summary>
-    ///   Initializes a new instance of the <see cref = "MeshElement3D" /> class.
+    ///   Initializes a new instance of the <see cref = "MeshModelVisual3D" /> class.
     /// </summary>
-    protected MeshElement3D()
+    protected MeshModelVisual3D()
     {
       Content = new GeometryModel3D();
       UpdateModel();
-    }
-
-    /// <summary>
-    /// Gets or sets the back material.
-    /// </summary>
-    /// <value>The back material.</value>
-    public Material BackMaterial
-    {
-      get => (Material)GetValue(BackMaterialProperty);
-
-      set => SetValue(BackMaterialProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the fill brush. This brush will be used for both the Material and BackMaterial.
-    /// </summary>
-    /// <value>The fill brush.</value>
-    public Brush Fill
-    {
-      get => (Brush)GetValue(FillProperty);
-
-      set => SetValue(FillProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the material.
-    /// </summary>
-    /// <value>The material.</value>
-    public Material Material
-    {
-      get => (Material)GetValue(MaterialProperty);
-
-      set => SetValue(MaterialProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this <see cref="MeshElement3D"/> is visible.
-    /// </summary>
-    /// <value>
-    ///   <c>true</c> if the element is visible; otherwise, <c>false</c>.
-    /// </value>
-    public bool Visible
-    {
-      get => (bool)GetValue(VisibleProperty);
-
-      set => SetValue(VisibleProperty, value);
     }
 
     /// <summary>
@@ -171,7 +161,7 @@ namespace Crystal.Graphics
     /// </param>
     protected static void VisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-      ((MeshElement3D)d).OnGeometryChanged();
+      ((MeshModelVisual3D)d).OnGeometryChanged();
     }
 
     /// <summary>
@@ -185,7 +175,7 @@ namespace Crystal.Graphics
     /// </param>
     protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-      ((MeshElement3D)d).OnGeometryChanged();
+      ((MeshModelVisual3D)d).OnGeometryChanged();
     }
 
     /// <summary>
@@ -199,7 +189,7 @@ namespace Crystal.Graphics
     /// </param>
     protected static void MaterialChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-      ((MeshElement3D)d).OnMaterialChanged();
+      ((MeshModelVisual3D)d).OnMaterialChanged();
     }
 
     /// <summary>
@@ -262,7 +252,7 @@ namespace Crystal.Graphics
     /// </param>
     private static void FillChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-      ((MeshElement3D)d).OnFillChanged();
+      ((MeshModelVisual3D)d).OnFillChanged();
     }
   }
 }

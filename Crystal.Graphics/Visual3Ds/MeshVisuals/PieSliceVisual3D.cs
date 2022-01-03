@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows a flat pie slice defined by center, normal, up vectors, inner and outer radius, start and end angles.
   /// </summary>
-  public class PieSliceVisual3D : MeshElement3D
+  public class PieSliceVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="Center"/> dependency property.

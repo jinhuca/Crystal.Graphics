@@ -6,7 +6,7 @@
   /// <remarks>
   /// See http://en.wikipedia.org/wiki/Quadrilateral
   /// </remarks>
-  public class QuadVisual3D : MeshElement3D
+  public class QuadVisual3D : MeshModelVisual3D
   {
     // A quadrilateral defined by the four corner points.
     // Point4          Point3

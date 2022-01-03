@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows a truncated cone defined by origin, height, normal, base- and top radius.
   /// </summary>
-  public class TruncatedConeVisual3D : MeshElement3D
+  public class TruncatedConeVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="BaseCap"/> dependency property.

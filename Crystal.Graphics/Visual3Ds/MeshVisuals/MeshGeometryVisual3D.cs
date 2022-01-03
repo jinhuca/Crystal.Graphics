@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that can be bound to a <see cref="MeshGeometry3D"/>.
   /// </summary>
-  public class MeshGeometryVisual3D : MeshElement3D
+  public class MeshGeometryVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="MeshGeometry"/> dependency property.

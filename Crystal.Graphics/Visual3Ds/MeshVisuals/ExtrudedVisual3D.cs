@@ -6,7 +6,7 @@
   /// <remarks>
   /// The implementation will not work well if there are sharp bends in the path.
   /// </remarks>
-  public class ExtrudedVisual3D : MeshElement3D
+  public class ExtrudedVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="Diameters"/> dependency property.

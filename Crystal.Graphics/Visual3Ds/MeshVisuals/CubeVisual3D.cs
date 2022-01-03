@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that displays a cube.
   /// </summary>
-  public class CubeVisual3D : MeshElement3D
+  public class CubeVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="Center"/> dependency property.

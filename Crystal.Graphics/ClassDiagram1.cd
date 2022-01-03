@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Crystal.Graphics.ParametricSurface3D" Collapsed="true">
+    <Position X="9.5" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABgAABAAAAAAAAAAAAAgAAAAQAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\ParametricSurface3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.MeshModelVisual3D" Collapsed="true">
+    <Position X="23.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gFBAgAAACAAAAABAIABEiAAAFAAQCAAYCAwAAAAwABA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\MeshModelVisual3D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.ModelVisual3D" Collapsed="true">
+    <Position X="23.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Crystal.Graphics.Teapot" Collapsed="true">
+    <Position X="12" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAQAAAABAAgQAAAACCAAAAAAAhAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\TestModels\Teapot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.ArrowVisual3D" Collapsed="true">
+    <Position X="14.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAgAAAQCAAgAAAAAAAAAAAICABCAgABAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\ArrowVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.BoxVisual3D" Collapsed="true">
+    <Position X="16.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAiBAABAAAAEAgAACAAFBAAAAAAAAAAAAAAAgIABA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\BoxVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.CubeVisual3D" Collapsed="true">
+    <Position X="18.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAEAAAAgAAAAAAAAAAIAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\CubeVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.EllipsoidVisual3D" Collapsed="true">
+    <Position X="21" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAASAAAAAAAgIAAAGgAAAAAAQAAAAAAACAAoBAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\EllipsoidVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.ExtrudedVisual3D" Collapsed="true">
+    <Position X="23.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAUgAAAMAAAAAIAAAAAIAQAA0AAAAAAQEABAJAAIAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\ExtrudedVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.GridLinesVisual3D" Collapsed="true">
+    <Position X="25.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgqBAADAABAAAiAgAAgEBAAAAIAEAIBAAAAABIAAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\GridLinesVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.MeshGeometryVisual3D" Collapsed="true">
+    <Position X="27.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\MeshGeometryVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.PieSliceVisual3D" Collapsed="true">
+    <Position X="30" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAggAAAAAAAABAgAQAAIAAAABAIAAQAAAAICIAIBgA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\PieSliceVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.PipeVisual3D" Collapsed="true">
+    <Position X="32.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAQAAAAAgAAAAAAAgAAAAAAAIAAAIAABCAAABAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\PipeVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.QuadVisual3D" Collapsed="true">
+    <Position X="34.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAgAAAAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\QuadVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.RectangleVisual3D" Collapsed="true">
+    <Position X="36.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgiBAACAIAAAAgAAAAAFBAAAgIAIAAAAAAAAgAAAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\RectangleVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.SphereVisual3D" Collapsed="true">
+    <Position X="39" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIgAACAAAAAAAgIAAAAAAAAAAAAAAAAAAACAAIBAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\SphereVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.TorusVisual3D" Collapsed="true">
+    <Position X="41.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgACCAAAAAAAAIAAAAAIEAAAAIAAAAAAACAAABAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\TorusVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.TruncatedConeVisual3D" Collapsed="true">
+    <Position X="43.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAggAAABAABACAAAACBABBAAIAIAIAAAEAACAgABAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\TruncatedConeVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crystal.Graphics.CrystalVisual3D" Collapsed="true">
+    <Position X="9.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIABAAAAAAAAAAAAAAAgBAAAAAAIAAIEABCgiABAA=</HashCode>
+      <FileName>Visual3Ds\MeshVisuals\CrystalVisual3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Media.Media3D.Visual3D" Collapsed="true">
+    <Position X="21.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

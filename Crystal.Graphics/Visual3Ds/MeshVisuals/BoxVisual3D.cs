@@ -7,7 +7,7 @@
   /// The box is aligned with the local X, Y and Z coordinate system
   /// Use a transform to orient the box in other directions.
   /// </remarks>
-  public class BoxVisual3D : MeshElement3D
+  public class BoxVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="BottomFace"/> dependency property.

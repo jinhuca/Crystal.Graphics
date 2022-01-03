@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows a pipe between two points.
   /// </summary>
-  public class PipeVisual3D : MeshElement3D
+  public class PipeVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="Diameter"/> dependency property.

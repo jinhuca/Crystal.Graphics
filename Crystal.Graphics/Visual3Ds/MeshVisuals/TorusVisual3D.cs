@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows a torus defined by two diameters (torus and it's tube).
   /// </summary>
-  public class TorusVisual3D : MeshElement3D
+  public class TorusVisual3D : MeshModelVisual3D
     {
         /// <summary>
         /// Identifies the <see cref="TorusDiameter"/> dependency property.

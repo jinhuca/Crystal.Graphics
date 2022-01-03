@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows a 3D rectangle defined by origin, normal, length and width.
   /// </summary>
-  public class RectangleVisual3D : MeshElement3D
+  public class RectangleVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="DivLength"/> dependency property.

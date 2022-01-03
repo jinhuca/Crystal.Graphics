@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows a set of grid lines.
   /// </summary>
-  public class GridLinesVisual3D : MeshElement3D
+  public class GridLinesVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Gets or sets the center of the grid.

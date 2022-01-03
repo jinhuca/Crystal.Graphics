@@ -99,7 +99,7 @@
     /// </summary>
     protected virtual void OnFillChanged()
     {
-      foreach(MeshElement3D item in Children)
+      foreach(MeshModelVisual3D item in Children)
       {
         if(item != null)
         {

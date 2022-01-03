@@ -15,7 +15,6 @@
       set => SetValue(OriginProperty, value);
     }
 
-
     /// <summary>
     /// Identifies the <see cref="Origin"/> dependency property.
     /// </summary>

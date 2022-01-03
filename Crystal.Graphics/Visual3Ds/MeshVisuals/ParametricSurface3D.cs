@@ -6,20 +6,8 @@
   /// <remarks>
   /// Override the Evaluate method to define the points.
   /// </remarks>
-  public abstract class ParametricSurface3D : MeshElement3D
+  public abstract class ParametricSurface3D : MeshModelVisual3D
   {
-    /// <summary>
-    /// Identifies the <see cref="MeshSizeU"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MeshSizeUProperty = DependencyProperty.Register(
-        "MeshSizeU", typeof(int), typeof(ParametricSurface3D), new UIPropertyMetadata(120, GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="MeshSizeV"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MeshSizeVProperty = DependencyProperty.Register(
-        "MeshSizeV", typeof(int), typeof(ParametricSurface3D), new UIPropertyMetadata(120, GeometryChanged));
-
     /// <summary>
     /// Gets or sets the mesh size in u-direction.
     /// </summary>
@@ -27,9 +15,14 @@
     public int MeshSizeU
     {
       get => (int)GetValue(MeshSizeUProperty);
-
       set => SetValue(MeshSizeUProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="MeshSizeU"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty MeshSizeUProperty = DependencyProperty.Register(
+      nameof(MeshSizeU), typeof(int), typeof(ParametricSurface3D), new UIPropertyMetadata(120, GeometryChanged));
 
     /// <summary>
     /// Gets or sets the mesh size in v-direction.
@@ -38,9 +31,14 @@
     public int MeshSizeV
     {
       get => (int)GetValue(MeshSizeVProperty);
-
       set => SetValue(MeshSizeVProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="MeshSizeV"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty MeshSizeVProperty = DependencyProperty.Register(
+      nameof(MeshSizeV), typeof(int), typeof(ParametricSurface3D), new UIPropertyMetadata(120, GeometryChanged));
 
     /// <summary>
     /// Evaluates the surface at the specified u,v parameters.

@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows an arrow.
   /// </summary>
-  public class ArrowVisual3D : MeshElement3D
+  public class ArrowVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="Diameter"/> dependency property.

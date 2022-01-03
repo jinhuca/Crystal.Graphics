@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows an axis aligned ellipsoid.
   /// </summary>
-  public class EllipsoidVisual3D : MeshElement3D
+  public class EllipsoidVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="Center"/> dependency property.

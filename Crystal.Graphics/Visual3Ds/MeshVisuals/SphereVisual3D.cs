@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows a sphere defined by center and radius.
   /// </summary>
-  public class SphereVisual3D : MeshElement3D
+  public class SphereVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Identifies the <see cref="Center"/> dependency property.
