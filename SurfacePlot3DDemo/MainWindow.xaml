@@ -10,7 +10,8 @@
 
   <crystal:SurfacePlotViewport3D Points="{Binding Data}" ColorValues="{Binding ColorValues}" SurfaceBrush="{Binding SurfaceBrush}"
                             ZoomExtentsWhenLoaded="True" ShowCameraInfo="True"  PanGesture="LeftClick" 
-                            ShowCoordinateSystem="True" CoordinateSystemHorizontalPosition="Right" CoordinateSystemVerticalPosition="Top">
+                            ShowCoordinateSystem="True" CoordinateSystemHorizontalPosition="Right" CoordinateSystemVerticalPosition="Top"
+                                 >
 
     <ModelVisual3D Content="{Binding Lights}"/>
 

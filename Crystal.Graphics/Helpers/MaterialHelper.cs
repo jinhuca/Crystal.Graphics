@@ -191,7 +191,7 @@
     /// <param name="specularPower">The specular power.</param>
     /// <param name="freeze">Freeze the material if set to <c>true</c>.</param>
     /// <returns>The material.</returns>
-    public static Material CreateMaterial(Brush diffuse, Brush emissive, Brush specular = null, double opacity = 1, double specularPower = 85, bool freeze = true)
+    public static Material CreateMaterial(Brush diffuse, Brush? emissive, Brush? specular = null, double opacity = 1, double specularPower = 85, bool freeze = true)
     {
       var mg = new MaterialGroup();
       if(diffuse != null)

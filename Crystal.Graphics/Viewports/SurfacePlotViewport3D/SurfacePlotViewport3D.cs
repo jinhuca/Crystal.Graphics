@@ -1,115 +1,31 @@
 ﻿namespace Crystal.Graphics
 {
-  public class SurfacePlotViewport3D : CrystalViewport3D
+  public class SurfacePlotViewport3D : PlotViewport3D
   {
+    #region Private fields
+
+    private readonly ModelVisual3D visualChild;
+
+    #endregion Private fields
+
+    #region Constructors
+
     static SurfacePlotViewport3D()
     {
       DefaultStyleKeyProperty.OverrideMetadata(typeof(SurfacePlotViewport3D), new FrameworkPropertyMetadata(typeof(SurfacePlotViewport3D)));
     }
 
-    #region Dependency Properties
-
-    /// <summary>
-    /// Gets or sets the points defining the surface.
-    /// </summary>
-    public Point3D[,] Points
-    {
-      get => (Point3D[,])GetValue(PointsProperty);
-      set => SetValue(PointsProperty, value);
-    }
-
-    public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-      nameof(Points), typeof(Point3D[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
-
-    /// <summary>
-    /// Gets or sets the color values corresponding to the Points array.
-    /// The color values are used as Texture coordinates for the surface.
-    /// Remember to set the SurfaceBrush, e.g. by using the BrushHelper.CreateGradientBrush method.
-    /// If this property is not set, the z-value of the Points will be used as color value.
-    /// </summary>
-    public double[,] ColorValues
-    {
-      get => (double[,])GetValue(ColorValuesProperty);
-      set => SetValue(ColorValuesProperty, value);
-    }
-
-    public static readonly DependencyProperty ColorValuesProperty = DependencyProperty.Register(
-      nameof(ColorValues), typeof(double[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
-
-    /// <summary>
-    /// Gets or sets the brush used for the surface.
-    /// </summary>
-    public Brush SurfaceBrush
-    {
-      get => (Brush)GetValue(SurfaceBrushProperty);
-      set => SetValue(SurfaceBrushProperty, value);
-    }
-
-    public static readonly DependencyProperty SurfaceBrushProperty = DependencyProperty.Register(
-      nameof(SurfaceBrush), typeof(Brush), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
-
-    private readonly ModelVisual3D visualChild;
-
-    public double IntervalX
-    {
-      get => (double)GetValue(IntervalXProperty);
-      set => SetValue(IntervalXProperty, value);
-    }
-
-    public static readonly DependencyProperty IntervalXProperty = DependencyProperty.Register(
-      nameof(IntervalX), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(1.0d, ModelChanged));
-
-    public double IntervalY
-    {
-      get => (double)GetValue(IntervalYProperty);
-      set => SetValue(IntervalYProperty, value);
-    }
-
-    public static readonly DependencyProperty IntervalYProperty = DependencyProperty.Register(
-      nameof(IntervalY), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(1.0d, ModelChanged));
-
-    public double IntervalZ
-    {
-      get;
-      set;
-    }
-
-    public static readonly DependencyProperty IntervalZProperty = DependencyProperty.Register(
-      nameof(IntervalZ), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(1.0d, ModelChanged));
-
-    public new double FontSize
-    {
-      get;
-      set;
-    }
-
-    public static new readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
-      nameof(FontSize), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(1.0d, ModelChanged));
-
-    public double LineThickness
-    {
-      get => (double)GetValue(LineThicknessProperty);
-      set => SetValue(LineThicknessProperty, value);
-    }
-
-    public static readonly DependencyProperty LineThicknessProperty = DependencyProperty.Register(
-      nameof(LineThickness), typeof(double), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(0.005d, ModelChanged));
-
-    #endregion Dependency Properties
-
     public SurfacePlotViewport3D()
     {
-      IntervalX = 1;
-      IntervalY = 1;
-      IntervalZ = 0.25;
-      FontSize = 0.06;
-      LineThickness = 0.005;
-
       visualChild = new ModelVisual3D();
       Children.Add(visualChild);
     }
 
-    private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    #endregion Constructors
+
+    #region Private Methods
+
+    private static new void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
       ((SurfacePlotViewport3D)d).UpdateModel();
     }
@@ -172,8 +88,7 @@
       var surfaceMeshBuilder = new MeshBuilder();
       surfaceMeshBuilder.AddRectangularMesh(Points, texcoords);
 
-      var surfaceModel = new GeometryModel3D(surfaceMeshBuilder.ToMesh(),
-                                             MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0));
+      var surfaceModel = new GeometryModel3D(surfaceMeshBuilder.ToMesh(), MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0));
       surfaceModel.BackMaterial = surfaceModel.Material;
 
       var axesMeshBuilder = new MeshBuilder();
@@ -187,18 +102,14 @@
         }
         path.Add(new Point3D(x, maxY, minZ));
 
-        axesMeshBuilder.AddTube(path, LineThickness, 9, false);
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(x.ToString(), Brushes.Black, true, FontSize,
-                                                                   new Point3D(x, minY - FontSize * 2.5, minZ),
-                                                                   new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        axesMeshBuilder.AddTube(path, BoundingBoxThickness, 9, false);
+        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+          $"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
-
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D("X-axis", Brushes.Black, true, FontSize,
-                                                                   new Point3D((minX + maxX) * 0.5,
-                                                                               minY - FontSize * 6, minZ),
-                                                                   new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+          XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 6, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
 
@@ -211,42 +122,34 @@
           path.Add(BilinearInterpolation(Points, i, j));
         }
         path.Add(new Point3D(maxX, y, minZ));
-
-        axesMeshBuilder.AddTube(path, LineThickness, 9, false);
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(y.ToString(), Brushes.Black, true, FontSize,
-                                                                   new Point3D(minX - FontSize * 3, y, minZ),
-                                                                   new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        axesMeshBuilder.AddTube(path, BoundingBoxThickness, 9, false);
+        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+          $"{y:0}", YAxisLabelBrush, true, YAxisLabelFontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D("Y-axis", Brushes.Black, true, FontSize,
-                                                                   new Point3D(minX - FontSize * 10,
-                                                                               (minY + maxY) * 0.5, minZ),
-                                                                   new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
+        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+          YAxisTitleContent, YAxisTitleBrush, true, YAxisTitleFontSize, new Point3D(minX - FontSize * 10,(minY + maxY) * 0.5, minZ), new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
         plotModel.Children.Add(label);
       }
+
       double z0 = (int)(minZ / IntervalZ) * IntervalZ;
       for(double z = z0; z <= maxZ + double.Epsilon; z += IntervalZ)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(z.ToString(), Brushes.Black, true, FontSize,
-                                                                   new Point3D(minX - FontSize * 3, maxY, z),
-                                                                   new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
+        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+          $"{z:0}", ZAxisLabelBrush, true, ZAxisLabelFontSize, new Point3D(minX - FontSize * 3, maxY, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
         plotModel.Children.Add(label);
       }
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D("Z-axis", Brushes.Black, true, FontSize,
-                                                                   new Point3D(minX - FontSize * 10, maxY,
-                                                                               (minZ + maxZ) * 0.5),
-                                                                   new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
+        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+          ZAxisTitleContent, ZAxisTitleBrush, true, ZAxisTitleFontSize, new Point3D(minX - FontSize * 10, maxY, (minZ + maxZ) * 0.5), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
         plotModel.Children.Add(label);
       }
 
+      var axisBoundingBox = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, 0 * (maxZ - minZ));
+      axesMeshBuilder.AddBoundingBox(axisBoundingBox, BoundingBoxThickness);
 
-      var bb = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, 0 * (maxZ - minZ));
-      axesMeshBuilder.AddBoundingBox(bb, LineThickness);
-
-      var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh(), Materials.Black);
-
+      var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh(), BoundingBoxMaterial);
       plotModel.Children.Add(surfaceModel);
       plotModel.Children.Add(axesModel);
 
@@ -274,5 +177,50 @@
       Vector3D v1 = v01 * (1 - u) + v11 * u;
       return (v0 * (1 - v) + v1 * v).ToPoint3D();
     }
+
+    #endregion Private Methods
+
+    #region Data Dependency Properties
+
+    /// <summary>
+    /// Gets or sets the points defining the surface.
+    /// </summary>
+    public Point3D[,] Points
+    {
+      get => (Point3D[,])GetValue(PointsProperty);
+      set => SetValue(PointsProperty, value);
+    }
+
+    public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
+      nameof(Points), typeof(Point3D[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
+
+    /// <summary>
+    /// Gets or sets the color values corresponding to the Points array.
+    /// The color values are used as Texture coordinates for the surface.
+    /// Remember to set the SurfaceBrush, e.g. by using the BrushHelper.CreateGradientBrush method.
+    /// If this property is not set, the z-value of the Points will be used as color value.
+    /// </summary>
+    public double[,] ColorValues
+    {
+      get => (double[,])GetValue(ColorValuesProperty);
+      set => SetValue(ColorValuesProperty, value);
+    }
+
+    public static readonly DependencyProperty ColorValuesProperty = DependencyProperty.Register(
+      nameof(ColorValues), typeof(double[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
+
+    /// <summary>
+    /// Gets or sets the brush used for the surface.
+    /// </summary>
+    public Brush SurfaceBrush
+    {
+      get => (Brush)GetValue(SurfaceBrushProperty);
+      set => SetValue(SurfaceBrushProperty, value);
+    }
+
+    public static readonly DependencyProperty SurfaceBrushProperty = DependencyProperty.Register(
+      nameof(SurfaceBrush), typeof(Brush), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
+
+    #endregion Data Dependency Properties
   }
 }
