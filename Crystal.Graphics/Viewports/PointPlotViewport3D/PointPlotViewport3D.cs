@@ -85,15 +85,18 @@ namespace Crystal.Graphics
 
       for(double x = minX; x <= Math.Ceiling(maxX) + 1; x += IntervalX)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+          $"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
-      GeometryModel3D xAxisTitle = TextCreator.CreateTextLabelModel3D(XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 6, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+      GeometryModel3D xAxisTitle = TextCreator.CreateTextLabelModel3D(
+        XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 6, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
       plotModel.Children.Add(xAxisTitle);
 
       for(double y = minY; y <= Math.Ceiling(maxY) + 1; y += IntervalY)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D($"{y:0}", YAxisLabelBrush, true, YAxisLabelFontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+          $"{y:0}", YAxisLabelBrush, true, YAxisLabelFontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
       {

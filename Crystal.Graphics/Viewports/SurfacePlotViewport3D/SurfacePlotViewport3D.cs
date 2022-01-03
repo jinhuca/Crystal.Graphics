@@ -150,9 +150,8 @@
       axesMeshBuilder.AddBoundingBox(axisBoundingBox, BoundingBoxThickness);
 
       var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh(), BoundingBoxMaterial);
-      plotModel.Children.Add(surfaceModel);
       plotModel.Children.Add(axesModel);
-
+      plotModel.Children.Add(surfaceModel);
       return plotModel;
     }
 

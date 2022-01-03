@@ -15,12 +15,12 @@
                                ShowFieldOfView="True"
                                ShowCoordinateSystem="True" CoordinateSystemHorizontalPosition="Right" CoordinateSystemVerticalPosition="Top"
                                PanGesture="LeftClick" 
-                               XAxisTitleContent="X" XAxisTitleBrush="Red" XAxisTitleFontSize="1"
+                               XAxisTitleContent="X" XAxisTitleBrush="Red"
                                XAxisLabelBrush="Red" 
                                YAxisTitleContent="Y-Axis" YAxisTitleBrush="Blue"
                                YAxisLabelBrush="Green" 
                                ZAxisTitleContent="Z-Axis" ZAxisTitleBrush="DarkGreen" 
-                               ZAxisLabelBrush="CadetBlue">
+                               ZAxisLabelBrush="Red">
     <crystal:PointPlotViewport3D.BoundingBoxMaterial>
       <DiffuseMaterial Brush="DarkRed"/>
     </crystal:PointPlotViewport3D.BoundingBoxMaterial>

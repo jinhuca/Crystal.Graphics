@@ -3564,7 +3564,7 @@ namespace Crystal.Graphics
     /// <param name="backCap">
     /// Create a back Cap or not.
     /// </param>
-    public void AddTube(IList<Point3D> path, double[] values, double[] diameters, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
+    public void AddTube(IList<Point3D> path, double[]? values, double[] diameters, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
     {
       var circle = GetCircle(thetaDiv);
       AddTube(path, values, diameters, circle, isTubeClosed, true, frontCap, backCap);
