@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Expressions\Apple.txt" />
+    <None Remove="Expressions\Boys surface.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Crystal.Graphics\Crystal.Graphics.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Expressions\Apple.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Expressions\Boys surface.txt" />
+  </ItemGroup>
+
+</Project>

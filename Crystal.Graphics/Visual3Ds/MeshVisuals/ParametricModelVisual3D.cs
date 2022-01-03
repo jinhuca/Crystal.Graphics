@@ -6,7 +6,7 @@
   /// <remarks>
   /// Override the Evaluate method to define the points.
   /// </remarks>
-  public abstract class ParametricSurface3D : MeshModelVisual3D
+  public abstract class ParametricModelVisual3D : MeshModelVisual3D
   {
     /// <summary>
     /// Gets or sets the mesh size in u-direction.
@@ -22,7 +22,7 @@
     /// Identifies the <see cref="MeshSizeU"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty MeshSizeUProperty = DependencyProperty.Register(
-      nameof(MeshSizeU), typeof(int), typeof(ParametricSurface3D), new UIPropertyMetadata(120, GeometryChanged));
+      nameof(MeshSizeU), typeof(int), typeof(ParametricModelVisual3D), new UIPropertyMetadata(120, GeometryChanged));
 
     /// <summary>
     /// Gets or sets the mesh size in v-direction.
@@ -38,7 +38,7 @@
     /// Identifies the <see cref="MeshSizeV"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty MeshSizeVProperty = DependencyProperty.Register(
-      nameof(MeshSizeV), typeof(int), typeof(ParametricSurface3D), new UIPropertyMetadata(120, GeometryChanged));
+      nameof(MeshSizeV), typeof(int), typeof(ParametricModelVisual3D), new UIPropertyMetadata(120, GeometryChanged));
 
     /// <summary>
     /// Evaluates the surface at the specified u,v parameters.

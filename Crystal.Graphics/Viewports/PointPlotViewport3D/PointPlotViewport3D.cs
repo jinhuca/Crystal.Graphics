@@ -46,12 +46,13 @@ namespace Crystal.Graphics
       Model3DGroup? plotModel = new();
       if(Points == null || Values == null) return plotModel;
 
-      double minX = Points.Min(p => p.X);
-      double maxX = Points.Max(p => p.X);
-      double minY = Points.Min(p => p.Y);
-      double maxY = Points.Max(p => p.Y);
-      double minZ = Points.Min(p => p.Z);
-      double maxZ = Points.Max(p => p.Z);
+      int minX = (int)Math.Floor(Points.Min(p => p.X));
+      int maxX = (int)Math.Ceiling(Points.Max(p => p.X));
+      int minY = (int)Math.Floor(Points.Min(p => p.Y));
+      int maxY = (int)Math.Ceiling(Points.Max(p => p.Y));
+      int minZ = (int)Math.Floor(Points.Min(p => p.Z));
+      int maxZ = (int)Math.Ceiling(Points.Max(p => p.Z));
+
       double minValue = Values.Min();
       double maxValue = Values.Max();
 
@@ -83,7 +84,7 @@ namespace Crystal.Graphics
 
       var axesMeshBuilder = new MeshBuilder();
 
-      for(double x = minX; x <= Math.Ceiling(maxX) + 1; x += IntervalX)
+      for(double x = minX; x <= maxX; x += IntervalX)
       {
         GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
           $"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
@@ -93,7 +94,7 @@ namespace Crystal.Graphics
         XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 6, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
       plotModel.Children.Add(xAxisTitle);
 
-      for(double y = minY; y <= Math.Ceiling(maxY) + 1; y += IntervalY)
+      for(double y = minY; y <= maxY + 1; y += IntervalY)
       {
         GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
           $"{y:0}", YAxisLabelBrush, true, YAxisLabelFontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
@@ -105,7 +106,7 @@ namespace Crystal.Graphics
       }
 
       double z0 = (int)(minZ / IntervalZ) * IntervalZ;
-      for(double z = z0; z <= Math.Ceiling(maxZ); z += IntervalZ)
+      for(double z = z0; z <= maxZ; z += IntervalZ)
       {
         GeometryModel3D label = TextCreator.CreateTextLabelModel3D($"{z:0}", ZAxisLabelBrush, true, ZAxisLabelFontSize, new Point3D(minX - FontSize * 3, maxY, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
         plotModel.Children.Add(label);

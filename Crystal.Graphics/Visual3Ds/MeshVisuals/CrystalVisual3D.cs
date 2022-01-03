@@ -3,7 +3,7 @@
   /// <summary>
   /// A visual element that shows a space curve.
   /// </summary>
-  public class CrystalVisual3D : ParametricSurface3D
+  public class CrystalVisual3D : ParametricModelVisual3D
   {
     /// <summary>
     /// Gets or sets the origin.
