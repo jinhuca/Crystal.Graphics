@@ -74,9 +74,9 @@ namespace Crystal.Graphics
       }
 
       MeshGeometry3D? mesh = scatterMeshBuilder.ToMesh(true);
-      Material? temp = MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0);
+      Material? material = MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0);
 
-      var scatterModel = new GeometryModel3D(mesh, temp);
+      var scatterModel = new GeometryModel3D(mesh, material);
 
       scatterModel.BackMaterial = scatterModel.Material;
 

@@ -9,7 +9,7 @@ namespace ScatterPlotDemo
 {
   public class MainWindowViewModel : INotifyPropertyChanged
   {
-    private int totalPoints = 100;
+    private int totalPoints = 300;
     private Random random = new Random();
 
     public Point3D[] Data { get; set; }

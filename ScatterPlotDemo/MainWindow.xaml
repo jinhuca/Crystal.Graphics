@@ -15,7 +15,7 @@
                                ShowFieldOfView="True"
                                ShowCoordinateSystem="True" CoordinateSystemHorizontalPosition="Right" CoordinateSystemVerticalPosition="Top"
                                PanGesture="LeftClick" 
-                               XAxisTitleContent="X" XAxisTitleBrush="Red"
+                               XAxisTitleContent="X-Axis" XAxisTitleBrush="Red"
                                XAxisLabelBrush="Red" 
                                YAxisTitleContent="Y-Axis" YAxisTitleBrush="Blue"
                                YAxisLabelBrush="Green" 
