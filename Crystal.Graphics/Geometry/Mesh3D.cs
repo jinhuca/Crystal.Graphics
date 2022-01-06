@@ -54,7 +54,7 @@
       Faces = new List<int[]>();
       Edges = new List<int[]>();
       var tri = new int[3];
-      int i = 0;
+      var i = 0;
       foreach(var index in triangleIndices)
       {
         tri[i++] = index;
@@ -73,25 +73,25 @@
     /// Gets the edges.
     /// </summary>
     /// <value> The edges. </value>
-    public IList<int[]> Edges { get; private set; }
+    public IList<int[]> Edges { get; private init; }
 
     /// <summary>
     /// Gets the faces.
     /// </summary>
     /// <value> The faces. </value>
-    public IList<int[]> Faces { get; private set; }
+    public IList<int[]> Faces { get; private init; }
 
     /// <summary>
     /// Gets the texture coordinates.
     /// </summary>
     /// <value> The texture coordinates. </value>
-    public IList<Point> TextureCoordinates { get; private set; }
+    public IList<Point> TextureCoordinates { get; }
 
     /// <summary>
     /// Gets the vertices.
     /// </summary>
     /// <value> The vertices. </value>
-    public IList<Point3D> Vertices { get; private set; }
+    public IList<Point3D> Vertices { get; private init; }
 
     /// <summary>
     /// Adds a face.
@@ -134,8 +134,8 @@
       double x = 0;
       double y = 0;
       double z = 0;
-      int n = Faces[faceIndex].Length;
-      for(int i = 0; i < n; i++)
+      var n = Faces[faceIndex].Length;
+      for(var i = 0; i < n; i++)
       {
         x += Vertices[Faces[faceIndex][i]].X;
         y += Vertices[Faces[faceIndex][i]].Y;
@@ -166,10 +166,10 @@
     /// </returns>
     public int FindFaceFromEdge(int v0, int v1)
     {
-      for(int i = 0; i < Faces.Count; i++)
+      for(var i = 0; i < Faces.Count; i++)
       {
-        int m = Faces[i].Length;
-        for(int j = 0; j < m; j++)
+        var m = Faces[i].Length;
+        for(var j = 0; j < m; j++)
         {
           if(Faces[i][j] == v0 && Faces[i][(j + 1) % m] == v1)
           {
@@ -209,11 +209,11 @@
     /// </returns>
     public Vector3D GetFaceNormal(int faceIndex)
     {
-      int m = Faces[faceIndex].Length;
+      var m = Faces[faceIndex].Length;
       double x = 0;
       double y = 0;
       double z = 0;
-      for(int i = 0; i + 2 < m; i++)
+      for(var i = 0; i + 2 < m; i++)
       {
         var v0 = Vertices[Faces[faceIndex][i]];
         var v1 = Vertices[Faces[faceIndex][(i + 1) % m]];
@@ -228,18 +228,15 @@
     }
 
     /// <summary>
-    /// Gets the neighbour vertices.
+    /// Gets the neighbor vertices.
     /// </summary>
     /// <param name="vertexIndex">
     /// Index of the vertex.
     /// </param>
     /// <returns>
-    /// The neighbour vertices.
+    /// The neighbor vertices.
     /// </returns>
-    public int[] GetNeighbourVertices(int vertexIndex)
-    {
-      return Edges[vertexIndex];
-    }
+    public int[] GetNeighborVertices(int vertexIndex) => Edges[vertexIndex];
 
     /// <summary>
     /// Determines whether the mesh contains quadrilateral faces only.
@@ -284,8 +281,8 @@
     /// </summary>
     public void Quadrangulate()
     {
-      int n = Faces.Count;
-      for(int i = 0; i < n; i++)
+      var n = Faces.Count;
+      for(var i = 0; i < n; i++)
       {
         if(Faces[i].Length == 4)
         {
@@ -293,17 +290,17 @@
         }
 
         var c = FindCentroid(i);
-        int ci = Vertices.Count;
+        var ci = Vertices.Count;
         Vertices.Add(c);
 
-        int m = Faces[i].Length;
-        for(int j = 0; j < m; j++)
+        var m = Faces[i].Length;
+        for(var j = 0; j < m; j++)
         {
           var mp = FindMidpoint(Faces[i][j], Faces[i][(j + 1) % m]);
           Vertices.Add(mp);
         }
 
-        for(int j = 0; j < m; j++)
+        for(var j = 0; j < m; j++)
         {
           var quad = new int[4];
           quad[0] = ci + 1 + j;
@@ -337,27 +334,27 @@
     /// <returns>
     /// A mesh geometry.
     /// </returns>
-    public MeshGeometry3D ToMeshGeometry3D(
+    public MeshGeometry3D? ToMeshGeometry3D(
         bool sharedVertices = true, double shrinkFactor = 0.0, List<int> faceIndices = null)
     {
-      bool shrink = Math.Abs(shrinkFactor) > double.Epsilon;
+      var shrink = Math.Abs(shrinkFactor) > double.Epsilon;
 
       if(!sharedVertices || shrink)
       {
         // not shared vertices - flat shading
         var tm = new MeshBuilder(false, TextureCoordinates != null);
-        int faceIndex = 0;
+        var faceIndex = 0;
         foreach(var face in Faces)
         {
           var vertices = new int[face.Length];
-          int j = 0;
+          var j = 0;
 
           var centroid = FindCentroid(faceIndex);
 
           // var n = GetFaceNormal(faceIndex);
           // for (int i = 0; i < face.Length; i++)
           // tm.Normals.Add(n);
-          foreach(int v in face)
+          foreach(var v in face)
           {
             vertices[j++] = tm.Positions.Count;
             var vertex = Vertices[v];
@@ -376,8 +373,8 @@
           tm.AddTriangleFan(vertices);
           if(faceIndices != null)
           {
-            int numberOfTriangles = vertices.Length - 2;
-            for(int i = 0; i < numberOfTriangles; i++)
+            var numberOfTriangles = vertices.Length - 2;
+            for(var i = 0; i < numberOfTriangles; i++)
             {
               faceIndices.Add(faceIndex);
             }
@@ -405,14 +402,14 @@
           }
         }
 
-        int faceIndex = 0;
+        var faceIndex = 0;
         foreach(var face in Faces)
         {
           tm.AddTriangleFan(face);
           if(faceIndices != null)
           {
-            int numberOfTriangles = face.Length - 2;
-            for(int i = 0; i < numberOfTriangles; i++)
+            var numberOfTriangles = face.Length - 2;
+            for(var i = 0; i < numberOfTriangles; i++)
             {
               faceIndices.Add(faceIndex);
             }
@@ -433,8 +430,8 @@
     /// </param>
     public void Triangulate(bool barycentric)
     {
-      int n = Faces.Count;
-      for(int i = 0; i < n; i++)
+      var n = Faces.Count;
+      for(var i = 0; i < n; i++)
       {
         if(Faces[i].Length == 3)
         {
@@ -444,10 +441,10 @@
         if(barycentric)
         {
           var c = FindCentroid(i);
-          int ci = Vertices.Count;
+          var ci = Vertices.Count;
           Vertices.Add(c);
-          int m = Faces[i].Length;
-          for(int j = 0; j < m; j++)
+          var m = Faces[i].Length;
+          for(var j = 0; j < m; j++)
           {
             var tri = new int[3];
             tri[0] = Faces[i][j];
@@ -465,8 +462,8 @@
         }
         else
         {
-          int m = Faces[i].Length;
-          for(int j = 1; j + 1 < m; j++)
+          var m = Faces[i].Length;
+          for(var j = 1; j + 1 < m; j++)
           {
             var tri = new int[3];
             tri[0] = Faces[i][0];
@@ -498,10 +495,10 @@
 
       foreach(var f in Faces)
       {
-        for(int i = 0; i < f.Length; i++)
+        for(var i = 0; i < f.Length; i++)
         {
-          int v0 = f[i];
-          int v1 = f[(i + 1) % f.Length];
+          var v0 = f[i];
+          var v1 = f[(i + 1) % f.Length];
 
           // int vmin = Math.Min(v0, v1);
           // int vmax = Math.Max(v0, v1);

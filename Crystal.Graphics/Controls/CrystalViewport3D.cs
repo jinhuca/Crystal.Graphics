@@ -57,7 +57,7 @@ namespace Crystal.Graphics
     /// </summary>
     public static readonly DependencyProperty CameraRotationModeProperty = DependencyProperty.Register(
       nameof(CameraRotationMode), typeof(CameraRotationMode), typeof(CrystalViewport3D),
-      new UIPropertyMetadata(CameraRotationMode.Turntable, (s, e) => ((CrystalViewport3D)s).OnCameraRotationModeChanged()));
+      new UIPropertyMetadata(CameraRotationMode.Turntable, (s, _) => ((CrystalViewport3D)s).OnCameraRotationModeChanged()));
 
     /// <summary>
     /// Identifies the <see cref="ChangeFieldOfViewCursor"/> dependency property.
@@ -251,7 +251,7 @@ namespace Crystal.Graphics
     /// Identifies the <see cref="IsHeadLightEnabled"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty IsHeadlightEnabledProperty = DependencyProperty.Register(
-      nameof(IsHeadLightEnabled), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, e) => ((CrystalViewport3D)s).OnHeadlightChanged()));
+      nameof(IsHeadLightEnabled), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, _) => ((CrystalViewport3D)s).OnHeadlightChanged()));
 
     /// <summary>
     /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
@@ -347,7 +347,7 @@ namespace Crystal.Graphics
     /// Identifies the <see cref="Orthographic"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty OrthographicProperty = DependencyProperty.Register(
-      nameof(Orthographic), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, e) => ((CrystalViewport3D)s).OnOrthographicChanged()));
+      nameof(Orthographic), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, _) => ((CrystalViewport3D)s).OnOrthographicChanged()));
 
     /// <summary>
     /// Identifies the <see cref="OrthographicToggleGesture"/> dependency property.
@@ -443,7 +443,7 @@ namespace Crystal.Graphics
     /// Identifies the <see cref="ShowCameraInfo"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ShowCameraInfoProperty = DependencyProperty.Register(
-      nameof(ShowCameraInfo), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, e) => ((CrystalViewport3D)s).UpdateCameraInfo()));
+      nameof(ShowCameraInfo), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, _) => ((CrystalViewport3D)s).UpdateCameraInfo()));
 
     /// <summary>
     /// Identifies the <see cref="ShowCameraTarget"/> dependency property.
@@ -461,19 +461,19 @@ namespace Crystal.Graphics
     /// Identifies the <see cref="ShowFieldOfView"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ShowFieldOfViewProperty = DependencyProperty.Register(
-      nameof(ShowFieldOfView), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, e) => ((CrystalViewport3D)s).UpdateFieldOfViewInfo()));
+      nameof(ShowFieldOfView), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, _) => ((CrystalViewport3D)s).UpdateFieldOfViewInfo()));
 
     /// <summary>
     /// Identifies the <see cref="ShowFrameRate"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ShowFrameRateProperty = DependencyProperty.Register(
-      nameof(ShowFrameRate), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, e) => ((CrystalViewport3D)s).OnShowFrameRateChanged()));
+      nameof(ShowFrameRate), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, _) => ((CrystalViewport3D)s).OnShowFrameRateChanged()));
 
     /// <summary>
     /// Identifies the <see cref="ShowTriangleCountInfo"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ShowTriangleCountInfoProperty = DependencyProperty.Register(
-      nameof(ShowTriangleCountInfo), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, e) => ((CrystalViewport3D)s).OnShowTriangleCountInfoChanged()));
+      nameof(ShowTriangleCountInfo), typeof(bool), typeof(CrystalViewport3D), new UIPropertyMetadata(false, (s, _) => ((CrystalViewport3D)s).OnShowTriangleCountInfoChanged()));
 
     /// <summary>
     /// Identifies the <see cref="ShowViewCube"/> dependency property.
@@ -724,12 +724,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// The frame rate stopwatch.
     /// </summary>
-    private readonly Stopwatch fpsWatch = new Stopwatch();
+    private readonly Stopwatch fpsWatch = new();
 
     /// <summary>
     /// The headlight.
     /// </summary>
-    private readonly DirectionalLight headLight = new DirectionalLight { Color = Colors.White };
+    private readonly DirectionalLight headLight = new() { Color = Colors.White };
 
     /// <summary>
     /// The lights.
@@ -739,12 +739,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// The orthographic camera.
     /// </summary>
-    private readonly OrthographicCamera orthographicCamera;
+    private readonly OrthographicCamera? orthographicCamera;
 
     /// <summary>
     /// The perspective camera.
     /// </summary>
-    private readonly PerspectiveCamera perspectiveCamera;
+    private readonly PerspectiveCamera? perspectiveCamera;
 
     /// <summary>
     /// The rendering event listener.
@@ -759,27 +759,27 @@ namespace Crystal.Graphics
     /// <summary>
     /// The adorner layer.
     /// </summary>
-    private AdornerDecorator adornerLayer;
+    private AdornerDecorator? adornerLayer;
 
     /// <summary>
     /// The camera controller.
     /// </summary>
-    private CameraController cameraController;
+    private CameraController? cameraController;
 
     /// <summary>
     /// The coordinate system lights.
     /// </summary>
-    private Model3DGroup coordinateSystemLights;
+    private Model3DGroup? coordinateSystemLights;
 
     /// <summary>
     /// The coordinate view.
     /// </summary>
-    private Viewport3D coordinateView;
+    private Viewport3D? coordinateView;
 
     /// <summary>
     /// The current camera.
     /// </summary>
-    private Camera currentCamera;
+    private Camera? currentCamera;
 
     /// <summary>
     /// The frame counter.
@@ -804,17 +804,17 @@ namespace Crystal.Graphics
     /// <summary>
     /// The view cube.
     /// </summary>
-    private ViewCubeVisual3D viewCube;
+    private ViewCubeVisual3D? viewCube;
 
     /// <summary>
     /// The view cube lights.
     /// </summary>
-    private Model3DGroup viewCubeLights;
+    private Model3DGroup? viewCubeLights;
 
     /// <summary>
     /// The view cube view.
     /// </summary>
-    private Viewport3D viewCubeViewport;
+    private Viewport3D? viewCubeViewport;
 
     /// <summary>
     /// Initializes static members of the <see cref="CrystalViewport3D"/> class.
@@ -846,7 +846,7 @@ namespace Crystal.Graphics
       perspectiveCamera.Reset();
       orthographicCamera.Reset();
 
-      Camera = Orthographic ? (ProjectionCamera)orthographicCamera : perspectiveCamera;
+      Camera = Orthographic ? orthographicCamera : perspectiveCamera;
 
       // http://blogs.msdn.com/wpfsdk/archive/2007/01/15/maximizing-wpf-3d-performance-on-tier-2-hardware.aspx
       // RenderOptions.EdgeMode?
@@ -867,15 +867,8 @@ namespace Crystal.Graphics
     /// </summary>
     public event RoutedEventHandler CameraChanged
     {
-      add
-      {
-        AddHandler(CameraChangedEvent, value);
-      }
-
-      remove
-      {
-        RemoveHandler(CameraChangedEvent, value);
-      }
+      add => AddHandler(CameraChangedEvent, value);
+      remove => RemoveHandler(CameraChangedEvent, value);
     }
 
     /// <summary>
@@ -883,15 +876,9 @@ namespace Crystal.Graphics
     /// </summary>
     public event RoutedEventHandler LookAtChanged
     {
-      add
-      {
-        AddHandler(LookAtChangedEvent, value);
-      }
+      add => AddHandler(LookAtChangedEvent, value);
 
-      remove
-      {
-        RemoveHandler(LookAtChangedEvent, value);
-      }
+      remove => RemoveHandler(LookAtChangedEvent, value);
     }
 
     /// <summary>
@@ -899,21 +886,15 @@ namespace Crystal.Graphics
     /// </summary>
     public event RoutedEventHandler ZoomedByRectangle
     {
-      add
-      {
-        AddHandler(ZoomedByRectangleEvent, value);
-      }
+      add => AddHandler(ZoomedByRectangleEvent, value);
 
-      remove
-      {
-        RemoveHandler(ZoomedByRectangleEvent, value);
-      }
+      remove => RemoveHandler(ZoomedByRectangleEvent, value);
     }
 
     /// <summary>
     /// Gets the command that toggles between orthographic and perspective camera.
     /// </summary>
-    public static RoutedCommand OrthographicToggleCommand { get; private set; }
+    public static RoutedCommand OrthographicToggleCommand { get; }
 
     /// <summary>
     /// Gets or sets the back view gesture.
@@ -945,7 +926,7 @@ namespace Crystal.Graphics
     /// <value>
     /// The camera.
     /// </value>
-    public ProjectionCamera Camera
+    public ProjectionCamera? Camera
     {
       get => (ProjectionCamera)Viewport.Camera;
       set
@@ -956,14 +937,14 @@ namespace Crystal.Graphics
         }
         Viewport.Camera = value;
         currentCamera = Viewport.Camera;
-        currentCamera.Changed += CameraPropertyChanged;
+        currentCamera!.Changed += CameraPropertyChanged;
       }
     }
 
     /// <summary>
     /// Gets the camera controller.
     /// </summary>
-    public CameraController CameraController => cameraController;
+    public CameraController? CameraController => cameraController;
 
     /// <summary>
     /// Gets or sets the camera inertia factor.
@@ -2359,13 +2340,9 @@ namespace Crystal.Graphics
     /// </exception>
     public override void OnApplyTemplate()
     {
-      if(adornerLayer == null)
-      {
-        adornerLayer = Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
-      }
+      adornerLayer ??= Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
 
-      var grid = Template.FindName(PartViewportGrid, this) as Grid;
-      if(grid == null)
+      if(Template.FindName(PartViewportGrid, this) is not Grid grid)
       {
         throw new CrystalException("{0} is missing from the template.", PartViewportGrid);
       }
@@ -2384,8 +2361,8 @@ namespace Crystal.Graphics
         {
           cameraController.Viewport = Viewport;
           cameraController.LimitFPS = limitFPS;
-          cameraController.LookAtChanged += (s, e) => OnLookAtChanged();
-          cameraController.ZoomedByRectangle += (s, e) => OnZoomedByRectangle();
+          cameraController.LookAtChanged += (_, _) => OnLookAtChanged();
+          cameraController.ZoomedByRectangle += (_, _) => OnZoomedByRectangle();
         }
       }
 
@@ -2397,7 +2374,6 @@ namespace Crystal.Graphics
       if(coordinateView == null)
       {
         coordinateView = Template.FindName(PartCoordinateView, this) as Viewport3D;
-
         coordinateSystemLights = new Model3DGroup();
 
         // coordinateSystemLights.Children.Add(new DirectionalLight(Colors.White, new Vector3D(1, 1, 1)));
@@ -2448,13 +2424,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// Resets the camera.
     /// </summary>
-    public void ResetCamera()
-    {
-      if(cameraController != null)
-      {
-        cameraController.ResetCamera();
-      }
-    }
+    public void ResetCamera() => cameraController?.ResetCamera();
 
     /// <summary>
     /// Sets the camera position and orientation.
@@ -2491,10 +2461,7 @@ namespace Crystal.Graphics
     /// </param>
     public void ZoomExtents(double animationTime = 0)
     {
-      if(cameraController != null)
-      {
-        cameraController.ZoomExtents(animationTime);
-      }
+      cameraController?.ZoomExtents(animationTime);
     }
 
     /// <summary>
@@ -2532,7 +2499,7 @@ namespace Crystal.Graphics
       // update the camera of the view cube
       if(viewCubeViewport != null)
       {
-        Camera.CopyDirectionOnly(viewCubeViewport.Camera as PerspectiveCamera, 20);
+        Camera.CopyDirectionOnly((PerspectiveCamera)viewCubeViewport.Camera, 20);
       }
 
       // update the headlight and coordinate system light
@@ -2545,8 +2512,7 @@ namespace Crystal.Graphics
 
         if(coordinateSystemLights != null)
         {
-          var cshl = coordinateSystemLights.Children[0] as DirectionalLight;
-          if(cshl != null)
+          if(coordinateSystemLights.Children[0] is DirectionalLight cshl)
           {
             cshl.Direction = Camera.LookDirection;
           }
@@ -2663,9 +2629,7 @@ namespace Crystal.Graphics
       CursorPosition = Viewport.UnProject(pt);
 
       // Calculate the cursor ray
-      Point3D cursorNearPlanePoint;
-      Point3D cursorFarPlanePoint;
-      var ok = Viewport.Point2DtoPoint3D(pt, out cursorNearPlanePoint, out cursorFarPlanePoint);
+      var ok = Viewport.Point2DtoPoint3D(pt, out var cursorNearPlanePoint, out var cursorFarPlanePoint);
       if(ok)
       {
         var ray = new Ray3D(cursorFarPlanePoint, cursorNearPlanePoint);
@@ -2715,8 +2679,7 @@ namespace Crystal.Graphics
       {
         foreach(var element in newValue)
         {
-          var visual = element as Visual3D;
-          if(visual != null)
+          if(element is Visual3D visual)
           {
             Children.Add(visual);
           }
@@ -2770,7 +2733,7 @@ namespace Crystal.Graphics
       if(ShowTriangleCountInfo && infoFrameCounter > 100)
       {
         var count = viewport.GetTotalNumberOfTriangles();
-        TriangleCountInfo = string.Format("Triangles: {0}", count);
+        TriangleCountInfo = $"Triangles: {count}";
         infoFrameCounter = 0;
       }
     }
@@ -2895,8 +2858,7 @@ namespace Crystal.Graphics
       {
         foreach(var element in oldValue)
         {
-          var visual = element as Visual3D;
-          if(visual != null)
+          if(element is Visual3D visual)
           {
             Children.Remove(visual);
           }
@@ -2938,8 +2900,7 @@ namespace Crystal.Graphics
     /// </summary>
     private void UpdateFieldOfViewInfo()
     {
-      var pc = Camera as PerspectiveCamera;
-      FieldOfViewText = pc != null ? string.Format("FoV ∠ {0:0}°", pc.FieldOfView) : null;
+      FieldOfViewText = Camera is PerspectiveCamera pc ? $"FoV ∠ {pc.FieldOfView:0}°" : null;
     }
 
     /// <summary>

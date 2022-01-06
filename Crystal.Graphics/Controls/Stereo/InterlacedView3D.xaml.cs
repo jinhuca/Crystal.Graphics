@@ -8,7 +8,7 @@ namespace Crystal.Graphics
   /// </summary>
   [ContentProperty("Children")]
   [Localizability(LocalizationCategory.NeverLocalize)]
-  public partial class InterlacedView3D : StereoControl
+  public partial class InterlacedView3D
   {
     /// <summary>
     /// Identifies the <see cref="HorizontalOffset"/> dependency property.
@@ -31,7 +31,7 @@ namespace Crystal.Graphics
       BindViewports(LeftView, RightView);
 
       var dt = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-      dt.Tick += (s, e) => UpdateEvenLeft();
+      dt.Tick += (_, _) => UpdateEvenLeft();
       dt.Start();
     }
 
@@ -53,7 +53,7 @@ namespace Crystal.Graphics
     {
       if(IsLoaded && IsVisible)
       {
-        int y = (int)PointToScreen(default(Point)).Y;
+        var y = (int)PointToScreen(default(Point)).Y;
         EvenLeft = y % 2 == 0;
       }
     }

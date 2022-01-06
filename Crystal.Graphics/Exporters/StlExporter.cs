@@ -34,8 +34,8 @@ namespace Crystal.Graphics
     {
       var writer = Create(stream);
 
-      int triangleIndicesCount = 0;
-      viewport.Children.Traverse<GeometryModel3D>((m, t) => triangleIndicesCount += ((MeshGeometry3D)m.Geometry).TriangleIndices.Count);
+      var triangleIndicesCount = 0;
+      viewport.Children.Traverse<GeometryModel3D>((m, _) => triangleIndicesCount += ((MeshGeometry3D)m.Geometry).TriangleIndices.Count);
 
       ExportHeader(writer, triangleIndicesCount / 3);
       viewport.Children.Traverse<GeometryModel3D>((m, t) => ExportModel(writer, m, t));
@@ -52,8 +52,8 @@ namespace Crystal.Graphics
     {
       var writer = Create(stream);
 
-      int triangleIndicesCount = 0;
-      visual.Traverse<GeometryModel3D>((m, t) => triangleIndicesCount += ((MeshGeometry3D)m.Geometry).TriangleIndices.Count);
+      var triangleIndicesCount = 0;
+      visual.Traverse<GeometryModel3D>((m, _) => triangleIndicesCount += ((MeshGeometry3D)m.Geometry).TriangleIndices.Count);
 
       ExportHeader(writer, triangleIndicesCount / 3);
       visual.Traverse<GeometryModel3D>((m, t) => ExportModel(writer, m, t));
@@ -70,8 +70,8 @@ namespace Crystal.Graphics
     {
       var writer = Create(stream);
 
-      int triangleIndicesCount = 0;
-      model.Traverse<GeometryModel3D>((m, t) => triangleIndicesCount += ((MeshGeometry3D)m.Geometry).TriangleIndices.Count);
+      var triangleIndicesCount = 0;
+      model.Traverse<GeometryModel3D>((m, _) => triangleIndicesCount += ((MeshGeometry3D)m.Geometry).TriangleIndices.Count);
 
       ExportHeader(writer, triangleIndicesCount / 3);
       model.Traverse<GeometryModel3D>((m, t) => ExportModel(writer, m, t));
@@ -107,7 +107,7 @@ namespace Crystal.Graphics
       var normals = mesh.Normals;
       if(normals == null || normals.Count != mesh.Positions.Count)
       {
-        normals = MeshGeometryHelper.CalculateNormals(mesh);
+        normals = mesh.CalculateNormals();
       }
 
       // TODO: Also handle non-uniform scale
@@ -120,37 +120,32 @@ namespace Crystal.Graphics
       var material = model.Material;
       var dm = material as DiffuseMaterial;
 
-      var mg = material as MaterialGroup;
-      if(mg != null)
+      if(material is MaterialGroup mg)
       {
         foreach(var m in mg.Children)
         {
-          if(m is DiffuseMaterial)
+          if(m is DiffuseMaterial diffuseMaterial)
           {
-            dm = m as DiffuseMaterial;
+            dm = diffuseMaterial;
           }
         }
       }
 
       ushort attribute = 0;
 
-      if(dm != null)
+      if(dm is { Brush: SolidColorBrush scb })
       {
-        var scb = dm.Brush as SolidColorBrush;
-        if(scb != null)
-        {
-          byte r = scb.Color.R;
-          byte g = scb.Color.G;
-          byte b = scb.Color.B;
-          attribute = (ushort)((1 << 15) | ((r >> 3) << 10) | ((g >> 3) << 5) | (b >> 3));
-        }
+        var r = scb.Color.R;
+        var g = scb.Color.G;
+        var b = scb.Color.B;
+        attribute = (ushort)((1 << 15) | ((r >> 3) << 10) | ((g >> 3) << 5) | (b >> 3));
       }
 
-      for(int i = 0; i < mesh.TriangleIndices.Count; i += 3)
+      for(var i = 0; i < mesh.TriangleIndices.Count; i += 3)
       {
-        int i0 = mesh.TriangleIndices[i + 0];
-        int i1 = mesh.TriangleIndices[i + 1];
-        int i2 = mesh.TriangleIndices[i + 2];
+        var i0 = mesh.TriangleIndices[i + 0];
+        var i1 = mesh.TriangleIndices[i + 1];
+        var i2 = mesh.TriangleIndices[i + 2];
 
         // Normal
         var faceNormal = normalTransform.Transform(normals[i0] + normals[i1] + normals[i2]);

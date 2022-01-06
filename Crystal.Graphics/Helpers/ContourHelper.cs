@@ -96,10 +96,10 @@ namespace Crystal.Graphics
     /// <param name="planeOrigin">The plane origin.</param>
     /// <param name="planeNormal">The plane normal.</param>
     /// <param name="originalMesh">The original mesh.</param>
-    public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D originalMesh)
+    public ContourHelper(Point3D planeOrigin, Vector3D planeNormal, MeshGeometry3D? originalMesh)
     {
-      var hasNormals = originalMesh.Normals != null && originalMesh.Normals.Count > 0;
-      var hasTextureCoordinates = originalMesh.TextureCoordinates != null && originalMesh.TextureCoordinates.Count > 0;
+      var hasNormals = originalMesh.Normals is { Count: > 0 };
+      var hasTextureCoordinates = originalMesh.TextureCoordinates is { Count: > 0 };
       normals = hasNormals ? new Vector3D[3] : null;
       textures = hasTextureCoordinates ? new Point[3] : null;
       positionCount = originalMesh.Positions.Count;
@@ -207,50 +207,44 @@ namespace Crystal.Graphics
           triangleIndices = new[] { index0, index1, positionCount, positionCount++, positionCount++, index0 };
           break;
         case ContourFacetResult.All:
-          newPositions = new Point3D[0];
-          newNormals = new Vector3D[0];
-          newTextureCoordinates = new Point[0];
+          newPositions = Array.Empty<Point3D>();
+          newNormals = Array.Empty<Vector3D>();
+          newTextureCoordinates = Array.Empty<Point>();
           triangleIndices = new[] { index0, index1, index2 };
           return;
         default:
-          newPositions = new Point3D[0];
-          newNormals = new Vector3D[0];
-          newTextureCoordinates = new Point[0];
-          triangleIndices = new int[0];
+          newPositions = Array.Empty<Point3D>();
+          newNormals = Array.Empty<Vector3D>();
+          newTextureCoordinates = Array.Empty<Point>();
+          triangleIndices = Array.Empty<int>();
           return;
       }
 
       var facetIndices = ResultIndices[facetResult];
-      newPositions = new[]
-      {
-                CreateNewPosition(facetIndices[0, 0], facetIndices[0, 1]),
-                CreateNewPosition(facetIndices[1, 0], facetIndices[1, 1])
-            };
+      newPositions = new[] {
+        CreateNewPosition(facetIndices[0, 0], facetIndices[0, 1]),
+        CreateNewPosition(facetIndices[1, 0], facetIndices[1, 1]) };
 
       if(normals != null)
       {
-        newNormals = new[]
-    {
-                CreateNewNormal(facetIndices[0, 0], facetIndices[0, 1]),
-                CreateNewNormal(facetIndices[1, 0], facetIndices[1, 1])
-            };
+        newNormals = new[] {
+          CreateNewNormal(facetIndices[0, 0], facetIndices[0, 1]),
+          CreateNewNormal(facetIndices[1, 0], facetIndices[1, 1]) };
       }
       else
       {
-        newNormals = new Vector3D[0];
+        newNormals = Array.Empty<Vector3D>();
       }
 
       if(textures != null)
       {
-        newTextureCoordinates = new[]
-        {
-                    CreateNewTexture(facetIndices[0, 0], facetIndices[0, 1]),
-                    CreateNewTexture(facetIndices[1, 0], facetIndices[1, 1])
-                };
+        newTextureCoordinates = new[] {
+          CreateNewTexture(facetIndices[0, 0], facetIndices[0, 1]),
+          CreateNewTexture(facetIndices[1, 0], facetIndices[1, 1]) };
       }
       else
       {
-        newTextureCoordinates = new Point[0];
+        newTextureCoordinates = Array.Empty<Point>();
       }
     }
 
@@ -408,8 +402,7 @@ namespace Crystal.Graphics
 
       var firstSideIndex = getNext(index);
       var secondSideIndex = getNext(firstSideIndex);
-      return sides[index] * sides[firstSideIndex] < 0
-          && sides[index] * sides[secondSideIndex] < 0;
+      return sides[index] * sides[firstSideIndex] < 0 && sides[index] * sides[secondSideIndex] < 0;
     }
 
     /// <summary>

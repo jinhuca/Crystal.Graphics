@@ -1,10 +1,7 @@
 ﻿using Crystal.Graphics;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -36,7 +33,7 @@ namespace ScatterPlot
       Data = Enumerable.Range(0, 6 * 6 * 6).Select(i => new Point3D(i % 6, (i % 36) / 6, i / 36)).ToArray();
 
       var rnd = new Random();
-      this.Values = Data.Select(d => rnd.NextDouble()).ToArray();
+      Values = Data.Select(_ => rnd.NextDouble()).ToArray();
 
       RaisePropertyChanged(nameof(Data));
       RaisePropertyChanged(nameof(Values));

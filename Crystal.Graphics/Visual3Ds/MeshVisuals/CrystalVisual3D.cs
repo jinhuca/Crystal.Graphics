@@ -136,18 +136,18 @@
     /// </returns>
     protected override Point3D Evaluate(double u, double v, out Point texCoord)
     {
-      double color = u;
+      var color = u;
       v *= 2 * Math.PI;
 
-      double b = Turns * 2 * Math.PI;
-      double r = Radius / 2;
-      double d = Diameter;
-      double dr = Diameter / r;
-      double p = Phase / 180 * Math.PI;
+      var b = Turns * 2 * Math.PI;
+      var r = Radius / 2;
+      var d = Diameter;
+      var dr = Diameter / r;
+      var p = Phase / 180 * Math.PI;
 
-      double x = r * Math.Cos((b * u) + p) * (2 + (dr * Math.Cos(v)));
-      double y = r * Math.Sin((b * u) + p) * (2 + (dr * Math.Cos(v)));
-      double z = (u * Length) + (d * Math.Sin(v));
+      var x = r * Math.Cos((b * u) + p) * (2 + (dr * Math.Cos(v)));
+      var y = r * Math.Sin((b * u) + p) * (2 + (dr * Math.Cos(v)));
+      var z = (u * Length) + (d * Math.Sin(v));
 
       texCoord = new Point(color, 0);
       return Origin + new Vector3D(x, y, z);

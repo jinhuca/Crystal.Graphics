@@ -14,8 +14,7 @@
     /// Remember that the material must not be frozen.</remarks>
     public static void ChangeOpacity(Material material, double opacity)
     {
-      var mg = material as MaterialGroup;
-      if(mg != null)
+      if(material is MaterialGroup mg)
       {
         foreach(var m in mg.Children)
         {
@@ -23,8 +22,7 @@
         }
       }
 
-      var dm = material as DiffuseMaterial;
-      if(dm != null && dm.Brush != null)
+      if(material is DiffuseMaterial { Brush: { } } dm)
       {
         dm.Brush.Opacity = opacity;
       }
@@ -236,8 +234,7 @@
         return (T)material;
       }
 
-      var mg = material as MaterialGroup;
-      if(mg != null)
+      if(material is MaterialGroup mg)
       {
         return mg.Children.Select(GetFirst<T>).FirstOrDefault(m => m != null);
       }

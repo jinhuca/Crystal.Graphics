@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Crystal.Graphics
+﻿namespace Crystal.Graphics
 {
   public abstract class PlotViewport3D : CrystalViewport3D
   {
@@ -38,7 +32,7 @@ namespace Crystal.Graphics
       set => SetValue(FontSizeProperty, value);
     }
 
-    public static new readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
+    public new static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
       nameof(FontSize), typeof(double), typeof(PointPlotViewport3D), new UIPropertyMetadata(.1d, ModelChanged));
 
     public double SphereSize

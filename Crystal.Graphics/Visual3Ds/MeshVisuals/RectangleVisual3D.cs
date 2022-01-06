@@ -138,32 +138,32 @@
     /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
     /// </summary>
     /// <returns>A triangular mesh geometry.</returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
-      Vector3D u = LengthDirection;
-      Vector3D w = Normal;
-      Vector3D v = Vector3D.CrossProduct(w, u);
+      var u = LengthDirection;
+      var w = Normal;
+      var v = Vector3D.CrossProduct(w, u);
       u = Vector3D.CrossProduct(v, w);
 
       u.Normalize();
       v.Normalize();
       w.Normalize();
 
-      double le = Length;
-      double wi = Width;
+      var le = Length;
+      var wi = Width;
 
       var pts = new List<Point3D>();
-      for(int i = 0; i < DivLength; i++)
+      for(var i = 0; i < DivLength; i++)
       {
-        double fi = -0.5 + ((double)i / (DivLength - 1));
-        for(int j = 0; j < DivWidth; j++)
+        var fi = -0.5 + ((double)i / (DivLength - 1));
+        for(var j = 0; j < DivWidth; j++)
         {
-          double fj = -0.5 + ((double)j / (DivWidth - 1));
+          var fj = -0.5 + ((double)j / (DivWidth - 1));
           pts.Add(Origin + (u * le * fi) + (v * wi * fj));
         }
       }
 
-      var builder = new MeshBuilder(false, true);
+      var builder = new MeshBuilder(false);
       builder.AddRectangularMesh(pts, DivWidth);
 
       return builder.ToMesh();

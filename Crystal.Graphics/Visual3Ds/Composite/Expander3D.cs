@@ -20,7 +20,7 @@
     /// <summary>
     /// The original transforms.
     /// </summary>
-    private readonly Dictionary<Model3D, Transform3D> originalTransforms = new Dictionary<Model3D, Transform3D>();
+    private readonly Dictionary<Model3D, Transform3D> originalTransforms = new();
 
     /// <summary>
     /// The actual expand origin.
@@ -99,7 +99,7 @@
         actualExpandOrigin = ExpandOrigin.Value;
       }
 
-      Model3DHelper.Traverse<GeometryModel3D>(Content, Expand);
+      Content.Traverse<GeometryModel3D>(Expand);
     }
 
     /// <summary>
@@ -124,24 +124,23 @@
         originalTransforms.Add(model, ot);
       }
 
-      Transform3D totalTransform = Transform3DHelper.CombineTransform(transformation, ot);
+      var totalTransform = Transform3DHelper.CombineTransform(transformation, ot);
 
-      var mesh = model.Geometry as MeshGeometry3D;
-      if(mesh == null)
+      if(model.Geometry is not MeshGeometry3D mesh)
       {
         return;
       }
 
       var bounds = new Rect3D();
-      foreach(int i in mesh.TriangleIndices)
+      foreach(var i in mesh.TriangleIndices)
       {
         bounds.Union(totalTransform.Transform(mesh.Positions[i]));
       }
 
-      Point3D p = bounds.Location;
-      Vector3D d = p - actualExpandOrigin;
+      var p = bounds.Location;
+      var d = p - actualExpandOrigin;
       d *= Expansion;
-      Point3D p2 = actualExpandOrigin + d;
+      var p2 = actualExpandOrigin + d;
       var t = new TranslateTransform3D(p2 - p);
 
       model.Transform = Transform3DHelper.CombineTransform(ot, t);

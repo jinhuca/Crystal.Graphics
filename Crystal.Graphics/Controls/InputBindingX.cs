@@ -3,7 +3,7 @@
 namespace Crystal.Graphics
 {
   /// <summary>
-  /// Input binding supporting binding the Gezture.
+  /// Input binding supporting binding the Gesture.
   /// </summary>
   public class InputBindingX : InputBinding
   {
@@ -11,34 +11,34 @@ namespace Crystal.Graphics
     /// Gets or sets the gesture.
     /// </summary>
     /// <value>The gesture.</value>
-    public InputGesture Gezture
+    public InputGesture Gesture
     {
-      get => (InputGesture)GetValue(GeztureProperty);
-      set => SetValue(GeztureProperty, value);
+      get => (InputGesture)GetValue(GestureProperty);
+      set => SetValue(GestureProperty, value);
     }
 
     /// <summary>
-    /// Identifies the <see cref="Gezture"/> dependency property.
+    /// Identifies the <see cref="Gesture"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty GeztureProperty =
-        DependencyProperty.Register("Gezture", typeof(InputGesture), typeof(InputBindingX), new UIPropertyMetadata(null, GeztureChanged));
+    public static readonly DependencyProperty GestureProperty =
+        DependencyProperty.Register("Gesture", typeof(InputGesture), typeof(InputBindingX), new UIPropertyMetadata(null, GestureChanged));
 
     /// <summary>
-    /// Geztures the changed.
+    /// Gesture the changed.
     /// </summary>
     /// <param name="d">The d.</param>
     /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-    private static void GeztureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void GestureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-      ((InputBindingX)d).OnGeztureChanged();
+      ((InputBindingX)d).OnGestureChanged();
     }
 
     /// <summary>
-    /// Called when [gezture changed].
+    /// Called when [gesture changed].
     /// </summary>
-    protected virtual void OnGeztureChanged()
+    protected virtual void OnGestureChanged()
     {
-      Gesture = Gezture;
+      base.Gesture = Gesture;
     }
   }
 }

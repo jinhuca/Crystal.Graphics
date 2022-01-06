@@ -62,7 +62,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// The shader.
     /// </summary>
-    private static readonly PixelShader Shader = new PixelShader();
+    private static readonly PixelShader Shader = new();
 
     /// <summary>
     /// This property is mapped to the method variable within the pixel shader.
@@ -78,9 +78,9 @@ namespace Crystal.Graphics
     /// </summary>
     static InterlacedEffect()
     {
-      Assembly a = typeof(InterlacedEffect).Assembly;
-      string assemblyShortName = a.ToString().Split(',')[0];
-      string uriString = "pack://application:,,,/" + assemblyShortName + ";component/" + EffectFile;
+      var a = typeof(InterlacedEffect).Assembly;
+      var assemblyShortName = a.ToString().Split(',')[0];
+      var uriString = "pack://application:,,,/" + assemblyShortName + ";component/" + EffectFile;
       Shader.UriSource = new Uri(uriString);
     }
 

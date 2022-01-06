@@ -115,11 +115,13 @@
       }
 
       var m = ct.TransformToDevice;
-      double dpiFactor = 1 / m.M11;
+      var dpiFactor = 1 / m.M11;
 
       pen = new Pen(new SolidColorBrush(color1), thickness1 * dpiFactor);
-      pen2 = new Pen(new SolidColorBrush(color2), thickness2 * dpiFactor);
-      pen2.DashStyle = dashStyle2;
+      pen2 = new Pen(new SolidColorBrush(color2), thickness2 * dpiFactor)
+      {
+        DashStyle = dashStyle2
+      };
       this.crossHairSize = crossHairSize;
     }
 
@@ -136,10 +138,10 @@
     /// </param>
     protected override void OnRender(DrawingContext dc)
     {
-      double halfPenWidth = pen.Thickness / 2;
+      var halfPenWidth = pen.Thickness / 2;
 
-      double mx = (Rectangle.Left + Rectangle.Right) / 2;
-      double my = (Rectangle.Top + Rectangle.Bottom) / 2;
+      var mx = (Rectangle.Left + Rectangle.Right) / 2;
+      var my = (Rectangle.Top + Rectangle.Bottom) / 2;
       mx = (int)mx + halfPenWidth;
       my = (int)my + halfPenWidth;
 

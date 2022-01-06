@@ -397,20 +397,18 @@
       var group = new Model3DGroup();
       while(items.Count > 0)
       {
-        Dictionary<string, FrameworkElement> elementMap;
-        Dictionary<FrameworkElement, Rect> elementPositions;
-        var material = CreateTextMaterial(items, CreateElement, Background, out elementMap, out elementPositions);
+        var material = CreateTextMaterial(items, CreateElement, Background, out var elementMap, out var elementPositions);
 
-        var builder = new MeshBuilder(false, true);
+        var builder = new MeshBuilder(false);
         var addedChildren = new List<SpatialTextItem>();
         foreach(var item in items)
         {
           var element = elementMap[item.Text];
           var r = elementPositions[element];
-          double u0 = r.Left;
-          double v0 = r.Top;
-          double u1 = r.Right;
-          double v1 = r.Bottom;
+          var u0 = r.Left;
+          var v0 = r.Top;
+          var u1 = r.Right;
+          var v1 = r.Bottom;
           if(v1 > 1)
           {
             break;

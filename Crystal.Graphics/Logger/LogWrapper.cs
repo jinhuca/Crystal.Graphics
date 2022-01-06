@@ -35,7 +35,7 @@
     public void Log<MsgType>(LogLevel logLevel, MsgType msg, string className = "",
         [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
     {
-      logger.Log<MsgType>(logLevel, msg, className, caller, sourceLineNumber);
+      logger.Log(logLevel, msg, className, caller, sourceLineNumber);
     }
   }
 }

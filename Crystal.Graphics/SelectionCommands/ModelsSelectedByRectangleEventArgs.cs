@@ -22,6 +22,6 @@
     /// <summary>
     /// Gets the rectangle of selection.
     /// </summary>
-    public Rect Rectangle { get; private set; }
+    public Rect Rectangle { get; }
   }
 }

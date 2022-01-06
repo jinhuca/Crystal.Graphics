@@ -19,7 +19,7 @@ namespace Crystal.Graphics
       this.gesture = kgc.ConvertFromString(gesture) as KeyGesture;
     }
 
-    private KeyGesture gesture;
+    private readonly KeyGesture gesture;
 
     /// <summary>
     /// Provides the value.

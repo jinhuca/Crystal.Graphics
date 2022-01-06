@@ -160,8 +160,8 @@ namespace Crystal.Graphics
         u.Normalize();
 
         var currentAxis = Vector3D.CrossProduct(u, v);
-        double sign = -Vector3D.DotProduct(Axis, currentAxis);
-        double theta = Math.Sign(sign) * Math.Asin(currentAxis.Length) / Math.PI * 180;
+        var sign = -Vector3D.DotProduct(Axis, currentAxis);
+        var theta = Math.Sign(sign) * Math.Asin(currentAxis.Length) / Math.PI * 180;
         Value += theta;
 
         if(TargetTransform != null)

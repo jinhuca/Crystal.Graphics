@@ -120,12 +120,12 @@
     /// <summary>
     /// The billboard meshes.
     /// </summary>
-    private readonly Dictionary<MeshGeometry3D, IList<Billboard>> meshes = new Dictionary<MeshGeometry3D, IList<Billboard>>();
+    private readonly Dictionary<MeshGeometry3D, IList<Billboard>> meshes = new();
 
     /// <summary>
     /// The pin meshes
     /// </summary>
-    private readonly Dictionary<MeshGeometry3D, IList<Billboard>> pinMeshes = new Dictionary<MeshGeometry3D, IList<Billboard>>();
+    private readonly Dictionary<MeshGeometry3D, IList<Billboard>> pinMeshes = new();
 
     /// <summary>
     /// The is rendering flag.
@@ -459,10 +459,8 @@
       var group = new Model3DGroup();
       while(items.Count > 0)
       {
-        Dictionary<string, FrameworkElement> elementMap;
-        Dictionary<FrameworkElement, Rect> elementPositions;
         var material = TextGroupVisual3D.CreateTextMaterial(
-            items, CreateElement, Background, out elementMap, out elementPositions);
+            items, CreateElement, Background, out var elementMap, out var elementPositions);
         material.Freeze();
 
         var billboards = new List<Billboard>();

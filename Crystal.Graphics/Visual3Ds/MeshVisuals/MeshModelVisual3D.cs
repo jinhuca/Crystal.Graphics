@@ -104,7 +104,7 @@ namespace Crystal.Graphics
     ///   Gets the geometry model.
     /// </summary>
     /// <value>The geometry model.</value>
-    public GeometryModel3D Model => Content as GeometryModel3D;
+    public GeometryModel3D? Model => Content as GeometryModel3D;
 
     /// <summary>
     /// Begins an edit on the object.
@@ -239,7 +239,7 @@ namespace Crystal.Graphics
     /// <returns>
     /// A triangular mesh geometry.
     /// </returns>
-    protected abstract MeshGeometry3D Tessellate();
+    protected abstract MeshGeometry3D? Tessellate();
 
     /// <summary>
     /// Called when Fill is changed.

@@ -129,7 +129,7 @@
         startTick = e.RenderingTime.Ticks;
       }
 
-      double time = 100e-9 * (e.RenderingTime.Ticks - startTick);
+      var time = 100e-9 * (e.RenderingTime.Ticks - startTick);
       if(IsSorting && time >= 1.0 / SortingFrequency)
       {
         startTick = e.RenderingTime.Ticks;
@@ -168,7 +168,7 @@
     /// </returns>
     private double GetCameraDistance(Visual3D c, Point3D cameraPos, Transform3D transform)
     {
-      var bounds = Visual3DHelper.FindBounds(c, transform);
+      var bounds = c.FindBounds(transform);
       switch(Method)
       {
         case SortingMethod.BoundingBoxCenter:
@@ -176,7 +176,7 @@
               bounds.X + bounds.SizeX * 0.5, bounds.Y + bounds.SizeY * 0.5, bounds.Z + bounds.SizeZ * 0.5);
           return (mid - cameraPos).LengthSquared;
         case SortingMethod.BoundingBoxCorners:
-          double d = double.MaxValue;
+          var d = double.MaxValue;
           d = Math.Min(d, cameraPos.DistanceTo(new Point3D(bounds.X, bounds.Y, bounds.Z)));
           d = Math.Min(d, cameraPos.DistanceTo(new Point3D(bounds.X + bounds.SizeX, bounds.Y, bounds.Z)));
           d = Math.Min(
@@ -233,20 +233,19 @@
     /// </summary>
     private void SortChildren()
     {
-      var vp = Visual3DHelper.GetViewport3D(this);
+      var vp = this.GetViewport3D();
       if(vp == null)
       {
         return;
       }
 
-      var cam = vp.Camera as ProjectionCamera;
-      if(cam == null)
+      if(vp.Camera is not ProjectionCamera cam)
       {
         return;
       }
 
       var cameraPos = cam.Position;
-      var transform = new MatrixTransform3D(Visual3DHelper.GetTransform(this));
+      var transform = new MatrixTransform3D(this.GetTransform());
 
       IList<Visual3D> transparentChildren = new List<Visual3D>();
       IList<Visual3D> opaqueChildren = new List<Visual3D>();
@@ -279,10 +278,10 @@
       // temporary duplicates result in exceptions in the visual tree.
       // Due to this set of considerations we use selection sort to sort the current Children. (if we could swap without removal, cycle sort might be a small improvement)
 
-      for(int desiredIndex = 0; desiredIndex < opaqueChildren.Count; desiredIndex++)
+      for(var desiredIndex = 0; desiredIndex < opaqueChildren.Count; desiredIndex++)
       {
-        Visual3D currentChild = opaqueChildren[desiredIndex];
-        int currentIndex = Children.IndexOf(currentChild);
+        var currentChild = opaqueChildren[desiredIndex];
+        var currentIndex = Children.IndexOf(currentChild);
         //Insert in the proper spot if not contained:
         if(currentIndex == -1)
         {
@@ -299,10 +298,10 @@
         Children.Insert(desiredIndex, currentChild);
       }
 
-      for(int desiredIndex = opaqueChildren.Count; desiredIndex < opaqueChildren.Count + sortedTransparentChildren.Count; desiredIndex++)
+      for(var desiredIndex = opaqueChildren.Count; desiredIndex < opaqueChildren.Count + sortedTransparentChildren.Count; desiredIndex++)
       {
-        Visual3D currentChild = sortedTransparentChildren[desiredIndex - opaqueChildren.Count];
-        int currentIndex = Children.IndexOf(currentChild);
+        var currentChild = sortedTransparentChildren[desiredIndex - opaqueChildren.Count];
+        var currentIndex = Children.IndexOf(currentChild);
         //Insert in the proper spot if not contained:
         if(currentIndex == -1)
         {

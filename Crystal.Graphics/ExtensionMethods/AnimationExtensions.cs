@@ -17,7 +17,7 @@
     /// <param name="animationTime">
     /// The animation time.
     /// </param>
-    public static void AnimateOpacity(this IAnimatable obj, double targetOpacity, double animationTime)
+    public static void AnimateOpacity(this IAnimatable? obj, double targetOpacity, double animationTime)
     {
       var animation = new DoubleAnimation(targetOpacity, new Duration(TimeSpan.FromMilliseconds(animationTime)))
       {

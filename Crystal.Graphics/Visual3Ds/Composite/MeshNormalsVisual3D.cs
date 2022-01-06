@@ -78,7 +78,7 @@
       Children.Clear();
 
       var builder = new MeshBuilder();
-      for(int i = 0; i < Mesh.Positions.Count; i++)
+      for(var i = 0; i < Mesh.Positions.Count; i++)
       {
         builder.AddArrow(
             Mesh.Positions[i], Mesh.Positions[i] + Mesh.Normals[i], Diameter, 3, 10);

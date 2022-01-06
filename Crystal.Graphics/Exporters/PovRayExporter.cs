@@ -30,33 +30,6 @@ namespace Crystal.Graphics
     }
 
     /// <summary>
-    /// Exports the camera.
-    /// </summary>
-    /// <param name="writer">The writer.</param>
-    /// <param name="camera">The camera.</param>
-    protected override void ExportCamera(StreamWriter writer, Camera camera)
-    {
-      base.ExportCamera(writer, camera);
-
-      // todo...
-      // http://www.povray.org/documentation/view/3.6.1/17/
-    }
-
-    /// <summary>
-    /// Exports the light.
-    /// </summary>
-    /// <param name="writer">The writer.</param>
-    /// <param name="light">The light.</param>
-    /// <param name="inheritedTransform">The inherited transform.</param>
-    protected override void ExportLight(StreamWriter writer, Light light, Transform3D inheritedTransform)
-    {
-      base.ExportLight(writer, light, inheritedTransform);
-
-      // todo...
-      // http://www.povray.org/documentation/view/3.6.1/34/
-    }
-
-    /// <summary>
     /// Exports the model.
     /// </summary>
     /// <param name="writer">The writer.</param>
@@ -64,8 +37,7 @@ namespace Crystal.Graphics
     /// <param name="inheritedTransform">The inherited transform.</param>
     protected override void ExportModel(StreamWriter writer, GeometryModel3D model, Transform3D inheritedTransform)
     {
-      var mesh = model.Geometry as MeshGeometry3D;
-      if(mesh == null)
+      if(model.Geometry is not MeshGeometry3D mesh)
       {
         return;
       }
@@ -89,7 +61,7 @@ namespace Crystal.Graphics
       writer.WriteLine("  face_indices");
       writer.WriteLine("  {");
       writer.WriteLine("    " + (mesh.TriangleIndices.Count / 3) + ",");
-      for(int i = 0; i < mesh.TriangleIndices.Count; i += 3)
+      for(var i = 0; i < mesh.TriangleIndices.Count; i += 3)
       {
         writer.WriteLine(
             string.Format(

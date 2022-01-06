@@ -11,23 +11,21 @@
     /// <param name="camera">
     /// The camera.
     /// </param>
-    public CameraSetting(ProjectionCamera camera)
+    public CameraSetting(ProjectionCamera? camera)
     {
       Position = camera.Position;
       LookDirection = camera.LookDirection;
       UpDirection = camera.UpDirection;
       NearPlaneDistance = camera.NearPlaneDistance;
       FarPlaneDistance = camera.FarPlaneDistance;
-      var pcamera = camera as PerspectiveCamera;
-      if(pcamera != null)
+      switch (camera)
       {
-        FieldOfView = pcamera.FieldOfView;
-      }
-
-      var ocamera = camera as OrthographicCamera;
-      if(ocamera != null)
-      {
-        Width = ocamera.Width;
+        case PerspectiveCamera pcamera:
+          FieldOfView = pcamera.FieldOfView;
+          break;
+        case OrthographicCamera ocamera:
+          Width = ocamera.Width;
+          break;
       }
     }
 
@@ -72,21 +70,19 @@
     /// <param name="camera">
     /// The camera to update.
     /// </param>
-    public void UpdateCamera(ProjectionCamera camera)
+    public void UpdateCamera(ProjectionCamera? camera)
     {
-      camera.Position = Position;
+      camera!.Position = Position;
       camera.LookDirection = LookDirection;
       camera.UpDirection = UpDirection;
       camera.NearPlaneDistance = NearPlaneDistance;
       camera.FarPlaneDistance = FarPlaneDistance;
-      var pcamera = camera as PerspectiveCamera;
-      if(pcamera != null)
+      if(camera is PerspectiveCamera pcamera)
       {
         pcamera.FieldOfView = FieldOfView;
       }
 
-      var ocamera = camera as OrthographicCamera;
-      if(ocamera != null)
+      if(camera is OrthographicCamera ocamera)
       {
         ocamera.Width = Width;
       }

@@ -39,9 +39,9 @@
         return DependencyProperty.UnsetValue;
       }
 
-      string checkValue = value.ToString();
-      string targetValue = parameter.ToString();
-      return checkValue.Equals(targetValue, StringComparison.OrdinalIgnoreCase);
+      var checkValue = value.ToString();
+      var targetValue = parameter.ToString();
+      return checkValue!.Equals(targetValue, StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>

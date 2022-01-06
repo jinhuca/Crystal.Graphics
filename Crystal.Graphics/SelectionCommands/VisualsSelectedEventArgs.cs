@@ -19,7 +19,7 @@
     /// <summary>
     /// Gets the selected visuals.
     /// </summary>
-    public IList<Visual3D> SelectedVisuals { get; private set; }
+    public IList<Visual3D> SelectedVisuals { get; }
 
     /// <summary>
     /// Gets a value indicating whether the selected visuals are sorted by distance in ascending order.
@@ -27,6 +27,6 @@
     /// <value>
     /// <c>true</c> if the selected visuals are sorted by distance in ascending order; otherwise, <c>false</c>.
     /// </value>
-    public bool AreSortedByDistanceAscending { get; private set; }
+    public bool AreSortedByDistanceAscending { get; }
   }
 }

@@ -35,10 +35,9 @@ namespace Crystal.Graphics
     public static ResourceDictionary WrapInResourceDictionary(object obj)
     {
       var rd = new ResourceDictionary();
-      var list = obj as IEnumerable;
-      if(list != null)
+      if(obj is IEnumerable list)
       {
-        int i = 1;
+        var i = 1;
         foreach(var o in list)
         {
           rd.Add("Model" + i, o);

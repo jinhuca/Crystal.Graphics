@@ -61,12 +61,12 @@
     /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
     /// </summary>
     /// <returns>A triangular mesh geometry.</returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
       var mesh = new MeshGeometry3D();
 
-      int n = MeshSizeU;
-      int m = MeshSizeV;
+      var n = MeshSizeU;
+      var m = MeshSizeV;
       var p = new Point3D[m * n];
       var tc = new Point[m * n];
 
@@ -74,23 +74,23 @@
 
       // todo: parallel execution...
       // Parallel.For(0, n, (i) =>
-      for(int i = 0; i < n; i++)
+      for(var i = 0; i < n; i++)
       {
-        double u = 1.0 * i / (n - 1);
+        var u = 1.0 * i / (n - 1);
 
-        for(int j = 0; j < m; j++)
+        for(var j = 0; j < m; j++)
         {
-          double v = 1.0 * j / (m - 1);
-          int ij = (i * m) + j;
+          var v = 1.0 * j / (m - 1);
+          var ij = (i * m) + j;
           p[ij] = Evaluate(u, v, out tc[ij]);
         }
       }
 
       // );
-      int idx = 0;
-      for(int i = 0; i < n; i++)
+      var idx = 0;
+      for(var i = 0; i < n; i++)
       {
-        for(int j = 0; j < m; j++)
+        for(var j = 0; j < m; j++)
         {
           mesh.Positions.Add(p[idx]);
           mesh.TextureCoordinates.Add(tc[idx]);
@@ -98,14 +98,14 @@
         }
       }
 
-      for(int i = 0; i + 1 < n; i++)
+      for(var i = 0; i + 1 < n; i++)
       {
-        for(int j = 0; j + 1 < m; j++)
+        for(var j = 0; j + 1 < m; j++)
         {
-          int x0 = i * m;
-          int x1 = (i + 1) * m;
-          int y0 = j;
-          int y1 = j + 1;
+          var x0 = i * m;
+          var x1 = (i + 1) * m;
+          var y0 = j;
+          var y1 = j + 1;
           AddTriangle(mesh, x0 + y0, x0 + y1, x1 + y0);
           AddTriangle(mesh, x1 + y0, x0 + y1, x1 + y1);
         }
@@ -129,29 +129,38 @@
     /// <param name="i3">
     /// The i 3.
     /// </param>
-    private static void AddTriangle(MeshGeometry3D mesh, int i1, int i2, int i3)
+    private static void AddTriangle(MeshGeometry3D? mesh, int i1, int i2, int i3)
     {
-      var p1 = mesh.Positions[i1];
-      if(!IsDefined(p1))
+      if (mesh != null)
       {
-        return;
+        var p1 = mesh.Positions[i1];
+        if(!IsDefined(p1))
+        {
+          return;
+        }
       }
 
-      var p2 = mesh.Positions[i2];
-      if(!IsDefined(p2))
+      if (mesh != null)
       {
-        return;
+        var p2 = mesh.Positions[i2];
+        if(!IsDefined(p2))
+        {
+          return;
+        }
       }
 
-      var p3 = mesh.Positions[i3];
-      if(!IsDefined(p3))
+      if (mesh != null)
       {
-        return;
+        var p3 = mesh.Positions[i3];
+        if(!IsDefined(p3))
+        {
+          return;
+        }
       }
 
-      mesh.TriangleIndices.Add(i1);
-      mesh.TriangleIndices.Add(i2);
-      mesh.TriangleIndices.Add(i3);
+      mesh?.TriangleIndices.Add(i1);
+      mesh?.TriangleIndices.Add(i2);
+      mesh?.TriangleIndices.Add(i3);
     }
 
     /// <summary>

@@ -23,7 +23,7 @@
     /// <param name="animationTime">
     /// Animation time in milliseconds.
     /// </param>
-    public static void AnimateTo(this ProjectionCamera camera, Point3D newPosition, Vector3D newDirection, Vector3D newUpDirection, double animationTime)
+    public static void AnimateTo(this ProjectionCamera? camera, Point3D newPosition, Vector3D newDirection, Vector3D newUpDirection, double animationTime)
     {
       var fromPosition = camera.Position;
       var fromDirection = camera.LookDirection;
@@ -42,7 +42,7 @@
           DecelerationRatio = 0.5,
           FillBehavior = FillBehavior.Stop
         };
-        a1.Completed += (s, a) => camera.BeginAnimation(ProjectionCamera.PositionProperty, null);
+        a1.Completed += (_, _) => camera.BeginAnimation(ProjectionCamera.PositionProperty, null);
         camera.BeginAnimation(ProjectionCamera.PositionProperty, a1);
 
         var a2 = new Vector3DAnimation(
@@ -52,7 +52,7 @@
           DecelerationRatio = 0.5,
           FillBehavior = FillBehavior.Stop
         };
-        a2.Completed += (s, a) => camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, null);
+        a2.Completed += (_, _) => camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, null);
         camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, a2);
 
         var a3 = new Vector3DAnimation(
@@ -62,7 +62,7 @@
           DecelerationRatio = 0.5,
           FillBehavior = FillBehavior.Stop
         };
-        a3.Completed += (s, a) => camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, null);
+        a3.Completed += (_, _) => camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, null);
         camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, a3);
       }
     }
@@ -81,7 +81,7 @@
     /// </param>
     public static void AnimateWidth(this OrthographicCamera camera, double newWidth, double animationTime)
     {
-      double fromWidth = camera.Width;
+      var fromWidth = camera.Width;
 
       camera.Width = newWidth;
 
@@ -113,7 +113,7 @@
     /// <param name="animationTime">
     /// The animation time.
     /// </param>
-    public static void ChangeDirection(this ProjectionCamera camera, Vector3D newLookDirection, Vector3D newUpDirection, double animationTime)
+    public static void ChangeDirection(this ProjectionCamera? camera, Vector3D newLookDirection, Vector3D newUpDirection, double animationTime)
     {
       var target = camera.Position + camera.LookDirection;
       var length = camera.LookDirection.Length;
@@ -127,7 +127,7 @@
     /// <param name="source">The source camera.</param>
     /// <param name="dest">The destination camera.</param>
     /// <param name="copyNearFarPlaneDistances">Copy near and far plane distances if set to <c>true</c>.</param>
-    public static void Copy(this ProjectionCamera source, ProjectionCamera dest, bool copyNearFarPlaneDistances = true)
+    public static void Copy(this ProjectionCamera? source, ProjectionCamera? dest, bool copyNearFarPlaneDistances = true)
     {
       if(source == null || dest == null)
       {
@@ -146,9 +146,8 @@
 
       var psrc = source as PerspectiveCamera;
       var osrc = source as OrthographicCamera;
-      var pdest = dest as PerspectiveCamera;
       var odest = dest as OrthographicCamera;
-      if(pdest != null)
+      if(dest is PerspectiveCamera pdest)
       {
         double fov = 45;
         if(psrc != null)
@@ -158,7 +157,7 @@
 
         if(osrc != null)
         {
-          double dist = source.LookDirection.Length;
+          var dist = source.LookDirection.Length;
           fov = Math.Atan(osrc.Width / 2 / dist) * 180 / Math.PI * 2;
         }
 
@@ -170,7 +169,7 @@
         double width = 100;
         if(psrc != null)
         {
-          double dist = source.LookDirection.Length;
+          var dist = source.LookDirection.Length;
           width = Math.Tan(psrc.FieldOfView / 180 * Math.PI / 2) * dist * 2;
         }
 
@@ -195,14 +194,14 @@
     /// <param name="distance">
     /// New length of the LookDirection vector.
     /// </param>
-    public static void CopyDirectionOnly(this ProjectionCamera source, ProjectionCamera dest, double distance)
+    public static void CopyDirectionOnly(this ProjectionCamera? source, ProjectionCamera? dest, double distance)
     {
       if(source == null || dest == null)
       {
         return;
       }
 
-      Vector3D dir = source.LookDirection;
+      var dir = source.LookDirection;
       dir.Normalize();
       dir *= distance;
 
@@ -231,7 +230,7 @@
     /// <returns>
     /// The get info.
     /// </returns>
-    public static string GetInfo(this Camera camera)
+    public static string GetInfo(this Camera? camera)
     {
       var matrixCamera = camera as MatrixCamera;
       var perspectiveCamera = camera as PerspectiveCamera;
@@ -312,7 +311,7 @@
     /// <param name="animationTime">
     /// The animation time.
     /// </param>
-    public static void LookAt(this ProjectionCamera camera, Point3D target, double animationTime)
+    public static void LookAt(this ProjectionCamera? camera, Point3D target, double animationTime)
     {
       LookAt(camera, target, camera.LookDirection, animationTime);
     }
@@ -332,7 +331,7 @@
     /// <param name="animationTime">
     /// The animation time.
     /// </param>
-    public static void LookAt(this ProjectionCamera camera, Point3D target, Vector3D newLookDirection, double animationTime)
+    public static void LookAt(this ProjectionCamera? camera, Point3D target, Vector3D newLookDirection, double animationTime)
     {
       LookAt(camera, target, newLookDirection, camera.UpDirection, animationTime);
     }
@@ -355,19 +354,17 @@
     /// <param name="animationTime">
     /// The animation time.
     /// </param>
-    public static void LookAt(this ProjectionCamera camera, Point3D target, Vector3D newLookDirection, Vector3D newUpDirection, double animationTime)
+    public static void LookAt(this ProjectionCamera? camera, Point3D target, Vector3D newLookDirection, Vector3D newUpDirection, double animationTime)
     {
       var newPosition = target - newLookDirection;
 
-      var perspectiveCamera = camera as PerspectiveCamera;
-      if(perspectiveCamera != null)
+      if(camera is PerspectiveCamera perspectiveCamera)
       {
         AnimateTo(perspectiveCamera, newPosition, newLookDirection, newUpDirection, animationTime);
         return;
       }
 
-      var orthographicCamera = camera as OrthographicCamera;
-      if(orthographicCamera != null)
+      if(camera is OrthographicCamera orthographicCamera)
       {
         AnimateTo(orthographicCamera, newPosition, newLookDirection, newUpDirection, animationTime);
       }
@@ -388,9 +385,9 @@
     /// <param name="animationTime">
     /// The animation time.
     /// </param>
-    public static void LookAt(this ProjectionCamera camera, Point3D target, double distance, double animationTime)
+    public static void LookAt(this ProjectionCamera? camera, Point3D target, double distance, double animationTime)
     {
-      Vector3D d = camera.LookDirection;
+      var d = camera.LookDirection;
       d.Normalize();
       LookAt(camera, target, d * distance, animationTime);
     }
@@ -401,16 +398,14 @@
     /// <param name="camera">
     /// The camera.
     /// </param>
-    public static void Reset(this Camera camera)
+    public static void Reset(this Camera? camera)
     {
-      var pcamera = camera as PerspectiveCamera;
-      if(pcamera != null)
+      if(camera is PerspectiveCamera pcamera)
       {
         Reset(pcamera);
       }
 
-      var ocamera = camera as OrthographicCamera;
-      if(ocamera != null)
+      if(camera is OrthographicCamera ocamera)
       {
         Reset(ocamera);
       }
@@ -422,7 +417,7 @@
     /// <param name="camera">
     /// The camera.
     /// </param>
-    public static void Reset(this PerspectiveCamera camera)
+    public static void Reset(this PerspectiveCamera? camera)
     {
       if(camera == null)
       {
@@ -443,7 +438,7 @@
     /// <param name="camera">
     /// The camera.
     /// </param>
-    public static void Reset(this OrthographicCamera camera)
+    public static void Reset(this OrthographicCamera? camera)
     {
       if(camera == null)
       {
@@ -474,14 +469,12 @@
         throw new ArgumentNullException(nameof(camera));
       }
 
-      var matrixCamera = camera as MatrixCamera;
-      if(matrixCamera != null)
+      if(camera is MatrixCamera matrixCamera)
       {
         return matrixCamera.ViewMatrix;
       }
 
-      var projectionCamera = camera as ProjectionCamera;
-      if(projectionCamera != null)
+      if(camera is ProjectionCamera projectionCamera)
       {
         var zaxis = -projectionCamera.LookDirection;
         zaxis.Normalize();
@@ -527,42 +520,39 @@
         throw new ArgumentNullException(nameof(camera));
       }
 
-      var perspectiveCamera = camera as PerspectiveCamera;
-      if(perspectiveCamera != null)
+      if(camera is PerspectiveCamera perspectiveCamera)
       {
         // The angle-to-radian formula is a little off because only
         // half the angle enters the calculation.
-        double xscale = 1 / Math.Tan(Math.PI * perspectiveCamera.FieldOfView / 360);
-        double yscale = xscale * aspectRatio;
-        double znear = perspectiveCamera.NearPlaneDistance;
-        double zfar = perspectiveCamera.FarPlaneDistance;
-        double zscale = double.IsPositiveInfinity(zfar) ? -1 : (zfar / (znear - zfar));
-        double zoffset = znear * zscale;
+        var xscale = 1 / Math.Tan(Math.PI * perspectiveCamera.FieldOfView / 360);
+        var yscale = xscale * aspectRatio;
+        var znear = perspectiveCamera.NearPlaneDistance;
+        var zfar = perspectiveCamera.FarPlaneDistance;
+        var zscale = double.IsPositiveInfinity(zfar) ? -1 : (zfar / (znear - zfar));
+        var zoffset = znear * zscale;
 
         return new Matrix3D(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, zscale, -1, 0, 0, zoffset, 0);
       }
 
-      var orthographicCamera = camera as OrthographicCamera;
-      if(orthographicCamera != null)
+      if(camera is OrthographicCamera orthographicCamera)
       {
-        double xscale = 2.0 / orthographicCamera.Width;
-        double yscale = xscale * aspectRatio;
-        double znear = orthographicCamera.NearPlaneDistance;
-        double zfar = orthographicCamera.FarPlaneDistance;
+        var xscale = 2.0 / orthographicCamera.Width;
+        var yscale = xscale * aspectRatio;
+        var znear = orthographicCamera.NearPlaneDistance;
+        var zfar = orthographicCamera.FarPlaneDistance;
 
         if(double.IsPositiveInfinity(zfar))
         {
           zfar = znear * 1e5;
         }
 
-        double dzinv = 1.0 / (znear - zfar);
+        var dzinv = 1.0 / (znear - zfar);
 
         var m = new Matrix3D(xscale, 0, 0, 0, 0, yscale, 0, 0, 0, 0, dzinv, 0, 0, 0, znear * dzinv, 1);
         return m;
       }
 
-      var matrixCamera = camera as MatrixCamera;
-      if(matrixCamera != null)
+      if(camera is MatrixCamera matrixCamera)
       {
         return matrixCamera.ProjectionMatrix;
       }
@@ -635,19 +625,17 @@
     /// <param name="viewport">The viewport.</param>
     /// <param name="animationTime">The animation time.</param>
     public static void FitView(
-        this ProjectionCamera camera,
+        this ProjectionCamera? camera,
         Viewport3D viewport,
         double animationTime = 0)
     {
-      var perspectiveCamera = camera as PerspectiveCamera;
-      if(perspectiveCamera != null)
+      if(camera is PerspectiveCamera perspectiveCamera)
       {
         FitView(camera, viewport, perspectiveCamera.LookDirection, perspectiveCamera.UpDirection, animationTime);
         return;
       }
 
-      var orthoCamera = camera as OrthographicCamera;
-      if(orthoCamera != null)
+      if(camera is OrthographicCamera orthoCamera)
       {
         FitView(camera, viewport, orthoCamera.LookDirection, orthoCamera.UpDirection, animationTime);
       }
@@ -661,9 +649,9 @@
     /// <param name="lookDirection">The look direction.</param>
     /// <param name="upDirection">The up direction.</param>
     /// <param name="animationTime">The animation time.</param>
-    public static void FitView(this ProjectionCamera camera, Viewport3D viewport, Vector3D lookDirection, Vector3D upDirection, double animationTime = 0)
+    public static void FitView(this ProjectionCamera? camera, Viewport3D viewport, Vector3D lookDirection, Vector3D upDirection, double animationTime = 0)
     {
-      var bounds = Visual3DHelper.FindBounds(viewport.Children);
+      var bounds = viewport.Children.FindBounds();
       var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
 
       if(bounds.IsEmpty || diagonal.LengthSquared < double.Epsilon)
@@ -686,9 +674,9 @@
     /// <param name="animationTime">
     /// The animation time.
     /// </param>
-    public static void ZoomExtents(this ProjectionCamera camera, Viewport3D viewport, double animationTime = 0)
+    public static void ZoomExtents(this ProjectionCamera? camera, Viewport3D viewport, double animationTime = 0)
     {
-      var bounds = Visual3DHelper.FindBounds(viewport.Children);
+      var bounds = viewport.Children.FindBounds();
       var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
 
       if(bounds.IsEmpty || diagonal.LengthSquared < double.Epsilon)
@@ -715,20 +703,18 @@
     /// The animation time.
     /// </param>
     public static void ZoomExtents(
-        this ProjectionCamera camera,
+        this ProjectionCamera? camera,
         Viewport3D viewport,
         Rect3D bounds,
         double animationTime = 0)
     {
-      var perspectiveCamera = camera as PerspectiveCamera;
-      if(perspectiveCamera != null)
+      if(camera is PerspectiveCamera perspectiveCamera)
       {
         FitView(camera, viewport, bounds, perspectiveCamera.LookDirection, perspectiveCamera.UpDirection, animationTime);
         return;
       }
 
-      var orthoCamera = camera as OrthographicCamera;
-      if(orthoCamera != null)
+      if(camera is OrthographicCamera orthoCamera)
       {
         FitView(camera, viewport, bounds, orthoCamera.LookDirection, orthoCamera.UpDirection, animationTime);
       }
@@ -743,11 +729,11 @@
     /// <param name="lookDirection">The look direction.</param>
     /// <param name="upDirection">The up direction.</param>
     /// <param name="animationTime">The animation time.</param>
-    public static void FitView(this ProjectionCamera camera, Viewport3D viewport, Rect3D bounds, Vector3D lookDirection, Vector3D upDirection, double animationTime = 0)
+    public static void FitView(this ProjectionCamera? camera, Viewport3D viewport, Rect3D bounds, Vector3D lookDirection, Vector3D upDirection, double animationTime = 0)
     {
       var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
       var center = bounds.Location + (diagonal * 0.5);
-      double radius = diagonal.Length * 0.5;
+      var radius = diagonal.Length * 0.5;
       FitView(camera, viewport, center, radius, lookDirection, upDirection, animationTime);
     }
 
@@ -770,21 +756,19 @@
     /// The animation time.
     /// </param>
     public static void ZoomExtents(
-        ProjectionCamera camera,
+        ProjectionCamera? camera,
         Viewport3D viewport,
         Point3D center,
         double radius,
         double animationTime = 0)
     {
-      var perspectiveCamera = camera as PerspectiveCamera;
-      if(perspectiveCamera != null)
+      if(camera is PerspectiveCamera perspectiveCamera)
       {
         FitView(camera, viewport, center, radius, perspectiveCamera.LookDirection, perspectiveCamera.UpDirection, animationTime);
         return;
       }
 
-      var orthoCamera = camera as OrthographicCamera;
-      if(orthoCamera != null)
+      if(camera is OrthographicCamera orthoCamera)
       {
         FitView(camera, viewport, center, radius, orthoCamera.LookDirection, orthoCamera.UpDirection, animationTime);
       }
@@ -801,7 +785,7 @@
     /// <param name="upDirection">The up direction.</param>
     /// <param name="animationTime">The animation time.</param>
     public static void FitView(
-        ProjectionCamera camera,
+        ProjectionCamera? camera,
         Viewport3D viewport,
         Point3D center,
         double radius,
@@ -809,32 +793,30 @@
         Vector3D upDirection,
         double animationTime = 0)
     {
-      var perspectiveCamera = camera as PerspectiveCamera;
-      if(perspectiveCamera != null)
+      if(camera is PerspectiveCamera perspectiveCamera)
       {
         var pcam = perspectiveCamera;
-        double disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
-        double vfov = pcam.FieldOfView;
+        var disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
+        var vfov = pcam.FieldOfView;
         if(viewport.ActualWidth > 0 && viewport.ActualHeight > 0)
         {
           vfov *= viewport.ActualHeight / viewport.ActualWidth;
         }
 
-        double distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
-        double dist = Math.Max(disth, distv);
+        var distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
+        var dist = Math.Max(disth, distv);
         var dir = lookDirection;
         dir.Normalize();
         LookAt(perspectiveCamera, center, dir * dist, upDirection, animationTime);
         return;
       }
 
-      var orthographicCamera = camera as OrthographicCamera;
-      if(orthographicCamera != null)
+      if(camera is OrthographicCamera orthographicCamera)
       {
         var dir = lookDirection;
         dir.Normalize();
         LookAt(orthographicCamera, center, dir, upDirection, animationTime);
-        double newWidth = radius * 2;
+        var newWidth = radius * 2;
 
         if(viewport.ActualWidth > viewport.ActualHeight)
         {
@@ -857,13 +839,11 @@
     /// <param name="zoomRectangle">
     /// The zoom rectangle.
     /// </param>
-    public static void ZoomToRectangle(this ProjectionCamera camera, Viewport3D viewport, Rect zoomRectangle)
+    public static void ZoomToRectangle(this ProjectionCamera? camera, Viewport3D viewport, Rect zoomRectangle)
     {
-      var topLeftRay = Viewport3DHelper.Point2DtoRay3D(viewport, zoomRectangle.TopLeft);
-      var topRightRay = Viewport3DHelper.Point2DtoRay3D(viewport, zoomRectangle.TopRight);
-      var centerRay = Viewport3DHelper.Point2DtoRay3D(
-          viewport,
-          new Point(
+      var topLeftRay = viewport.Point2DtoRay3D(zoomRectangle.TopLeft);
+      var topRightRay = viewport.Point2DtoRay3D(zoomRectangle.TopRight);
+      var centerRay = viewport.Point2DtoRay3D(new Point(
               (zoomRectangle.Left + zoomRectangle.Right) * 0.5, (zoomRectangle.Top + zoomRectangle.Bottom) * 0.5));
 
       if(topLeftRay == null || topRightRay == null || centerRay == null)
@@ -878,8 +858,7 @@
       u.Normalize();
       v.Normalize();
       w.Normalize();
-      var perspectiveCamera = camera as PerspectiveCamera;
-      if(perspectiveCamera != null)
+      if(camera is PerspectiveCamera perspectiveCamera)
       {
         var distance = camera.LookDirection.Length;
 
@@ -897,14 +876,12 @@
         //    LookAt(camera, newTarget, distance * w, 0);
       }
 
-      var orthographicCamera = camera as OrthographicCamera;
-      if(orthographicCamera != null)
+      if(camera is OrthographicCamera orthographicCamera)
       {
         orthographicCamera.Width *= zoomRectangle.Width / viewport.ActualWidth;
         var oldTarget = camera.Position + camera.LookDirection;
         var distance = camera.LookDirection.Length;
-        Point3D newTarget;
-        if(centerRay.PlaneIntersection(oldTarget, w, out newTarget))
+        if(centerRay.PlaneIntersection(oldTarget, w, out var newTarget))
         {
           orthographicCamera.LookDirection = w * distance;
           orthographicCamera.Position = newTarget - orthographicCamera.LookDirection;

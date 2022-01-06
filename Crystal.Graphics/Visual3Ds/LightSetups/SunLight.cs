@@ -32,12 +32,12 @@
     /// <summary>
     /// The altitude axis.
     /// </summary>
-    private readonly Vector3D altitudeAxis = new Vector3D(0, 1, 0);
+    private readonly Vector3D altitudeAxis = new(0, 1, 0);
 
     /// <summary>
     /// The azimuth axis.
     /// </summary>
-    private readonly Vector3D azimuthAxis = new Vector3D(0, 0, 1);
+    private readonly Vector3D azimuthAxis = new(0, 0, 1);
 
     /// <summary>
     /// Gets or sets the altitude angle (degrees).

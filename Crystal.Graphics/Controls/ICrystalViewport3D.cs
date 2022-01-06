@@ -9,13 +9,13 @@
     /// Gets the camera.
     /// </summary>
     /// <value>The camera.</value>
-    ProjectionCamera Camera { get; }
+    ProjectionCamera? Camera { get; }
 
     /// <summary>
     /// Gets the camera controller.
     /// </summary>
     /// <value>The camera controller.</value>
-    CameraController CameraController { get; }
+    CameraController? CameraController { get; }
 
     /// <summary>
     /// Gets the lights.

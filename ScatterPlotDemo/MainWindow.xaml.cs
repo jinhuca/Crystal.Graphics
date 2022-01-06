@@ -1,8 +1,6 @@
-﻿using System.Windows;
-
-namespace ScatterPlotDemo
+﻿namespace ScatterPlotDemo
 {
-  public partial class MainWindow : Window
+  public partial class MainWindow
   {
     public MainWindow()
     {

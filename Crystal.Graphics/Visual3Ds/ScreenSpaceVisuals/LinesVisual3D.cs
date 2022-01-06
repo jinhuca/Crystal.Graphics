@@ -6,10 +6,22 @@
   public class LinesVisual3D : ScreenSpaceVisual3D
   {
     /// <summary>
+    /// Gets or sets the thickness of the lines.
+    /// </summary>
+    /// <value>
+    /// The thickness.
+    /// </value>
+    public double Thickness
+    {
+      get => (double)GetValue(ThicknessProperty);
+      set => SetValue(ThicknessProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="Thickness"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
-        "Thickness", typeof(double), typeof(LinesVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
+      nameof(Thickness), typeof(double), typeof(LinesVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
     /// <summary>
     /// The builder.
@@ -25,19 +37,6 @@
     }
 
     /// <summary>
-    /// Gets or sets the thickness of the lines.
-    /// </summary>
-    /// <value>
-    /// The thickness.
-    /// </value>
-    public double Thickness
-    {
-      get => (double)GetValue(ThicknessProperty);
-
-      set => SetValue(ThicknessProperty, value);
-    }
-
-    /// <summary>
     /// Updates the geometry.
     /// </summary>
     protected override void UpdateGeometry()
@@ -48,7 +47,7 @@
         return;
       }
 
-      int n = Points.Count;
+      var n = Points.Count;
       if(n > 0)
       {
         if(Mesh.TriangleIndices.Count != n * 3)

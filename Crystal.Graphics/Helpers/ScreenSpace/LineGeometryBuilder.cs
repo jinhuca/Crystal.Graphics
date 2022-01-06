@@ -29,7 +29,7 @@
     {
       var indices = new Int32Collection(n * 3);
 
-      for(int i = 0; i < n / 2; i++)
+      for(var i = 0; i < n / 2; i++)
       {
         var i4 = i * 4;
         indices.Add(i4 + 2);
@@ -64,7 +64,7 @@
     /// The positions collection.
     /// </returns>
     public Point3DCollection CreatePositions(
-        IList<Point3D> points,
+        IList<Point3D>? points,
         double thickness = 1.0,
         double depthOffset = 0.0,
         CohenSutherlandClipping clipping = null)
@@ -74,9 +74,9 @@
 
       var positions = new Point3DCollection(segmentCount * 4);
 
-      for(int i = 0; i < segmentCount; i++)
+      for(var i = 0; i < segmentCount; i++)
       {
-        int startIndex = i * 2;
+        var startIndex = i * 2;
 
         var startPoint = points[startIndex];
         var endPoint = points[startIndex + 1];

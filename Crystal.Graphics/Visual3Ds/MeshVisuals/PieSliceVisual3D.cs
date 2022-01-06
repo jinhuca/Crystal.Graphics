@@ -145,14 +145,14 @@
     /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
     /// </summary>
     /// <returns>A triangular mesh geometry.</returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
       var pts = new List<Point3D>();
       var right = Vector3D.CrossProduct(UpVector, Normal);
-      for(int i = 0; i < ThetaDiv; i++)
+      for(var i = 0; i < ThetaDiv; i++)
       {
-        double angle = StartAngle + ((EndAngle - StartAngle) * i / (ThetaDiv - 1));
-        double angleRad = angle / 180 * Math.PI;
+        var angle = StartAngle + ((EndAngle - StartAngle) * i / (ThetaDiv - 1));
+        var angleRad = angle / 180 * Math.PI;
         var dir = (right * Math.Cos(angleRad)) + (UpVector * Math.Sin(angleRad));
         pts.Add(Center + (dir * InnerRadius));
         pts.Add(Center + (dir * OuterRadius));

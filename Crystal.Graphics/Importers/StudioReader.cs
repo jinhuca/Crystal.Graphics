@@ -16,12 +16,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// The materials.
     /// </summary>
-    private readonly Dictionary<string, Material> materials = new Dictionary<string, Material>();
+    private readonly Dictionary<string?, Material> materials = new();
 
     /// <summary>
     /// The meshes.
     /// </summary>
-    private readonly List<Mesh> meshes = new List<Mesh>();
+    private readonly List<Mesh> meshes = new();
 
     /// <summary>
     /// The chunk id.
@@ -149,7 +149,7 @@ namespace Crystal.Graphics
     {
       using(var reader = new BinaryReader(s))
       {
-        long length = reader.BaseStream.Length;
+        var length = reader.BaseStream.Length;
 
         // http://gpwiki.org/index.php/Loading_3ds_files
         // http://www.flipcode.com/archives/3DS_File_Loader.shtml
@@ -160,7 +160,7 @@ namespace Crystal.Graphics
           throw new FileFormatException("Unknown file");
         }
 
-        int headerSize = ReadChunkSize(reader);
+        var headerSize = ReadChunkSize(reader);
         //if (headerSize != length)
         //{
         //    throw new FileFormatException("Incomplete file (file length does not match header)");
@@ -169,7 +169,7 @@ namespace Crystal.Graphics
         while(reader.BaseStream.Position < reader.BaseStream.Length)
         {
           var id = ReadChunkId(reader);
-          int size = ReadChunkSize(reader);
+          var size = ReadChunkSize(reader);
 
           switch(id)
           {
@@ -260,22 +260,22 @@ namespace Crystal.Graphics
     private Color ReadColor(BinaryReader reader)
     {
       var type = ReadChunkId(reader);
-      int csize = ReadChunkSize(reader);
+      var csize = ReadChunkSize(reader);
       switch(type)
       {
         case ChunkID.COL_RGB:
           {
-            float r = reader.ReadSingle();
-            float g = reader.ReadSingle();
-            float b = reader.ReadSingle();
+            var r = reader.ReadSingle();
+            var g = reader.ReadSingle();
+            var b = reader.ReadSingle();
             return Color.FromScRgb(1, r, g, b);
           }
 
         case ChunkID.COL_TRU:
           {
-            byte r = reader.ReadByte();
-            byte g = reader.ReadByte();
-            byte b = reader.ReadByte();
+            var r = reader.ReadByte();
+            var g = reader.ReadByte();
+            var b = reader.ReadByte();
             return Color.FromArgb(0xFF, r, g, b);
           }
 
@@ -325,7 +325,7 @@ namespace Crystal.Graphics
     {
       int size = reader.ReadUInt16();
       var faces = new List<int>(size * 3);
-      for(int i = 0; i < size; i++)
+      for(var i = 0; i < size; i++)
       {
         faces.Add(reader.ReadUInt16());
         faces.Add(reader.ReadUInt16());
@@ -350,21 +350,21 @@ namespace Crystal.Graphics
     /// </returns>
     private List<FaceSet> ReadFaceSets(BinaryReader reader, int chunkSize)
     {
-      int total = 6;
+      var total = 6;
       var list = new List<FaceSet>();
       while(total < chunkSize)
       {
         var id = ReadChunkId(reader);
-        int size = ReadChunkSize(reader);
+        var size = ReadChunkSize(reader);
         total += size;
         switch(id)
         {
           case ChunkID.TRI_FACEMAT:
             {
-              string name = ReadString(reader);
+              var name = ReadString(reader);
               int n = reader.ReadUInt16();
               var c = new List<int>();
-              for(int i = 0; i < n; i++)
+              for(var i = 0; i < n; i++)
               {
                 c.Add(reader.ReadUInt16());
               }
@@ -403,18 +403,18 @@ namespace Crystal.Graphics
     /// <returns>
     /// The mat map.
     /// </returns>
-    private string ReadMatMap(BinaryReader reader, int size)
+    private string? ReadMatMap(BinaryReader reader, int size)
     {
       var id = ReadChunkId(reader);
-      int siz = ReadChunkSize(reader);
-      ushort f1 = reader.ReadUInt16();
-      ushort f2 = reader.ReadUInt16();
-      ushort f3 = reader.ReadUInt16();
-      ushort f4 = reader.ReadUInt16();
+      var siz = ReadChunkSize(reader);
+      var f1 = reader.ReadUInt16();
+      var f2 = reader.ReadUInt16();
+      var f3 = reader.ReadUInt16();
+      var f4 = reader.ReadUInt16();
       size -= 14;
-      string cname = ReadString(reader);
+      var cname = ReadString(reader);
       size -= cname.Length + 1;
-      byte[] morebytes = ReadData(reader, size);
+      var morebytes = ReadData(reader, size);
       return cname;
     }
 
@@ -425,19 +425,18 @@ namespace Crystal.Graphics
     /// <param name="chunkSize">The chunk size.</param>
     private void ReadMaterial(BinaryReader reader, int chunkSize)
     {
-      int total = 6;
-      string name = null;
+      var total = 6;
+      string? name = null;
 
-      var luminance = Colors.Transparent;
       var diffuse = Colors.Transparent;
       var specular = Colors.Transparent;
       var shininess = Colors.Transparent;
-      string texture = null;
+      string? texture = null;
 
       while(total < chunkSize)
       {
-        ChunkID id = ReadChunkId(reader);
-        int size = ReadChunkSize(reader);
+        var id = ReadChunkId(reader);
+        var size = ReadChunkSize(reader);
 
         // Debug.WriteLine(id);
         total += size;
@@ -451,7 +450,7 @@ namespace Crystal.Graphics
             break;
 
           case ChunkID.MAT_LUMINANCE:
-            luminance = ReadColor(reader);
+            ReadColor(reader);
             break;
 
           case ChunkID.MAT_DIFFUSE:
@@ -463,7 +462,7 @@ namespace Crystal.Graphics
             break;
 
           case ChunkID.MAT_SHININESS:
-            byte[] bytes = ReadData(reader, size - 6);
+            var bytes = ReadData(reader, size - 6);
 
             // shininess = ReadColor(r, size);
             break;
@@ -482,7 +481,7 @@ namespace Crystal.Graphics
         }
       }
 
-      int specularPower = 100;
+      var specularPower = 100;
 
       Dispatch(() =>
               {
@@ -491,7 +490,7 @@ namespace Crystal.Graphics
                       // mg.Children.Add(new DiffuseMaterial(new SolidColorBrush(luminance)));
                       if(texture != null)
                 {
-                  string ext = System.IO.Path.GetExtension(texture);
+                  var ext = Path.GetExtension(texture);
                   if(ext != null)
                   {
                     ext = ext.ToLower();
@@ -500,11 +499,11 @@ namespace Crystal.Graphics
                         // TGA not supported - convert textures to .png!
                         if(ext == ".tga")
                   {
-                    texture = System.IO.Path.ChangeExtension(texture, ".png");
+                    texture = Path.ChangeExtension(texture, ".png");
                   }
 
-                  var actualTexturePath = TexturePath ?? string.Empty;
-                  string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(actualTexturePath, texture));
+                  var actualTexturePath = TexturePath;
+                  var path = Path.GetFullPath(Path.Combine(actualTexturePath, texture));
                   if(File.Exists(path))
                   {
                     var img = new BitmapImage(new Uri(path));
@@ -545,15 +544,15 @@ namespace Crystal.Graphics
     /// </param>
     private void ReadObject(BinaryReader reader, int chunkSize)
     {
-      int total = 6;
+      var total = 6;
 
-      string objectName = ReadString(reader);
+      var objectName = ReadString(reader);
       total += objectName.Length + 1;
 
       while(total < chunkSize)
       {
         var id = ReadChunkId(reader);
-        int size = ReadChunkSize(reader);
+        var size = ReadChunkSize(reader);
         total += size;
         switch(id)
         {
@@ -580,7 +579,7 @@ namespace Crystal.Graphics
     /// <returns>
     /// The string.
     /// </returns>
-    private string ReadString(BinaryReader reader)
+    private string? ReadString(BinaryReader reader)
     {
       var sb = new StringBuilder();
       while(true)
@@ -610,10 +609,10 @@ namespace Crystal.Graphics
     {
       int size = reader.ReadUInt16();
       var pts = new List<Point>(size);
-      for(int i = 0; i < size; i++)
+      for(var i = 0; i < size; i++)
       {
-        float x = reader.ReadSingle();
-        float y = reader.ReadSingle();
+        var x = reader.ReadSingle();
+        var y = reader.ReadSingle();
         pts.Add(new Point(x, 1 - y));
       }
 
@@ -624,12 +623,12 @@ namespace Crystal.Graphics
     /// Reads a transformation.
     /// </summary>
     /// <param name="reader">
-    /// The reader.
+    ///   The reader.
     /// </param>
     /// <returns>
     /// A transformation.
     /// </returns>
-    private Matrix3D ReadTransformation(BinaryReader reader)
+    private void ReadTransformation(BinaryReader reader)
     {
       var localx = ReadVector(reader);
       var localy = ReadVector(reader);
@@ -655,8 +654,6 @@ namespace Crystal.Graphics
         M34 = 0,
         M44 = 1
       };
-
-      return matrix;
     }
 
     /// <summary>
@@ -670,7 +667,7 @@ namespace Crystal.Graphics
     /// </param>
     private void ReadTriangularMesh(BinaryReader reader, int chunkSize)
     {
-      int bytesRead = 6;
+      var bytesRead = 6;
       List<Point3D> positions = null;
       List<int> faces = null;
       List<Point> textureCoordinates = null;
@@ -678,8 +675,8 @@ namespace Crystal.Graphics
 
       while(bytesRead < chunkSize)
       {
-        ChunkID id = ReadChunkId(reader);
-        int size = ReadChunkSize(reader);
+        var id = ReadChunkId(reader);
+        var size = ReadChunkSize(reader);
         bytesRead += size;
         switch(id)
         {
@@ -749,7 +746,7 @@ namespace Crystal.Graphics
     private static List<int> ConvertFaceIndices(List<int> subFaces, List<int> faces)
     {
       var triangleIndices = new List<int>(subFaces.Count * 3);
-      foreach(int f in subFaces)
+      foreach(var f in subFaces)
       {
         triangleIndices.Add(faces[f * 3]);
         triangleIndices.Add(faces[(f * 3) + 1]);
@@ -761,12 +758,12 @@ namespace Crystal.Graphics
 
     private class Mesh
     {
-      public List<Point3D> Positions { get; set; }
-      public List<int> TriangleIndices { get; set; }
-      public List<Point> TextureCoordinates { get; set; }
+      public List<Point3D> Positions { get; init; }
+      public List<int> TriangleIndices { get; init; }
+      public List<Point> TextureCoordinates { get; init; }
 
-      public Material Material { get; set; }
-      public Material BackMaterial { get; set; }
+      public Material Material { get; init; }
+      public Material BackMaterial { get; init; }
 
       public Model3D CreateModel()
       {
@@ -811,11 +808,11 @@ namespace Crystal.Graphics
     {
       int size = reader.ReadUInt16();
       var pts = new List<Point3D>(size);
-      for(int i = 0; i < size; i++)
+      for(var i = 0; i < size; i++)
       {
-        float x = reader.ReadSingle();
-        float y = reader.ReadSingle();
-        float z = reader.ReadSingle();
+        var x = reader.ReadSingle();
+        var y = reader.ReadSingle();
+        var z = reader.ReadSingle();
         pts.Add(new Point3D(x, y, z));
       }
 
@@ -830,12 +827,12 @@ namespace Crystal.Graphics
       /// <summary>
       /// Gets or sets Faces.
       /// </summary>
-      public List<int> Faces { get; set; }
+      public List<int> Faces { get; init; }
 
       /// <summary>
       /// Gets or sets the name of the material.
       /// </summary>
-      public string Name { get; set; }
+      public string? Name { get; init; }
     }
   }
 }

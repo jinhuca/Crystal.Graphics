@@ -20,7 +20,7 @@
     /// Gets or sets the current position.
     /// </summary>
     /// <value>The current position.</value>
-    public Point CurrentPosition { get; private set; }
+    public Point CurrentPosition { get; }
 
   }
 }

@@ -8,7 +8,7 @@
     /// <summary>
     /// A regular expression containing "a one or more whitespaces" pattern.
     /// </summary>
-    private static Regex oneOrMoreWhitespaces = new Regex(@"\s+");
+    private static readonly Regex oneOrMoreWhitespaces = new(@"\s+");
 
     /// <summary>
     /// Splits the string on whitespace.

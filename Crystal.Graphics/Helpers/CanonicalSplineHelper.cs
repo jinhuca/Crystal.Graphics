@@ -36,7 +36,7 @@
         return result;
       }
 
-      int n = points.Count;
+      var n = points.Count;
       if(n < 1)
       {
         return result;
@@ -62,12 +62,12 @@
       }
       else
       {
-        bool useTensionCollection = tensions != null && tensions.Count > 0;
+        var useTensionCollection = tensions is { Count: > 0 };
 
-        for(int i = 0; i < n; i++)
+        for(var i = 0; i < n; i++)
         {
-          double t1 = useTensionCollection ? tensions[i % tensions.Count] : tension;
-          double t2 = useTensionCollection ? tensions[(i + 1) % tensions.Count] : tension;
+          var t1 = useTensionCollection ? tensions[i % tensions.Count] : tension;
+          var t2 = useTensionCollection ? tensions[(i + 1) % tensions.Count] : tension;
 
           if(i == 0)
           {
@@ -150,33 +150,33 @@
       // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or
       // Petzold, "Programming Microsoft Windows with Microsoft Visual Basic .NET", pages 638-639
       // for derivation of the following formulas:
-      double sx1 = t1 * (pt2.X - pt0.X);
-      double sy1 = t1 * (pt2.Y - pt0.Y);
-      double sz1 = t1 * (pt2.Z - pt0.Z);
-      double sx2 = t2 * (pt3.X - pt1.X);
-      double sy2 = t2 * (pt3.Y - pt1.Y);
-      double sz2 = t2 * (pt3.Z - pt1.Z);
+      var sx1 = t1 * (pt2.X - pt0.X);
+      var sy1 = t1 * (pt2.Y - pt0.Y);
+      var sz1 = t1 * (pt2.Z - pt0.Z);
+      var sx2 = t2 * (pt3.X - pt1.X);
+      var sy2 = t2 * (pt3.Y - pt1.Y);
+      var sz2 = t2 * (pt3.Z - pt1.Z);
 
-      double ax = sx1 + sx2 + 2 * pt1.X - 2 * pt2.X;
-      double ay = sy1 + sy2 + 2 * pt1.Y - 2 * pt2.Y;
-      double az = sz1 + sz2 + 2 * pt1.Z - 2 * pt2.Z;
-      double bx = -2 * sx1 - sx2 - 3 * pt1.X + 3 * pt2.X;
-      double by = -2 * sy1 - sy2 - 3 * pt1.Y + 3 * pt2.Y;
-      double bz = -2 * sz1 - sz2 - 3 * pt1.Z + 3 * pt2.Z;
+      var ax = sx1 + sx2 + 2 * pt1.X - 2 * pt2.X;
+      var ay = sy1 + sy2 + 2 * pt1.Y - 2 * pt2.Y;
+      var az = sz1 + sz2 + 2 * pt1.Z - 2 * pt2.Z;
+      var bx = -2 * sx1 - sx2 - 3 * pt1.X + 3 * pt2.X;
+      var by = -2 * sy1 - sy2 - 3 * pt1.Y + 3 * pt2.Y;
+      var bz = -2 * sz1 - sz2 - 3 * pt1.Z + 3 * pt2.Z;
 
-      double cx = sx1;
-      double cy = sy1;
-      double cz = sz1;
-      double dx = pt1.X;
-      double dy = pt1.Y;
-      double dz = pt1.Z;
+      var cx = sx1;
+      var cy = sy1;
+      var cz = sz1;
+      var dx = pt1.X;
+      var dy = pt1.Y;
+      var dz = pt1.Z;
 
       var num = (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y) + Math.Abs(pt1.Z - pt2.Z)) / tolerance);
 
       // Notice begins at 1 so excludes the first point (which is just pt1)
-      for(int i = 1; i < num; i++)
+      for(var i = 1; i < num; i++)
       {
-        double t = (double)i / (num - 1);
+        var t = (double)i / (num - 1);
         var pt = new Point3D(
             ax * t * t * t + bx * t * t + cx * t + dx,
             ay * t * t * t + by * t * t + cy * t + dy,

@@ -45,7 +45,7 @@ namespace Crystal.Graphics
     /// Gets the camera.
     /// </summary>
     /// <value>The camera.</value>
-    protected ProjectionCamera Camera => Viewport.Camera as ProjectionCamera;
+    protected ProjectionCamera? Camera => Viewport.Camera as ProjectionCamera;
 
     /// <summary>
     /// Gets or sets the camera look direction.
@@ -249,14 +249,13 @@ namespace Crystal.Graphics
     /// </returns>
     public Point3D? UnProject(Point p, Point3D position, Vector3D normal)
     {
-      Ray3D ray = GetRay(p);
+      var ray = GetRay(p);
       if(ray == null)
       {
         return null;
       }
 
-      Point3D i;
-      return ray.PlaneIntersection(position, normal, out i) ? (Point3D?)i : null;
+      return ray.PlaneIntersection(position, normal, out var i) ? i : null;
     }
 
     /// <summary>
@@ -301,16 +300,10 @@ namespace Crystal.Graphics
     /// <returns>
     /// A ray
     /// </returns>
-    protected Ray3D GetRay(Point position)
+    protected Ray3D? GetRay(Point position)
     {
-      Point3D point1, point2;
-      bool ok = Viewport3DHelper.Point2DtoPoint3D(Viewport, position, out point1, out point2);
-      if(!ok)
-      {
-        return null;
-      }
-
-      return new Ray3D { Origin = point1, Direction = point2 - point1 };
+      var ok = Viewport.Point2DtoPoint3D(position, out var point1, out var point2);
+      return !ok ? null : new Ray3D { Origin = point1, Direction = point2 - point1 };
     }
 
     /// <summary>
@@ -332,7 +325,7 @@ namespace Crystal.Graphics
     /// <param name="e">
     /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
     /// </param>
-    protected virtual void OnMouseDown(object sender, MouseButtonEventArgs e)
+    protected virtual void OnMouseDown(object sender, MouseButtonEventArgs? e)
     {
       Controller.MouseUp += OnMouseUp;
       Controller.MouseMove += OnMouseMove;
@@ -399,7 +392,7 @@ namespace Crystal.Graphics
     {
       MouseDownPoint = position;
       MouseDownPoint3D = UnProject(MouseDownPoint);
-      NearestPointInCamera nearestPoint = new Closest3DPointHitTester(Controller.Viewport, Controller.RotataAroundClosestVertexComplexity)
+      var nearestPoint = new Closest3DPointHitTester(Controller.Viewport, Controller.RotataAroundClosestVertexComplexity)
           .CalculateMouseDownNearestPoint(position, Controller.SnapMouseDownPoint);
       MouseDownNearestPoint2D = nearestPoint.MouseDownNearestPoint2D;
       MouseDownNearestPoint3D = nearestPoint.MouseDownNearestPoint3D;

@@ -129,18 +129,18 @@
 
       base.AddVisuals();
 
-      double miny = ColorArea.Bottom - (MinimumTextureCoordinate * ColorArea.Height);
-      double maxy = ColorArea.Bottom - (MaximumTextureCoordinate * ColorArea.Height);
-      Func<double, double> transform = v => miny + ((v - Minimum) / (Maximum - Minimum) * (maxy - miny));
+      var minY = ColorArea.Bottom - (MinimumTextureCoordinate * ColorArea.Height);
+      var maxY = ColorArea.Bottom - (MaximumTextureCoordinate * ColorArea.Height);
+      double Transform(double v) => minY + ((v - Minimum) / (Maximum - Minimum) * (maxY - minY));
 
-      double p = double.MinValue;
-      double ymax = transform(Maximum);
+      var p = double.MinValue;
+      var yMax = Transform(Maximum);
       foreach(var v in GetTickValues())
       {
         var text = v.ToString(FormatString, FormatProvider);
         var tb = new TextBlock(new Run(text)) { Foreground = Foreground };
         tb.Measure(new Size(ActualWidth, ActualHeight));
-        double y = transform(v);
+        var y = Transform(v);
         Point p0, p1, p2;
         switch(Position)
         {
@@ -168,8 +168,8 @@
         };
         Canvas.Children.Add(l);
 
-        double h = tb.DesiredSize.Height * 0.7;
-        if(v < Maximum && Math.Abs(y - ymax) < h)
+        var h = tb.DesiredSize.Height * 0.7;
+        if(v < Maximum && Math.Abs(y - yMax) < h)
         {
           continue;
         }
@@ -201,7 +201,7 @@
     private IEnumerable<double> GetTickValues()
     {
       yield return Minimum;
-      double x = Math.Floor(Minimum / Step) * Step;
+      var x = Math.Floor(Minimum / Step) * Step;
       while(x < Maximum)
       {
         if(x > Minimum)

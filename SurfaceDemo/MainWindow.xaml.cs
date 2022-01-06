@@ -2,31 +2,21 @@
 using Crystal.Graphics;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.ComponentModel;
-using System.Windows.Resources;
 
 namespace SurfaceDemo
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class MainWindow : Window
+  public partial class MainWindow
   {
-    private readonly ViewModel _viewModel = new ViewModel();
+    private readonly ViewModel _viewModel = new();
 
     // todo: auto-enumerate resources??
     private readonly string[] models = {
@@ -41,7 +31,7 @@ namespace SurfaceDemo
     private bool _isInvalidated = true;
     private bool _isUpdating;
     private UIElement currentView;
-    private object updateLock = "abc";
+    private readonly object updateLock = "abc";
     private Viewport3D v1;
     private Viewport3D v2;
 
@@ -54,9 +44,9 @@ namespace SurfaceDemo
 
       _viewModel.PropertyChanged += ModelChanged;
 
-      foreach(string m in models)
+      foreach(var m in models)
       {
-        var uri = new Uri(String.Format("pack://application:,,/Expressions/{0}.txt", m));
+        var uri = new Uri($"pack://application:,,/Expressions/{m}.txt");
         AddToMenu(m, uri);
       }
       SearchForSurfaces("Expressions");
@@ -84,7 +74,7 @@ namespace SurfaceDemo
       Loaded += Window1_Loaded;
     }
 
-    private Brush patternBrush;
+    private readonly Brush patternBrush;
 
     private void Window1_Loaded(object sender, RoutedEventArgs e)
     {
@@ -117,14 +107,14 @@ namespace SurfaceDemo
     {
       if(!Directory.Exists(dir))
         return;
-      string[] files = Directory.GetFiles(dir, "*.txt", SearchOption.AllDirectories);
+      var files = Directory.GetFiles(dir, "*.txt", SearchOption.AllDirectories);
 
       if(files.Length > 0)
         surfacesMenu.Items.Add(new Separator());
 
-      foreach(string file in files)
+      foreach(var file in files)
       {
-        AddToMenu(System.IO.Path.GetFileNameWithoutExtension(file), System.IO.Path.GetFullPath(file));
+        AddToMenu(Path.GetFileNameWithoutExtension(file), Path.GetFullPath(file));
       }
     }
 
@@ -137,8 +127,7 @@ namespace SurfaceDemo
 
     private void SurfaceFile_Click(object sender, RoutedEventArgs e)
     {
-      var menu = sender as MenuItem;
-      if(menu != null)
+      if(sender is MenuItem menu)
       {
         if(menu.Tag is Uri)
           Load(menu.Tag as Uri);
@@ -151,7 +140,7 @@ namespace SurfaceDemo
     {
       try
       {
-        StreamResourceInfo sri = Application.GetResourceStream(uri);
+        var sri = Application.GetResourceStream(uri);
         Load(sri.Stream);
       }
       catch
@@ -165,7 +154,7 @@ namespace SurfaceDemo
       var s = new FileStream(p, FileMode.Open);
       Load(s);
       s.Close();
-      _viewModel.ModelTitle = System.IO.Path.GetFileNameWithoutExtension(p);
+      _viewModel.ModelTitle = Path.GetFileNameWithoutExtension(p);
     }
 
     private void Load(Stream s)
@@ -210,7 +199,7 @@ namespace SurfaceDemo
         {
           _isInvalidated = false;
           _isUpdating = true;
-          string src = source1.Text;
+          var src = source1.Text;
           Dispatcher.Invoke(new Action<string>(UpdateModel), src);
         }
       }
@@ -382,17 +371,17 @@ namespace SurfaceDemo
       d.DefaultExt = ".png";
       if(d.ShowDialog().Value)
       {
-        string ext = System.IO.Path.GetExtension(d.FileName).ToLower();
+        var ext = Path.GetExtension(d.FileName).ToLower();
         if(ext == ".xml")
         {
           view1.Export(d.FileName);
-          string left = System.IO.Path.ChangeExtension(d.FileName, "left.xml");
-          string right = System.IO.Path.ChangeExtension(d.FileName, "right.xml");
+          var left = Path.ChangeExtension(d.FileName, "left.xml");
+          var right = Path.ChangeExtension(d.FileName, "right.xml");
           view2.ExportKerkythea(left, right);
         }
         else
           view1.Export(d.FileName);
-        Process.Start(System.IO.Path.GetDirectoryName(d.FileName));
+        Process.Start(Path.GetDirectoryName(d.FileName));
       }
     }
 
@@ -408,7 +397,7 @@ namespace SurfaceDemo
       if(true == d.ShowDialog())
       {
         view1.ExportStereo(d.FileName, _viewModel.StereoBase);
-        var directory = System.IO.Path.GetDirectoryName(d.FileName);
+        var directory = Path.GetDirectoryName(d.FileName);
         if(directory != null)
         {
           Process.Start(directory);

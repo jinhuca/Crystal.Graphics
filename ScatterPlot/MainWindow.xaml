@@ -46,25 +46,25 @@
                                           ZoomRectangleCursor="{TemplateBinding ZoomRectangleCursor}"
                                           ZoomSensitivity="{TemplateBinding ZoomSensitivity}">
                   <crystal:CameraController.InputBindings>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ResetCameraCommand}" Gezture="{Binding ResetCameraKeyGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.RotateCommand}" Gezture="{Binding RotateGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.RotateCommand}" Gezture="{Binding RotateGesture2, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.PanCommand}" Gezture="{Binding PanGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.PanCommand}" Gezture="{Binding PanGesture2, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ZoomCommand}" Gezture="{Binding ZoomGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ZoomCommand}" Gezture="{Binding ZoomGesture2, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ZoomRectangleCommand}" Gezture="{Binding ZoomRectangleGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ChangeFieldOfViewCommand}" Gezture="{Binding ChangeFieldOfViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ChangeLookAtCommand}" Gezture="{Binding ChangeLookAtGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ZoomExtentsCommand}" Gezture="{Binding ZoomExtentsGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ResetCameraCommand}" Gezture="{Binding ResetCameraGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.TopViewCommand}" Gezture="{Binding TopViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.BottomViewCommand}" Gezture="{Binding BottomViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.LeftViewCommand}" Gezture="{Binding LeftViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.RightViewCommand}" Gezture="{Binding RightViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.FrontViewCommand}" Gezture="{Binding FrontViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.BackViewCommand}" Gezture="{Binding BackViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <crystal:InputBindingX Command="{x:Static crystal:CrystalViewport3D.OrthographicToggleCommand}" Gezture="{Binding OrthographicToggleGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ResetCameraCommand}" Gesture="{Binding ResetCameraKeyGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.RotateCommand}" Gesture="{Binding RotateGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.RotateCommand}" Gesture="{Binding RotateGesture2, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.PanCommand}" Gesture="{Binding PanGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.PanCommand}" Gesture="{Binding PanGesture2, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ZoomCommand}" Gesture="{Binding ZoomGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ZoomCommand}" Gesture="{Binding ZoomGesture2, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ZoomRectangleCommand}" Gesture="{Binding ZoomRectangleGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ChangeFieldOfViewCommand}" Gesture="{Binding ChangeFieldOfViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ChangeLookAtCommand}" Gesture="{Binding ChangeLookAtGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ZoomExtentsCommand}" Gesture="{Binding ZoomExtentsGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.ResetCameraCommand}" Gesture="{Binding ResetCameraGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.TopViewCommand}" Gesture="{Binding TopViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.BottomViewCommand}" Gesture="{Binding BottomViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.LeftViewCommand}" Gesture="{Binding LeftViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.RightViewCommand}" Gesture="{Binding RightViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.FrontViewCommand}" Gesture="{Binding FrontViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CameraController.BackViewCommand}" Gesture="{Binding BackViewGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <crystal:InputBindingX Command="{x:Static crystal:CrystalViewport3D.OrthographicToggleCommand}" Gesture="{Binding OrthographicToggleGesture, RelativeSource={RelativeSource TemplatedParent}}"/>
                   </crystal:CameraController.InputBindings>
                   <Grid x:Name="PART_ViewportGrid">
                     <AdornerDecorator x:Name="PART_AdornerLayer"

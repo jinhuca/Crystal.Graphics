@@ -30,31 +30,6 @@ namespace Crystal.Graphics
     }
 
     /// <summary>
-    /// Exports the camera.
-    /// </summary>
-    /// <param name="writer">The writer.</param>
-    /// <param name="camera">The camera.</param>
-    protected override void ExportCamera(StreamWriter writer, Camera camera)
-    {
-      base.ExportCamera(writer, camera);
-
-      // todo...
-    }
-
-    /// <summary>
-    /// Exports the light.
-    /// </summary>
-    /// <param name="writer">The writer.</param>
-    /// <param name="light">The light.</param>
-    /// <param name="inheritedTransform">The inherited transform.</param>
-    protected override void ExportLight(StreamWriter writer, Light light, Transform3D inheritedTransform)
-    {
-      base.ExportLight(writer, light, inheritedTransform);
-
-      // todo...
-    }
-
-    /// <summary>
     /// Exports the model.
     /// </summary>
     /// <param name="writer">The writer.</param>
@@ -62,10 +37,8 @@ namespace Crystal.Graphics
     /// <param name="inheritedTransform">The inherited transform.</param>
     protected override void ExportModel(StreamWriter writer, GeometryModel3D model, Transform3D inheritedTransform)
     {
-      var mesh = model.Geometry as MeshGeometry3D;
-      if(mesh == null)
+      if(model.Geometry is not MeshGeometry3D mesh)
       {
-        return;
       }
 
       // todo

@@ -95,9 +95,9 @@
     /// <returns>
     /// A triangular mesh geometry.
     /// </returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
         {
-            var builder = new MeshBuilder(false, true);
+            var builder = new MeshBuilder(false);
             builder.AddTorus(TorusDiameter, TubeDiameter, ThetaDiv, PhiDiv);
             return builder.ToMesh();
         }

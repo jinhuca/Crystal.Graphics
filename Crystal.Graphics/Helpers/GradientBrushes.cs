@@ -14,13 +14,12 @@
     /// <summary>
     /// A blue-white-red gradient brush.
     /// </summary>
-    public static LinearGradientBrush BlueWhiteRed = BrushHelper.CreateGradientBrush(
-        Colors.Blue, Colors.White, Colors.Red);
+    public static LinearGradientBrush BlueWhiteRed = BrushHelper.CreateGradientBrush(Colors.Blue, Colors.White, Colors.Red);
 
     /// <summary>
     /// A hue gradient brush.
     /// </summary>
-    public static LinearGradientBrush Hue = BrushHelper.CreateHsvBrush(1.0);
+    public static LinearGradientBrush Hue = BrushHelper.CreateHsvBrush();
 
     /// <summary>
     /// A hue gradient brush with 12 stripes.

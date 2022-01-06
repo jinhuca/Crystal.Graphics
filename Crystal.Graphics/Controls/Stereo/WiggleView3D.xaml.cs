@@ -5,7 +5,7 @@ namespace Crystal.Graphics
   /// <summary>
   /// A stereoscopic wiggle control.
   /// </summary>
-  public partial class WiggleView3D : StereoControl
+  public partial class WiggleView3D
   {
     /// <summary>
     /// Identifies the <see cref="WiggleRate"/> dependency property.
@@ -16,12 +16,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// The timer.
     /// </summary>
-    private readonly DispatcherTimer timer = new DispatcherTimer();
+    private readonly DispatcherTimer timer = new();
 
     /// <summary>
     /// The watch.
     /// </summary>
-    private readonly Stopwatch watch = new Stopwatch();
+    private readonly Stopwatch watch = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref = "WiggleView3D" /> class.

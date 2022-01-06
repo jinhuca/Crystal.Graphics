@@ -32,7 +32,7 @@
     {
       get
       {
-        Type managerType = typeof(TManager);
+        var managerType = typeof(TManager);
         var manager = (TManager)GetCurrentManager(managerType);
         if(manager == null)
         {

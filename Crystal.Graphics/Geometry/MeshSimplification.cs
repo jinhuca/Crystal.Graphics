@@ -30,7 +30,7 @@ namespace Crystal.Graphics
         M44 = d * d;
       }
 
-      public SymmetricMatrix(double m11, double m12, double m13, double m14, double m22, double m23, double m24, double m33, double m34, double m44)
+      private SymmetricMatrix(double m11, double m12, double m13, double m14, double m22, double m23, double m24, double m33, double m34, double m44)
       {
         M11 = m11;
         M12 = m12;
@@ -44,35 +44,24 @@ namespace Crystal.Graphics
         M44 = m44;
       }
 
-      public double this[int c]
+      private double this[int c]
       {
         get
         {
-          switch(c)
+          return c switch
           {
-            case 0:
-              return M11;
-            case 1:
-              return M12;
-            case 2:
-              return M13;
-            case 3:
-              return M14;
-            case 4:
-              return M22;
-            case 5:
-              return M23;
-            case 6:
-              return M24;
-            case 7:
-              return M33;
-            case 8:
-              return M34;
-            case 9:
-              return M44;
-            default:
-              throw new ArgumentOutOfRangeException();
-          }
+            0 => M11,
+            1 => M12,
+            2 => M13,
+            3 => M14,
+            4 => M22,
+            5 => M23,
+            6 => M24,
+            7 => M33,
+            8 => M34,
+            9 => M44,
+            _ => throw new ArgumentOutOfRangeException()
+          };
         }
       }
 
@@ -101,20 +90,29 @@ namespace Crystal.Graphics
     {
       public readonly int[] v = new int[3];
       public readonly double[] err = new double[4];
-      public bool deleted = false;
-      public bool dirty = false;
-      public Vector3D normal = new Vector3D();
+      public bool deleted;
+      public bool dirty;
+      public Vector3D normal;
 
       public Triangle Clone()
       {
-        var t = new Triangle() { deleted = deleted, dirty = dirty, normal = normal };
-        t.v[0] = v[0];
-        t.v[1] = v[1];
-        t.v[2] = v[2];
-        t.err[0] = err[0];
-        t.err[1] = err[1];
-        t.err[2] = err[2];
-        t.err[3] = err[3];
+        var t = new Triangle
+        {
+          deleted = deleted, dirty = dirty, normal = normal,
+          v =
+          {
+            [0] = v[0],
+            [1] = v[1],
+            [2] = v[2]
+          },
+          err =
+          {
+            [0] = err[0],
+            [1] = err[1],
+            [2] = err[2],
+            [3] = err[3]
+          }
+        };
         return t;
       }
     }
@@ -122,11 +120,12 @@ namespace Crystal.Graphics
     private sealed class Vertex
     {
       public Vector3D p;
-      public int tStart = 0;
-      public int tCount = 0;
-      public SymmetricMatrix q = new SymmetricMatrix();
-      public bool border = false;
-      public Vertex()
+      public int tStart;
+      public int tCount;
+      public SymmetricMatrix q;
+      public bool border;
+
+      private Vertex()
       {
         p = new Vector3D();
       }
@@ -176,7 +175,7 @@ namespace Crystal.Graphics
     /// <param name="model"></param>
     public MeshSimplification(MeshGeometry3D model)
     {
-      triangles = new List<Triangle>(Enumerable.Range(0, model.TriangleIndices.Count / 3).Select(x => new Triangle()));
+      triangles = new List<Triangle>(Enumerable.Range(0, model.TriangleIndices.Count / 3).Select(_ => new Triangle()));
       var i = 0;
       foreach(var tri in triangles)
       {
@@ -185,7 +184,7 @@ namespace Crystal.Graphics
         tri.v[2] = model.TriangleIndices[i++];
       }
       vertices = model.Positions.Select(x => new Vertex(x)).ToList();
-      refs = new List<Ref>(Enumerable.Range(0, model.TriangleIndices.Count).Select(x => new Ref()));
+      refs = new List<Ref>(Enumerable.Range(0, model.TriangleIndices.Count).Select(_ => new Ref()));
     }
     /// <summary>
     /// 
@@ -269,8 +268,7 @@ namespace Crystal.Graphics
                 continue;
               }
               //Compute vertex to collapse to
-              Vector3D p;
-              CalculateError(i0, i1, out p);
+              CalculateError(i0, i1, out var p);
               deleted0.Clear();
               deleted1.Clear();
               deleted0.AddRange(Enumerable.Repeat(false, v0.tCount));
@@ -381,7 +379,6 @@ namespace Crystal.Graphics
 
     private void UpdateTriangles(int i0, ref Vertex v, IList<bool> deleted, ref int deletedTriangles)
     {
-      Vector3D p;
       for(var i = 0; i < v.tCount; ++i)
       {
         var r = refs[v.tStart + i];
@@ -399,9 +396,9 @@ namespace Crystal.Graphics
 
         t.v[r.tvertex] = i0;
         t.dirty = true;
-        t.err[0] = CalculateError(t.v[0], t.v[1], out p);
-        t.err[1] = CalculateError(t.v[1], t.v[2], out p);
-        t.err[2] = CalculateError(t.v[2], t.v[0], out p);
+        t.err[0] = CalculateError(t.v[0], t.v[1], out _);
+        t.err[1] = CalculateError(t.v[1], t.v[2], out _);
+        t.err[2] = CalculateError(t.v[2], t.v[0], out _);
         t.err[3] = Math.Min(t.err[0], Math.Min(t.err[1], t.err[2]));
         refs.Add(r);
       }
@@ -486,12 +483,12 @@ namespace Crystal.Graphics
             vertices[tri.v[j]].q += new SymmetricMatrix(n.X, n.Y, n.Z, -SharedFunctions.DotProduct(ref n, ref p0));
           }
         }
-        Vector3D p;
+
         foreach(var tri in triangles)
         {
           for(var i = 0; i < 3; ++i)
           {
-            tri.err[i] = CalculateError(tri.v[i], tri.v[(i + 1) % 3], out p);
+            tri.err[i] = CalculateError(tri.v[i], tri.v[(i + 1) % 3], out var p);
           }
           tri.err[3] = Math.Min(tri.err[0], Math.Min(tri.err[1], tri.err[2]));
         }
@@ -521,7 +518,7 @@ namespace Crystal.Graphics
       if(refs.Count < totalTris)
       {
         refs.Clear();
-        refs.AddRange(Enumerable.Range(0, totalTris).Select(x => new Ref()));
+        refs.AddRange(Enumerable.Range(0, totalTris).Select(_ => new Ref()));
       }
       else
       {

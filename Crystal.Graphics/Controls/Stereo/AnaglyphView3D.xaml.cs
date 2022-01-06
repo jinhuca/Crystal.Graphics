@@ -15,7 +15,7 @@ namespace Crystal.Graphics
   /// </remarks>
   [ContentProperty("Children")]
   [Localizability(LocalizationCategory.NeverLocalize)]
-  public partial class AnaglyphView3D : StereoControl
+  public partial class AnaglyphView3D
   {
     /// <summary>
     /// Identifies the <see cref="HorizontalOffset"/> dependency property.

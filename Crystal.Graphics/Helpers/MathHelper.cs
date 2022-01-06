@@ -69,10 +69,10 @@ namespace Crystal.Graphics
   /// </summary>
   public static class Noise2d
   {
-    private static Random _random = new Random();
+    private static readonly Random _random = new();
     private static int[] _permutation;
 
-    private static Vector2[] _gradients;
+    private static readonly Vector2[] _gradients;
 
     static Noise2d()
     {
@@ -141,7 +141,7 @@ namespace Crystal.Graphics
     /// <returns></returns>
     public static DoubleOrSingle Noise(DoubleOrSingle x, DoubleOrSingle y)
     {
-      var cell = new Vector2((DoubleOrSingle)Math.Floor(x), (DoubleOrSingle)Math.Floor(y));
+      var cell = new Vector2(Math.Floor(x), Math.Floor(y));
 
       DoubleOrSingle total = 0;
 

@@ -48,7 +48,7 @@
         return;
       }
 
-      int n = Points.Count;
+      var n = Points.Count;
       if(n > 0)
       {
         if(Mesh.TriangleIndices.Count != n * 6)

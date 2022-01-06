@@ -159,17 +159,17 @@ namespace Crystal.Graphics
     /// <summary>
     /// The circle cache.
     /// </summary>
-    private static readonly ThreadLocal<Dictionary<int, IList<Point>>> CircleCache = new ThreadLocal<Dictionary<int, IList<Point>>>(() => new Dictionary<int, IList<Point>>());
+    private static readonly ThreadLocal<Dictionary<int, IList<Point>>> CircleCache = new(() => new Dictionary<int, IList<Point>>());
 
     /// <summary>
     /// The closed circle cache.
     /// </summary>
-    private static readonly ThreadLocal<Dictionary<int, IList<Point>>> ClosedCircleCache = new ThreadLocal<Dictionary<int, IList<Point>>>(() => new Dictionary<int, IList<Point>>());
+    private static readonly ThreadLocal<Dictionary<int, IList<Point>>> ClosedCircleCache = new(() => new Dictionary<int, IList<Point>>());
 
     /// <summary>
     /// The unit sphere cache.
     /// </summary>
-    private static readonly ThreadLocal<Dictionary<int, MeshGeometry3D>> UnitSphereCache = new ThreadLocal<Dictionary<int, MeshGeometry3D>>(() => new Dictionary<int, MeshGeometry3D>());
+    private static readonly ThreadLocal<Dictionary<int, MeshGeometry3D?>> UnitSphereCache = new(() => new Dictionary<int, MeshGeometry3D>());
 
     #endregion Static and Const
 
@@ -325,8 +325,7 @@ namespace Crystal.Graphics
     /// <remarks>
     /// Normal and texture coordinate generation are included.
     /// </remarks>
-    public MeshBuilder()
-        : this(true, true)
+    public MeshBuilder() : this(true)
     {
     }
 
@@ -399,8 +398,8 @@ namespace Crystal.Graphics
         var num = closed ? thetaDiv : thetaDiv - 1;
         for(var i = 0; i < thetaDiv; i++)
         {
-          var theta = (DoubleOrSingle)Math.PI * 2 * ((DoubleOrSingle)i / num);
-          circle.Add(new Point((DoubleOrSingle)Math.Cos(theta), -(DoubleOrSingle)Math.Sin(theta)));
+          var theta = Math.PI * 2 * ((DoubleOrSingle)i / num);
+          circle.Add(new Point(Math.Cos(theta), -Math.Sin(theta)));
         }
       }
       // Since Vector2Collection is not Freezable,
@@ -424,14 +423,12 @@ namespace Crystal.Graphics
     /// </returns>
     public static IList<Point> GetCircleSegment(int thetaDiv, double totalAngle = 2 * Math.PI, double angleOffset = 0)
     {
-      IList<Point> circleSegment;
-      circleSegment = new PointCollection();
+      IList<Point> circleSegment = new PointCollection();
       for(var i = 0; i < thetaDiv; i++)
       {
-        var theta = (DoubleOrSingle)totalAngle * ((DoubleOrSingle)i / (thetaDiv - 1)) + (DoubleOrSingle)angleOffset;
-        circleSegment.Add(new Point((DoubleOrSingle)Math.Cos(theta), (DoubleOrSingle)Math.Sin(theta)));
+        var theta = totalAngle * ((DoubleOrSingle)i / (thetaDiv - 1)) + angleOffset;
+        circleSegment.Add(new Point(Math.Cos(theta), Math.Sin(theta)));
       }
-
       return circleSegment;
     }
 
@@ -444,7 +441,7 @@ namespace Crystal.Graphics
     /// <returns>
     /// A unit sphere mesh.
     /// </returns>
-    private static MeshGeometry3D GetUnitSphere(int subdivisions)
+    private static MeshGeometry3D? GetUnitSphere(int subdivisions)
     {
       if(UnitSphereCache.Value.ContainsKey(subdivisions))
       {
@@ -474,7 +471,7 @@ namespace Crystal.Graphics
     /// </summary>
     /// <param name="positions">The Positions.</param>
     /// <param name="triangleIndices">The TriangleIndices.</param>
-    /// <param name="normals">The calcualted Normals.</param>
+    /// <param name="normals">The calculated Normals.</param>
     private static void ComputeNormals(Point3DCollection positions, Int32Collection triangleIndices, out Vector3DCollection normals)
     {
       normals = new Vector3DCollection(positions.Count);
@@ -522,8 +519,7 @@ namespace Crystal.Graphics
         case MeshFaces.Default:
           if(positions != null & triangleIndices != null & normals != null & textureCoordinates != null)
           {
-            Vector3DCollection t1, t2;
-            ComputeTangents(positions, normals, textureCoordinates, triangleIndices, out t1, out t2);
+            ComputeTangents(positions, normals, textureCoordinates, triangleIndices, out var t1, out var t2);
             tangents = t1;
             bitangents = t2;
           }
@@ -531,13 +527,10 @@ namespace Crystal.Graphics
         case MeshFaces.QuadPatches:
           if(positions != null & triangleIndices != null & normals != null & textureCoordinates != null)
           {
-            Vector3DCollection t1, t2;
-            ComputeTangentsQuads(positions, normals, textureCoordinates, triangleIndices, out t1, out t2);
+            ComputeTangentsQuads(positions, normals, textureCoordinates, triangleIndices, out var t1, out var t2);
             tangents = t1;
             bitangents = t2;
           }
-          break;
-        default:
           break;
       }
     }
@@ -656,8 +649,7 @@ namespace Crystal.Graphics
     /// <param name="meshGeometry">The MeshGeometry3D.</param>
     public static void ComputeTangents(MeshGeometry3D meshGeometry)
     {
-      Vector3DCollection t1, t2;
-      ComputeTangents(meshGeometry.Positions, meshGeometry.Normals, meshGeometry.TextureCoordinates, meshGeometry.TriangleIndices, out t1, out t2);
+      ComputeTangents(meshGeometry.Positions, meshGeometry.Normals, meshGeometry.TextureCoordinates, meshGeometry.TriangleIndices, out var t1, out var t2);
     }
 
     /// <summary>
@@ -676,8 +668,7 @@ namespace Crystal.Graphics
         case MeshFaces.Default:
           if(tangents & HasNormals & textureCoordinates != null)
           {
-            Vector3DCollection t1, t2;
-            ComputeTangents(positions, normals, textureCoordinates, triangleIndices, out t1, out t2);
+            ComputeTangents(positions, normals, textureCoordinates, triangleIndices, out var t1, out var t2);
             this.tangents = t1;
             bitangents = t2;
           }
@@ -685,13 +676,10 @@ namespace Crystal.Graphics
         case MeshFaces.QuadPatches:
           if(tangents & HasNormals & textureCoordinates != null)
           {
-            Vector3DCollection t1, t2;
-            ComputeTangentsQuads(positions, normals, textureCoordinates, triangleIndices, out t1, out t2);
+            ComputeTangentsQuads(positions, normals, textureCoordinates, triangleIndices, out var t1, out var t2);
             this.tangents = t1;
             bitangents = t2;
           }
-          break;
-        default:
           break;
       }
     }
@@ -722,15 +710,15 @@ namespace Crystal.Graphics
     {
       var dir = point2 - point1;
       var length = SharedFunctions.Length(ref dir);
-      var r = (DoubleOrSingle)diameter / 2;
+      var r = diameter / 2;
 
       var pc = new PointCollection
                 {
-                    new Point(0, 0),
-                    new Point(0, r),
-                    new Point(length - (DoubleOrSingle)(diameter * headLength), r),
-                    new Point(length - (DoubleOrSingle)(diameter * headLength), r * 2),
-                    new Point(length, 0)
+                    new(0, 0),
+                    new(0, r),
+                    new(length - diameter * headLength, r),
+                    new(length - diameter * headLength, r * 2),
+                    new(length, 0)
                 };
 
       AddRevolvedGeometry(pc, null, point1, dir, thetaDiv);
@@ -747,31 +735,31 @@ namespace Crystal.Graphics
     /// </param>
     public void AddBoundingBox(Rect3D boundingBox, double diameter)
     {
-      var p0 = new Point3D((DoubleOrSingle)boundingBox.X, (DoubleOrSingle)boundingBox.Y, (DoubleOrSingle)boundingBox.Z);
-      var p1 = new Point3D((DoubleOrSingle)boundingBox.X, (DoubleOrSingle)boundingBox.Y + (DoubleOrSingle)boundingBox.SizeY, (DoubleOrSingle)boundingBox.Z);
-      var p2 = new Point3D((DoubleOrSingle)boundingBox.X + (DoubleOrSingle)boundingBox.SizeX, (DoubleOrSingle)boundingBox.Y + (DoubleOrSingle)boundingBox.SizeY, (DoubleOrSingle)boundingBox.Z);
-      var p3 = new Point3D((DoubleOrSingle)boundingBox.X + (DoubleOrSingle)boundingBox.SizeX, (DoubleOrSingle)boundingBox.Y, (DoubleOrSingle)boundingBox.Z);
-      var p4 = new Point3D((DoubleOrSingle)boundingBox.X, (DoubleOrSingle)boundingBox.Y, (DoubleOrSingle)boundingBox.Z + (DoubleOrSingle)boundingBox.SizeZ);
-      var p5 = new Point3D((DoubleOrSingle)boundingBox.X, (DoubleOrSingle)boundingBox.Y + (DoubleOrSingle)boundingBox.SizeY, (DoubleOrSingle)boundingBox.Z + (DoubleOrSingle)boundingBox.SizeZ);
-      var p6 = new Point3D((DoubleOrSingle)boundingBox.X + (DoubleOrSingle)boundingBox.SizeX, (DoubleOrSingle)boundingBox.Y + (DoubleOrSingle)boundingBox.SizeY, (DoubleOrSingle)boundingBox.Z + (DoubleOrSingle)boundingBox.SizeZ);
-      var p7 = new Point3D((DoubleOrSingle)boundingBox.X + (DoubleOrSingle)boundingBox.SizeX, (DoubleOrSingle)boundingBox.Y, (DoubleOrSingle)boundingBox.Z + (DoubleOrSingle)boundingBox.SizeZ);
+      var p0 = new Point3D(boundingBox.X, boundingBox.Y, boundingBox.Z);
+      var p1 = new Point3D(boundingBox.X, boundingBox.Y + boundingBox.SizeY, boundingBox.Z);
+      var p2 = new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y + boundingBox.SizeY, boundingBox.Z);
+      var p3 = new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y, boundingBox.Z);
+      var p4 = new Point3D(boundingBox.X, boundingBox.Y, boundingBox.Z + boundingBox.SizeZ);
+      var p5 = new Point3D(boundingBox.X, boundingBox.Y + boundingBox.SizeY, boundingBox.Z + boundingBox.SizeZ);
+      var p6 = new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y + boundingBox.SizeY, boundingBox.Z + boundingBox.SizeZ);
+      var p7 = new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y, boundingBox.Z + boundingBox.SizeZ);
 
-      Action<Point3D, Point3D> addEdge = (c1, c2) => AddCylinder(c1, c2, diameter, 10);
+      void AddEdge(Point3D c1, Point3D c2) => AddCylinder(c1, c2, diameter, 10);
 
-      addEdge(p0, p1);
-      addEdge(p1, p2);
-      addEdge(p2, p3);
-      addEdge(p3, p0);
+      AddEdge(p0, p1);
+      AddEdge(p1, p2);
+      AddEdge(p2, p3);
+      AddEdge(p3, p0);
 
-      addEdge(p4, p5);
-      addEdge(p5, p6);
-      addEdge(p6, p7);
-      addEdge(p7, p4);
+      AddEdge(p4, p5);
+      AddEdge(p5, p6);
+      AddEdge(p6, p7);
+      AddEdge(p7, p4);
 
-      addEdge(p0, p4);
-      addEdge(p1, p5);
-      addEdge(p2, p6);
-      addEdge(p3, p7);
+      AddEdge(p0, p4);
+      AddEdge(p1, p5);
+      AddEdge(p2, p6);
+      AddEdge(p3, p7);
     }
 
     /// <summary>
@@ -804,8 +792,8 @@ namespace Crystal.Graphics
     public void AddBox(Rect3D rectangle, BoxFaces faces = BoxFaces.All)
     {
       AddBox(
-          new Point3D((DoubleOrSingle)(rectangle.X + (rectangle.SizeX * 0.5f)), (DoubleOrSingle)(rectangle.Y + (rectangle.SizeY * 0.5f)), (DoubleOrSingle)(rectangle.Z + (rectangle.SizeZ * 0.5f))),
-          (DoubleOrSingle)rectangle.SizeX, (DoubleOrSingle)rectangle.SizeY, (DoubleOrSingle)rectangle.SizeZ, faces);
+          new Point3D(rectangle.X + (rectangle.SizeX * 0.5f), rectangle.Y + (rectangle.SizeY * 0.5f), rectangle.Z + (rectangle.SizeZ * 0.5f)),
+          rectangle.SizeX, rectangle.SizeY, rectangle.SizeZ, faces);
     }
 
     /// <summary>
@@ -917,13 +905,13 @@ namespace Crystal.Graphics
         tc.Add(0);
       }
 
-      pc.Add(new Point(0, (DoubleOrSingle)baseRadius));
+      pc.Add(new Point(0, baseRadius));
       tc.Add(1);
-      pc.Add(new Point((DoubleOrSingle)height, (DoubleOrSingle)topRadius));
+      pc.Add(new Point(height, topRadius));
       tc.Add(0);
       if(topCap)
       {
-        pc.Add(new Point((DoubleOrSingle)height, 0));
+        pc.Add(new Point(height, 0));
         tc.Add(1);
       }
 
@@ -970,9 +958,9 @@ namespace Crystal.Graphics
     public void AddCubeFace(Point3D center, Vector3D normal, Vector3D up, double dist, double width, double height)
     {
       var right = SharedFunctions.CrossProduct(ref normal, ref up);
-      var n = normal * (DoubleOrSingle)dist / 2;
-      up *= (DoubleOrSingle)height / 2;
-      right *= (DoubleOrSingle)width / 2;
+      var n = normal * dist / 2;
+      up *= height / 2;
+      right *= width / 2;
       var p1 = center + n - up - right;
       var p2 = center + n - up + right;
       var p3 = center + n + up + right;
@@ -1102,7 +1090,7 @@ namespace Crystal.Graphics
     /// </summary>
     /// <param name="center">The Center of the Dodecahedron</param>
     /// <param name="forward">The Direction to the first Point (normalized).</param>
-    /// <param name="up">The Up-Dirextion (normalized, perpendicular to the forward Direction)</param>
+    /// <param name="up">The Up-Direction (normalized, perpendicular to the forward Direction)</param>
     /// <param name="sideLength">Length of the Edges of the Dodecahedron</param>
     /// <remarks>
     /// See:
@@ -1117,9 +1105,9 @@ namespace Crystal.Graphics
 
       var right = SharedFunctions.CrossProduct(ref up, ref forward);
       // Distance from the Center to the Dodekaeder-Points
-      var radiusSphere = 0.25f * (DoubleOrSingle)Math.Sqrt(3) * (1 + (DoubleOrSingle)Math.Sqrt(5)) * (DoubleOrSingle)sideLength;
-      var radiusFace = 0.1f * (DoubleOrSingle)Math.Sqrt(50 + 10 * (DoubleOrSingle)Math.Sqrt(5)) * (DoubleOrSingle)sideLength;
-      var vectorDown = (DoubleOrSingle)Math.Sqrt(radiusSphere * radiusSphere - radiusFace * radiusFace);
+      var radiusSphere = 0.25f * Math.Sqrt(3) * (1 + Math.Sqrt(5)) * sideLength;
+      var radiusFace = 0.1f * Math.Sqrt(50 + 10 * Math.Sqrt(5)) * sideLength;
+      var vectorDown = Math.Sqrt(radiusSphere * radiusSphere - radiusFace * radiusFace);
 
       // Add Points
       var baseCenter = center - up * vectorDown;
@@ -1133,7 +1121,7 @@ namespace Crystal.Graphics
         positions.Add(newPoint);
       }
       // Angle of Projected Isosceles triangle
-      var gamma = (DoubleOrSingle)Math.Acos(1 - (sideLength * sideLength / (2 * radiusSphere * radiusSphere)));
+      var gamma = Math.Acos(1 - (sideLength * sideLength / (2 * radiusSphere * radiusSphere)));
       // Base Upper Points
       foreach(var point in basePoints)
       {
@@ -1142,7 +1130,7 @@ namespace Crystal.Graphics
         var centerToPoint = point - center;
         centerToPoint.Normalize();
         var tempRight = SharedFunctions.CrossProduct(ref up, ref baseCenterToPoint);
-        var newPoint = new Point3D(radiusSphere * (DoubleOrSingle)Math.Cos(gamma), 0, radiusSphere * (DoubleOrSingle)Math.Sin(gamma));
+        var newPoint = new Point3D(radiusSphere * Math.Cos(gamma), 0, radiusSphere * Math.Sin(gamma));
         var tempUp = SharedFunctions.CrossProduct(ref centerToPoint, ref tempRight);
         positions.Add(center + centerToPoint * newPoint.X + tempUp * newPoint.Z);
       }
@@ -1163,7 +1151,7 @@ namespace Crystal.Graphics
         var centerToPoint = point - center;
         centerToPoint.Normalize();
         var tempRight = SharedFunctions.CrossProduct(ref up, ref topCenterToPoint);
-        var newPoint = new Point3D(radiusSphere * (DoubleOrSingle)Math.Cos(gamma), 0, radiusSphere * (DoubleOrSingle)Math.Sin(gamma));
+        var newPoint = new Point3D(radiusSphere * Math.Cos(gamma), 0, radiusSphere * Math.Sin(gamma));
         var tempUp = SharedFunctions.CrossProduct(ref tempRight, ref centerToPoint);
         positions.Add(center + centerToPoint * newPoint.X + tempUp * newPoint.Z);
       }
@@ -1194,7 +1182,7 @@ namespace Crystal.Graphics
           var cTPUpValue = SharedFunctions.DotProduct(ref centerToPoint, ref up);
           var planeCTP = centerToPoint - up * cTPUpValue;
           planeCTP.Normalize();
-          var u = (DoubleOrSingle)Math.Atan2(SharedFunctions.DotProduct(ref planeCTP, ref forward), SharedFunctions.DotProduct(ref planeCTP, ref right));
+          var u = Math.Atan2(SharedFunctions.DotProduct(ref planeCTP, ref forward), SharedFunctions.DotProduct(ref planeCTP, ref right));
           var v = cTPUpValue * 0.5f + 0.5f;
           textureCoordinates.Add(new Point(u, v));
         }
@@ -1202,9 +1190,9 @@ namespace Crystal.Graphics
 
       // Add Faces
       // Base Polygon
-      AddPolygonByTriangulation(positions.Skip(positionsCount).Take(5).Select((p, i) => i).ToList());
+      AddPolygonByTriangulation(positions.Skip(positionsCount).Take(5).Select((_, i) => i).ToList());
       // Top Polygon
-      AddPolygonByTriangulation(positions.Skip(positionsCount + 15).Select((p, i) => 15 + i).ToList());
+      AddPolygonByTriangulation(positions.Skip(positionsCount + 15).Select((_, i) => 15 + i).ToList());
       // SidePolygons
       for(var i = 0; i < 5; i++)
       {
@@ -1276,8 +1264,8 @@ namespace Crystal.Graphics
     public void AddEllipsoid(Point3D center, double radiusx, double radiusy, double radiusz, int thetaDiv = 20, int phiDiv = 10)
     {
       var index0 = Positions.Count;
-      var dt = 2 * (DoubleOrSingle)Math.PI / thetaDiv;
-      var dp = (DoubleOrSingle)Math.PI / phiDiv;
+      var dt = 2 * Math.PI / thetaDiv;
+      var dp = Math.PI / phiDiv;
 
       for(var pi = 0; pi <= phiDiv; pi++)
       {
@@ -1290,11 +1278,11 @@ namespace Crystal.Graphics
 
           // Spherical coordinates
           // http://mathworld.wolfram.com/SphericalCoordinates.html
-          var x = (DoubleOrSingle)Math.Cos(theta) * (DoubleOrSingle)Math.Sin(phi);
-          var y = (DoubleOrSingle)Math.Sin(theta) * (DoubleOrSingle)Math.Sin(phi);
-          var z = (DoubleOrSingle)Math.Cos(phi);
+          var x = Math.Cos(theta) * Math.Sin(phi);
+          var y = Math.Sin(theta) * Math.Sin(phi);
+          var z = Math.Cos(phi);
 
-          var p = new Point3D(center.X + (DoubleOrSingle)(radiusx * x), center.Y + (DoubleOrSingle)(radiusy * y), center.Z + (DoubleOrSingle)(radiusz * z));
+          var p = new Point3D(center.X + radiusx * x, center.Y + radiusy * y, center.Z + radiusz * z);
           positions.Add(p);
 
           if(normals != null)
@@ -1305,7 +1293,7 @@ namespace Crystal.Graphics
 
           if(textureCoordinates != null)
           {
-            var uv = new Point(theta / (2 * (DoubleOrSingle)Math.PI), phi / (DoubleOrSingle)Math.PI);
+            var uv = new Point(theta / (2 * Math.PI), phi / Math.PI);
             textureCoordinates.Add(uv);
           }
         }
@@ -1381,30 +1369,30 @@ namespace Crystal.Graphics
     {
       var positions = new Point3D[]
       {
-        new Point3D(0,0,1),
-        new Point3D(0,1,1),
-        new Point3D(1,1,1),
-        new Point3D(1,0,1),
+        new(0,0,1),
+        new(0,1,1),
+        new(1,1,1),
+        new(1,0,1),
       };
       var normals = new Vector3D[]
       {
-        new Vector3D(0,0,1),
-        new Vector3D(0,0,1),
-        new Vector3D(0,0,1),
-        new Vector3D(0,0,1),
+        new(0,0,1),
+        new(0,0,1),
+        new(0,0,1),
+        new(0,0,1),
       };
       var i0 = this.positions.Count;
-      var indices = new int[]
+      var indices = new[]
       {
         i0+0,i0+3,i0+2,
         i0+0,i0+2,i0+1,
       };
       var texcoords = new Point[]
       {
-        new Point(0,1),
-        new Point(1,1),
-        new Point(1,0),
-        new Point(0,0),
+        new(0,1),
+        new(1,1),
+        new(1,0),
+        new(0,0),
       };
 
       foreach(var position in positions)
@@ -1432,12 +1420,12 @@ namespace Crystal.Graphics
     {
       var positions = new Point3D[]
       {
-        new Point3D(0,1,0), //p1
-        new Point3D(0,0,0), //p0                
-        new Point3D(1,0,0), //p3
-        new Point3D(1,1,0), //p2
+        new(0,1,0), //p1
+        new(0,0,0), //p0                
+        new(1,0,0), //p3
+        new(1,1,0), //p2
       };
-      var normals = new Vector3D[]
+      var normals = new[]
       {
         -new Vector3D(0,0,1),
         -new Vector3D(0,0,1),
@@ -1446,17 +1434,17 @@ namespace Crystal.Graphics
       };
 
       var i0 = this.positions.Count;
-      var indices = new int[]
+      var indices = new[]
       {
         i0+0,i0+3,i0+2,
         i0+0,i0+2,i0+1,
       };
       var texcoords = new Point[]
       {
-        new Point(0,1),
-        new Point(1,1),
-        new Point(1,0),
-        new Point(0,0),
+        new(0,1),
+        new(1,1),
+        new(1,0),
+        new(0,0),
       };
 
       foreach(var position in positions)
@@ -1484,31 +1472,31 @@ namespace Crystal.Graphics
     {
       var positions = new Point3D[]
       {
-        new Point3D(1,0,0), //p0
-        new Point3D(1,0,1), //p1
-        new Point3D(1,1,1), //p2   
-        new Point3D(1,1,0), //p3                             
+        new(1,0,0), //p0
+        new(1,0,1), //p1
+        new(1,1,1), //p2   
+        new(1,1,0), //p3                             
       };
       var normals = new Vector3D[]
       {
-        new Vector3D(1,0,0),
-        new Vector3D(1,0,0),
-        new Vector3D(1,0,0),
-        new Vector3D(1,0,0),
+        new(1,0,0),
+        new(1,0,0),
+        new(1,0,0),
+        new(1,0,0),
       };
 
       var i0 = this.positions.Count;
-      var indices = new int[]
+      var indices = new[]
       {
         i0+0,i0+3,i0+2,
         i0+0,i0+2,i0+1,
       };
       var texcoords = new Point[]
       {
-        new Point(0,1),
-        new Point(1,1),
-        new Point(1,0),
-        new Point(0,0),
+        new(0,1),
+        new(1,1),
+        new(1,0),
+        new(0,0),
       };
 
       foreach(var position in positions)
@@ -1536,12 +1524,12 @@ namespace Crystal.Graphics
     {
       var positions = new Point3D[]
       {
-        new Point3D(0,0,1), //p1
-        new Point3D(0,0,0), //p0                
-        new Point3D(0,1,0), //p3 
-        new Point3D(0,1,1), //p2               
+        new(0,0,1), //p1
+        new(0,0,0), //p0                
+        new(0,1,0), //p3 
+        new(0,1,1), //p2               
       };
-      var normals = new Vector3D[]
+      var normals = new[]
       {
         -new Vector3D(1,0,0),
         -new Vector3D(1,0,0),
@@ -1550,17 +1538,17 @@ namespace Crystal.Graphics
       };
 
       var i0 = this.positions.Count;
-      var indices = new int[]
+      var indices = new[]
       {
         i0+0,i0+3,i0+2,
         i0+0,i0+2,i0+1,
       };
       var texcoords = new Point[]
       {
-        new Point(0,1),
-        new Point(1,1),
-        new Point(1,0),
-        new Point(0,0),
+        new(0,1),
+        new(1,1),
+        new(1,0),
+        new(0,0),
       };
 
       foreach(var position in positions)
@@ -1588,31 +1576,31 @@ namespace Crystal.Graphics
     {
       var positions = new Point3D[]
       {
-        new Point3D(1,1,0), //p3  
-        new Point3D(1,1,1), //p2  
-        new Point3D(0,1,1), //p1
-        new Point3D(0,1,0), //p0
+        new(1,1,0), //p3  
+        new(1,1,1), //p2  
+        new(0,1,1), //p1
+        new(0,1,0), //p0
       };
       var normals = new Vector3D[]
       {
-        new Vector3D(0,1,0),
-        new Vector3D(0,1,0),
-        new Vector3D(0,1,0),
-        new Vector3D(0,1,0),
+        new(0,1,0),
+        new(0,1,0),
+        new(0,1,0),
+        new(0,1,0),
       };
 
       var i0 = this.positions.Count;
-      var indices = new int[]
+      var indices = new[]
       {
         i0+0,i0+3,i0+2,
         i0+0,i0+2,i0+1,
       };
       var texcoords = new Point[]
       {
-        new Point(0,1),
-        new Point(1,1),
-        new Point(1,0),
-        new Point(0,0),
+        new(0,1),
+        new(1,1),
+        new(1,0),
+        new(0,0),
       };
 
       foreach(var position in positions)
@@ -1640,12 +1628,12 @@ namespace Crystal.Graphics
     {
       var positions = new Point3D[]
       {
-        new Point3D(0,0,0), //p0
-        new Point3D(0,0,1), //p1
-        new Point3D(1,0,1), //p2
-        new Point3D(1,0,0), //p3
+        new(0,0,0), //p0
+        new(0,0,1), //p1
+        new(1,0,1), //p2
+        new(1,0,0), //p3
       };
-      var normals = new Vector3D[]
+      var normals = new[]
       {
         -new Vector3D(0,1,0),
         -new Vector3D(0,1,0),
@@ -1654,17 +1642,17 @@ namespace Crystal.Graphics
       };
 
       var i0 = this.positions.Count;
-      var indices = new int[]
+      var indices = new[]
       {
         i0+0,i0+3,i0+2,
         i0+0,i0+2,i0+1,
       };
       var texcoords = new Point[]
       {
-        new Point(0,1),
-        new Point(1,1),
-        new Point(1,0),
-        new Point(0,0),
+        new(0,1),
+        new(1,1),
+        new(1,0),
+        new(0,0),
       };
 
       foreach(var position in positions)
@@ -1864,9 +1852,9 @@ namespace Crystal.Graphics
     public void AddOctahedron(Point3D center, Vector3D forward, Vector3D up, double sideLength, double height)
     {
       var right = SharedFunctions.CrossProduct(ref forward, ref up);
-      var n = forward * (DoubleOrSingle)sideLength / 2;
-      up *= (DoubleOrSingle)height / 2;
-      right *= (DoubleOrSingle)sideLength / 2;
+      var n = forward * sideLength / 2;
+      up *= height / 2;
+      right *= sideLength / 2;
 
       var p1 = center - n - up - right;
       var p2 = center - n - up + right;
@@ -1911,10 +1899,10 @@ namespace Crystal.Graphics
       dir.Normalize();
 
       var pc = new PointCollection {
-        new Point(0, (DoubleOrSingle)innerDiameter / 2),
-        new Point(0, (DoubleOrSingle)diameter / 2),
-        new Point(height, (DoubleOrSingle)diameter / 2),
-        new Point(height, (DoubleOrSingle)innerDiameter / 2)
+        new(0, innerDiameter / 2),
+        new(0, diameter / 2),
+        new(height, diameter / 2),
+        new(height, innerDiameter / 2)
       };
 
       var tc = new List<double> { 1, 0, 1, 0 };
@@ -1922,7 +1910,7 @@ namespace Crystal.Graphics
       if(innerDiameter > 0)
       {
         // Add the inner surface
-        pc.Add(new Point(0, (DoubleOrSingle)innerDiameter / 2));
+        pc.Add(new Point(0, innerDiameter / 2));
         tc.Add(1);
       }
 
@@ -2097,9 +2085,9 @@ namespace Crystal.Graphics
     public void AddPyramid(Point3D center, Vector3D forward, Vector3D up, double sideLength, double height, bool closeBase = false)
     {
       var right = SharedFunctions.CrossProduct(ref forward, ref up);
-      var n = forward * (DoubleOrSingle)sideLength / 2;
-      up *= (DoubleOrSingle)height;
-      right *= (DoubleOrSingle)sideLength / 2;
+      var n = forward * sideLength / 2;
+      up *= height;
+      right *= sideLength / 2;
 
       var down = -up * 1f / 3;
       var realup = up * 2f / 3;
@@ -2122,7 +2110,7 @@ namespace Crystal.Graphics
     }
 
     /// <summary>
-    /// Adds a quad (exactely 4 indices)
+    /// Adds a quad (exactly 4 indices)
     /// </summary>
     /// <param name="vertexIndices">The vertex indices.</param>
     public void AddQuad(IList<int> vertexIndices)
@@ -2489,8 +2477,8 @@ namespace Crystal.Graphics
       var index0 = positions.Count;
 
       // positions
-      var stepy = (DoubleOrSingle)height / (rows - 1);
-      var stepx = (DoubleOrSingle)width / (columns - 1);
+      var stepy = height / (rows - 1);
+      var stepx = width / (columns - 1);
       //rows++;
       //columns++;
       for(var y = 0; y < rows; y++)
@@ -2742,8 +2730,8 @@ namespace Crystal.Graphics
     /// </remarks>
     public void AddRegularIcosahedron(Point3D center, double radius, bool shareVertices)
     {
-      var a = (DoubleOrSingle)Math.Sqrt(2.0 / (5.0 + Math.Sqrt(5.0)));
-      var b = (DoubleOrSingle)Math.Sqrt(2.0 / (5.0 - Math.Sqrt(5.0)));
+      var a = Math.Sqrt(2.0 / (5.0 + Math.Sqrt(5.0)));
+      var b = Math.Sqrt(2.0 / (5.0 - Math.Sqrt(5.0)));
 
       var icosahedronIndices = new[] {
         1, 4, 0, 4, 9, 0, 4, 5, 9, 8, 5, 4, 1, 8, 4, 1, 10, 8, 10, 3, 8, 8, 3, 5, 3, 2, 5, 3, 7, 2, 3, 10, 7,
@@ -2761,7 +2749,7 @@ namespace Crystal.Graphics
         var index0 = positions.Count;
         foreach(var v in icosahedronVertices)
         {
-          positions.Add(center + (v * (DoubleOrSingle)radius));
+          positions.Add(center + (v * radius));
         }
 
         foreach(var i in icosahedronIndices)
@@ -2773,9 +2761,9 @@ namespace Crystal.Graphics
       {
         for(var i = 0; i + 2 < icosahedronIndices.Length; i += 3)
         {
-          AddTriangle(center + (icosahedronVertices[icosahedronIndices[i]] * (DoubleOrSingle)radius),
-              center + (icosahedronVertices[icosahedronIndices[i + 1]] * (DoubleOrSingle)radius),
-              center + (icosahedronVertices[icosahedronIndices[i + 2]] * (DoubleOrSingle)radius));
+          AddTriangle(center + (icosahedronVertices[icosahedronIndices[i]] * radius),
+              center + (icosahedronVertices[icosahedronIndices[i + 1]] * radius),
+              center + (icosahedronVertices[icosahedronIndices[i + 2]] * radius));
         }
       }
     }
@@ -2838,8 +2826,8 @@ namespace Crystal.Graphics
 
           if(textureCoordinates != null)
           {
-            textureCoordinates.Add(new Point((DoubleOrSingle)i / (thetaDiv - 1), textureValues == null ? (DoubleOrSingle)j / (n - 1) : (DoubleOrSingle)textureValues[j]));
-            textureCoordinates.Add(new Point((DoubleOrSingle)i / (thetaDiv - 1), textureValues == null ? (DoubleOrSingle)(j + 1) / (n - 1) : (DoubleOrSingle)textureValues[j + 1]));
+            textureCoordinates.Add(new Point((DoubleOrSingle)i / (thetaDiv - 1), textureValues == null ? (DoubleOrSingle)j / (n - 1) : textureValues[j]));
+            textureCoordinates.Add(new Point((DoubleOrSingle)i / (thetaDiv - 1), textureValues == null ? (DoubleOrSingle)(j + 1) / (n - 1) : textureValues[j + 1]));
           }
 
           var i0 = index0 + (i * rowNodes) + (j * 2);
@@ -2901,7 +2889,7 @@ namespace Crystal.Graphics
       for(var i = p0; i < p1; i++)
       {
         var pVec = (Vector3D)positions[i];
-        positions[i] = center + ((DoubleOrSingle)radius * pVec);
+        positions[i] = center + (radius * pVec);
       }
     }
 
@@ -2952,7 +2940,7 @@ namespace Crystal.Graphics
 
           if(textureCoordinates != null)
           {
-            textureCoordinates.Add(new Point((DoubleOrSingle)i / (thetaDiv - 1), textureValues == null ? (DoubleOrSingle)j / (n - 1) : (DoubleOrSingle)textureValues[j]));
+            textureCoordinates.Add(new Point((DoubleOrSingle)i / (thetaDiv - 1), textureValues == null ? (DoubleOrSingle)j / (n - 1) : textureValues[j]));
           }
         }
       }
@@ -2995,13 +2983,13 @@ namespace Crystal.Graphics
     {
       // Helper Variables
       var right = SharedFunctions.CrossProduct(ref up, ref forward);
-      var heightSphere = (DoubleOrSingle)Math.Sqrt(6) / 3 * (DoubleOrSingle)sideLength;
-      var radiusSphere = (DoubleOrSingle)Math.Sqrt(6) / 4 * (DoubleOrSingle)sideLength;
-      var heightFace = (DoubleOrSingle)Math.Sqrt(3) / 2 * (DoubleOrSingle)sideLength;
-      var radiusFace = (DoubleOrSingle)Math.Sqrt(3) / 3 * (DoubleOrSingle)sideLength;
+      var heightSphere = Math.Sqrt(6) / 3 * sideLength;
+      var radiusSphere = Math.Sqrt(6) / 4 * sideLength;
+      var heightFace = Math.Sqrt(3) / 2 * sideLength;
+      var radiusFace = Math.Sqrt(3) / 3 * sideLength;
       var smallHeightSphere = heightSphere - radiusSphere;
       var smallHeightFace = heightFace - radiusFace;
-      var halfLength = (DoubleOrSingle)sideLength * 0.5f;
+      var halfLength = sideLength * 0.5f;
 
       // The Vertex Positions
       var p1 = center + forward * radiusFace - up * smallHeightSphere;
@@ -3044,8 +3032,8 @@ namespace Crystal.Graphics
         if(selfIntersecting)
         {
           // Angle-Calculations for Circle Segment https://de.wikipedia.org/wiki/Gleichschenkliges_Dreieck
-          var angleIcoTriangle = (DoubleOrSingle)Math.Acos(1 - ((torusDiameter * torusDiameter) / (2 * (tubeDiameter * tubeDiameter * .25))));
-          var circleAngle = (DoubleOrSingle)Math.PI + angleIcoTriangle;
+          var angleIcoTriangle = Math.Acos(1 - ((torusDiameter * torusDiameter) / (2 * (tubeDiameter * tubeDiameter * .25))));
+          var circleAngle = Math.PI + angleIcoTriangle;
           var offset = -circleAngle / 2;
           // The Cross-Section is defined by only a Segment of a Circle
           crossSectionPoints = GetCircleSegment(phiDiv, circleAngle, offset);
@@ -3056,7 +3044,7 @@ namespace Crystal.Graphics
           crossSectionPoints = GetCircle(phiDiv, true);
         }
         // Transform Crosssection to real Size
-        crossSectionPoints = crossSectionPoints.Select(p => new Point((DoubleOrSingle)p.X * (DoubleOrSingle)tubeDiameter * .5f, (DoubleOrSingle)p.Y * (DoubleOrSingle)tubeDiameter * .5f)).ToList();
+        crossSectionPoints = crossSectionPoints.Select(p => new Point(p.X * tubeDiameter * .5f, p.Y * tubeDiameter * .5f)).ToList();
         // Transform the Cross-Section Points to 3D Space
         var crossSection3DPoints = crossSectionPoints.Select(p => new Point3D(p.X, 0, p.Y)).ToList();
 
@@ -3066,7 +3054,7 @@ namespace Crystal.Graphics
           // Angle of the current Cross-Section in the XY-Plane
           var angle = Math.PI * 2 * ((double)i / thetaDiv);
           // Rotate the Cross-Section around the Origin by using the angle and the defined torusDiameter
-          var rotatedPoints = crossSection3DPoints.Select(p3D => new Point3D((DoubleOrSingle)Math.Cos(angle) * (DoubleOrSingle)(p3D.X + torusDiameter * .5f), (DoubleOrSingle)Math.Sin(angle) * (DoubleOrSingle)(p3D.X + torusDiameter * .5f), p3D.Z)).ToList();
+          var rotatedPoints = crossSection3DPoints.Select(p3D => new Point3D(Math.Cos(angle) * (p3D.X + torusDiameter * .5f), Math.Sin(angle) * (p3D.X + torusDiameter * .5f), p3D.Z)).ToList();
           for(var j = 0; j < phiDiv; j++)
           {
             // If selfintersecting Torus, skip the first and last Point of the Cross-Sections, when not the first Cross Section.
@@ -3084,7 +3072,7 @@ namespace Crystal.Graphics
           {
             // Transform the Cross-Section as well as the Origin of the Cross-Section
             var angle = Math.PI * 2 * ((double)i / thetaDiv);
-            var rotatedPoints = crossSection3DPoints.Select(p3D => new Point3D((DoubleOrSingle)Math.Cos(angle) * (DoubleOrSingle)(p3D.X + torusDiameter * .5f), (DoubleOrSingle)Math.Sin(angle) * (DoubleOrSingle)(p3D.X + torusDiameter * .5f), p3D.Z)).ToList();
+            var rotatedPoints = crossSection3DPoints.Select(p3D => new Point3D(Math.Cos(angle) * (p3D.X + torusDiameter * .5f), Math.Sin(angle) * (p3D.X + torusDiameter * .5f), p3D.Z)).ToList();
             // We don't need the first and last Point of the rotated Points, if we are not in the first Cross-Section
             if(selfIntersecting && i > 0)
             {
@@ -3092,7 +3080,7 @@ namespace Crystal.Graphics
               rotatedPoints.RemoveAt(rotatedPoints.Count - 1);
             }
             // Transform the Center of the Cross-Section
-            var rotatedOrigin = new Point3D((DoubleOrSingle)Math.Cos(angle) * (DoubleOrSingle)torusDiameter * .5f, (DoubleOrSingle)Math.Sin(angle) * (DoubleOrSingle)torusDiameter * .5f, 0);
+            var rotatedOrigin = new Point3D(Math.Cos(angle) * torusDiameter * .5f, Math.Sin(angle) * torusDiameter * .5f, 0);
             // Add the Normal of the Vertex
             for(var j = 0; j < rotatedPoints.Count; j++)
             {
@@ -3193,8 +3181,7 @@ namespace Crystal.Graphics
         {
           // Add bottom Cap by creating a List of Vertex-Indices
           // and using them to create a Triangle-Fan
-          var verts = new List<int>();
-          verts.Add(0);
+          var verts = new List<int> { 0 };
           for(var i = 0; i < thetaDiv; i++)
           {
             if(i == 0)
@@ -3212,8 +3199,7 @@ namespace Crystal.Graphics
 
           // Add top Cap by creating a List of Vertex-Indices
           // and using them to create a Triangle-Fan
-          verts = new List<int>();
-          verts.Add(phiDiv - 1 + positionsCount);
+          verts = new List<int> { phiDiv - 1 + positionsCount };
           for(var i = 0; i < thetaDiv; i++)
           {
             if(i == 0)
@@ -3627,12 +3613,12 @@ namespace Crystal.Graphics
         IList<Point3D> path, IList<double> values, IList<double> diameters,
         IList<Point> section, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
-      if(values != null && values.Count == 0)
+      if(values is { Count: 0 })
       {
         throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
       }
 
-      if(diameters != null && diameters.Count == 0)
+      if(diameters is { Count: 0 })
       {
         throw new InvalidOperationException(WrongNumberOfDiameters);
       }
@@ -3647,8 +3633,8 @@ namespace Crystal.Graphics
 
       var up = (path[1] - path[0]).FindAnyPerpendicular();
 
-      var diametersCount = diameters != null ? diameters.Count : 0;
-      var valuesCount = values != null ? values.Count : 0;
+      var diametersCount = diameters?.Count ?? 0;
+      var valuesCount = values?.Count ?? 0;
 
       //*******************************
       //*** PROPOSED SOLUTION *********
@@ -3659,7 +3645,7 @@ namespace Crystal.Graphics
 
       for(var i = 0; i < pathLength; i++)
       {
-        var r = diameters != null ? (DoubleOrSingle)diameters[i % diametersCount] / 2 : 1;
+        var r = diameters != null ? diameters[i % diametersCount] / 2 : 1;
         var i0 = i > 0 ? i - 1 : i;
         var i1 = i + 1 < pathLength ? i + 1 : i;
         var forward = path[i1] - path[i0];
@@ -3710,7 +3696,7 @@ namespace Crystal.Graphics
           {
             textureCoordinates.Add(
                 values != null
-                    ? new Point((DoubleOrSingle)values[i % valuesCount], (DoubleOrSingle)j / (sectionLength - 1))
+                    ? new Point(values[i % valuesCount], (DoubleOrSingle)j / (sectionLength - 1))
                     : new Point());
           }
         }
@@ -3771,17 +3757,17 @@ namespace Crystal.Graphics
         IList<Point3D> path, IList<double> angles, IList<double> values, IList<double> diameters,
         IList<Point> section, Vector3D sectionXAxis, bool isTubeClosed, bool isSectionClosed, bool frontCap = false, bool backCap = false)
     {
-      if(values != null && values.Count == 0)
+      if(values is { Count: 0 })
       {
         throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
       }
 
-      if(diameters != null && diameters.Count == 0)
+      if(diameters is { Count: 0 })
       {
         throw new InvalidOperationException(WrongNumberOfDiameters);
       }
 
-      if(angles != null && angles.Count == 0)
+      if(angles is { Count: 0 })
       {
         throw new InvalidOperationException(WrongNumberOfAngles);
       }
@@ -3800,17 +3786,17 @@ namespace Crystal.Graphics
       up.Normalize();
       right.Normalize();
 
-      var diametersCount = diameters != null ? diameters.Count : 0;
-      var valuesCount = values != null ? values.Count : 0;
-      var anglesCount = angles != null ? angles.Count : 0;
+      var diametersCount = diameters?.Count ?? 0;
+      var valuesCount = values?.Count ?? 0;
+      var anglesCount = angles?.Count ?? 0;
 
       for(var i = 0; i < pathLength; i++)
       {
-        var radius = diameters != null ? (DoubleOrSingle)diameters[i % diametersCount] / 2 : 1;
-        var theta = angles != null ? (DoubleOrSingle)angles[i % anglesCount] : 0.0;
+        var radius = diameters != null ? diameters[i % diametersCount] / 2 : 1;
+        var theta = angles != null ? angles[i % anglesCount] : 0.0;
 
-        var ct = (DoubleOrSingle)Math.Cos(theta);
-        var st = (DoubleOrSingle)Math.Sin(theta);
+        var ct = Math.Cos(theta);
+        var st = Math.Sin(theta);
 
         var i0 = i > 0 ? i - 1 : i;
         var i1 = i + 1 < pathLength ? i + 1 : i;
@@ -3842,7 +3828,7 @@ namespace Crystal.Graphics
           {
             textureCoordinates.Add(
                 values != null
-                    ? new Point((DoubleOrSingle)values[i % valuesCount], (DoubleOrSingle)j / (sectionLength - 1))
+                    ? new Point(values[i % valuesCount], (DoubleOrSingle)j / (sectionLength - 1))
                     : new Point());
           }
         }
@@ -3905,7 +3891,7 @@ namespace Crystal.Graphics
     /// <param name="mesh">
     /// The mesh.
     /// </param>
-    public void Append(MeshGeometry3D mesh)
+    public void Append(MeshGeometry3D? mesh)
     {
       if(mesh == null)
       {
@@ -4010,7 +3996,7 @@ namespace Crystal.Graphics
       textureCoordinates = null;
 
       var cornerNormal = FindCornerNormal(p, eps);
-      var newCornerPoint = p - (cornerNormal * (DoubleOrSingle)d);
+      var newCornerPoint = p - (cornerNormal * d);
       var index0 = positions.Count;
       positions.Add(newCornerPoint);
       var plane = new Plane3D(newCornerPoint, cornerNormal);
@@ -4118,12 +4104,12 @@ namespace Crystal.Graphics
     {
       if(positions.Count > 20000)
       {
-        Trace.WriteLine(string.Format("Too many positions ({0}).", positions.Count));
+        Trace.WriteLine($"Too many positions ({positions.Count}).");
       }
 
       if(triangleIndices.Count > 60002)
       {
-        Trace.WriteLine(string.Format("Too many triangle indices ({0}).", triangleIndices.Count));
+        Trace.WriteLine($"Too many triangle indices ({triangleIndices.Count}).");
       }
     }
 
@@ -4277,7 +4263,7 @@ namespace Crystal.Graphics
       for(var i = 0; i < Positions.Count; i++)
       {
         Positions[i] = new Point3D(
-            Positions[i].X * (DoubleOrSingle)scaleX, Positions[i].Y * (DoubleOrSingle)scaleY, Positions[i].Z * (DoubleOrSingle)scaleZ);
+            Positions[i].X * scaleX, Positions[i].Y * scaleY, Positions[i].Z * scaleZ);
       }
 
       if(Normals != null)
@@ -4285,7 +4271,7 @@ namespace Crystal.Graphics
         for(var i = 0; i < Normals.Count; i++)
         {
           var v = new Vector3D(
-              Normals[i].X * (DoubleOrSingle)scaleX, Normals[i].Y * (DoubleOrSingle)scaleY, Normals[i].Z * (DoubleOrSingle)scaleZ);
+              Normals[i].X * scaleX, Normals[i].Y * scaleY, Normals[i].Z * scaleZ);
           v.Normalize();
           Normals[i] = v;
         }
@@ -4609,7 +4595,7 @@ namespace Crystal.Graphics
     /// <returns>
     /// A mesh geometry.
     /// </returns>
-    public MeshGeometry3D ToMesh(bool freeze = false)
+    public MeshGeometry3D? ToMesh(bool freeze = false)
     {
       if(triangleIndices.Count == 0)
       {

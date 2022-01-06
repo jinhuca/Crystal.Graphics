@@ -422,15 +422,9 @@ namespace Crystal.Graphics
     /// </summary>
     public event RoutedEventHandler LookAtChanged
     {
-      add
-      {
-        AddHandler(LookAtChangedEvent, value);
-      }
+      add => AddHandler(LookAtChangedEvent, value);
 
-      remove
-      {
-        RemoveHandler(LookAtChangedEvent, value);
-      }
+      remove => RemoveHandler(LookAtChangedEvent, value);
     }
 
     /// <summary>
@@ -438,112 +432,90 @@ namespace Crystal.Graphics
     /// </summary>
     public event RoutedEventHandler ZoomedByRectangle
     {
-      add
-      {
-        AddHandler(ZoomedByRectangleEvent, value);
-      }
+      add => AddHandler(ZoomedByRectangleEvent, value);
 
-      remove
-      {
-        RemoveHandler(ZoomedByRectangleEvent, value);
-      }
+      remove => RemoveHandler(ZoomedByRectangleEvent, value);
     }
 
     /// <summary>
     /// Gets the back view command.
     /// </summary>
-    public static RoutedCommand BackViewCommand { get; private set; }
+    public static RoutedCommand BackViewCommand { get; }
 
     /// <summary>
     /// Gets the bottom view command.
     /// </summary>
-    public static RoutedCommand BottomViewCommand { get; private set; }
+    public static RoutedCommand BottomViewCommand { get; }
 
     /// <summary>
     /// Gets the change field of view command.
     /// </summary>
-    public static RoutedCommand ChangeFieldOfViewCommand { get; private set; }
+    public static RoutedCommand ChangeFieldOfViewCommand { get; }
 
     /// <summary>
     /// Gets the change look at command.
     /// </summary>
-    public static RoutedCommand ChangeLookAtCommand { get; private set; }
+    public static RoutedCommand ChangeLookAtCommand { get; }
 
     /// <summary>
     /// Gets the front view command.
     /// </summary>
-    public static RoutedCommand FrontViewCommand { get; private set; }
+    public static RoutedCommand FrontViewCommand { get; }
 
     /// <summary>
     /// Gets the left view command.
     /// </summary>
-    public static RoutedCommand LeftViewCommand { get; private set; }
+    public static RoutedCommand LeftViewCommand { get; }
 
     /// <summary>
     /// Gets the pan command.
     /// </summary>
-    public static RoutedCommand PanCommand { get; private set; }
+    public static RoutedCommand PanCommand { get; }
 
     /// <summary>
     /// Gets the reset camera command.
     /// </summary>
-    public static RoutedCommand ResetCameraCommand { get; private set; }
+    public static RoutedCommand ResetCameraCommand { get; }
 
     /// <summary>
     /// Gets the right view command.
     /// </summary>
-    public static RoutedCommand RightViewCommand { get; private set; }
+    public static RoutedCommand RightViewCommand { get; }
 
     /// <summary>
     /// Gets the rotate command.
     /// </summary>
-    public static RoutedCommand RotateCommand { get; private set; }
+    public static RoutedCommand RotateCommand { get; }
 
     /// <summary>
     /// Gets the top view command.
     /// </summary>
-    public static RoutedCommand TopViewCommand { get; private set; }
+    public static RoutedCommand TopViewCommand { get; }
 
     /// <summary>
     /// Gets the zoom command.
     /// </summary>
-    public static RoutedCommand ZoomCommand { get; private set; }
+    public static RoutedCommand ZoomCommand { get; }
 
     /// <summary>
     /// Gets the zoom extents command.
     /// </summary>
-    public static RoutedCommand ZoomExtentsCommand { get; private set; }
+    public static RoutedCommand ZoomExtentsCommand { get; }
 
     /// <summary>
     /// Gets the zoom rectangle command.
     /// </summary>
-    public static RoutedCommand ZoomRectangleCommand { get; private set; }
+    public static RoutedCommand ZoomRectangleCommand { get; }
 
     /// <summary>
     /// Gets ActualCamera.
     /// </summary>
-    public ProjectionCamera ActualCamera
-    {
-      get
-      {
-        if(Camera != null)
-        {
-          return Camera;
-        }
-
-        if(Viewport != null)
-        {
-          return Viewport.Camera as ProjectionCamera;
-        }
-
-        return null;
-      }
-    }
+    public ProjectionCamera? ActualCamera => Camera ?? Viewport.Camera as ProjectionCamera;
 
     /// <summary>
     /// Gets or sets Camera.
     /// </summary>
-    public ProjectionCamera Camera
+    public ProjectionCamera? Camera
     {
       get => (ProjectionCamera)GetValue(CameraProperty);
       set => SetValue(CameraProperty, value);
@@ -554,8 +526,8 @@ namespace Crystal.Graphics
     /// </summary>
     public Vector3D CameraLookDirection
     {
-      get => ActualCamera.LookDirection;
-      set => ActualCamera.LookDirection = value;
+      get => ActualCamera!.LookDirection;
+      set => ActualCamera!.LookDirection = value;
     }
 
     /// <summary>
@@ -572,8 +544,8 @@ namespace Crystal.Graphics
     /// </summary>
     public Point3D CameraPosition
     {
-      get => ActualCamera.Position;
-      set => ActualCamera.Position = value;
+      get => ActualCamera!.Position;
+      set => ActualCamera!.Position = value;
     }
 
     /// <summary>
@@ -599,8 +571,8 @@ namespace Crystal.Graphics
     /// </summary>
     public Vector3D CameraUpDirection
     {
-      get => ActualCamera.UpDirection;
-      set => ActualCamera.UpDirection = value;
+      get => ActualCamera!.UpDirection;
+      set => ActualCamera!.UpDirection = value;
     }
 
     /// <summary>
@@ -985,12 +957,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// Gets OrthographicCamera.
     /// </summary>
-    protected OrthographicCamera OrthographicCamera => ActualCamera as OrthographicCamera;
+    protected OrthographicCamera? OrthographicCamera => ActualCamera as OrthographicCamera;
 
     /// <summary>
     /// Gets PerspectiveCamera.
     /// </summary>
-    protected PerspectiveCamera PerspectiveCamera => ActualCamera as PerspectiveCamera;
+    protected PerspectiveCamera? PerspectiveCamera => ActualCamera as PerspectiveCamera;
     
     /// <summary>
     /// Gets or sets a value indicating whether [limit FPS].
@@ -1189,7 +1161,7 @@ namespace Crystal.Graphics
 
       StopAnimations();
       PushCameraSetting();
-      ActualCamera.ChangeDirection(lookDir, ActualCamera.UpDirection, animationTime);
+      ActualCamera.ChangeDirection(lookDir, ActualCamera!.UpDirection, animationTime);
     }
 
     /// <summary>
@@ -1203,7 +1175,7 @@ namespace Crystal.Graphics
       {
         myAdornerLayer.Remove(rectangleAdorner);
       }
-      rectangleAdorner = null;
+      rectangleAdorner = null!;
       Viewport.InvalidateVisual();
     }
 
@@ -1219,7 +1191,7 @@ namespace Crystal.Graphics
         myAdornerLayer.Remove(targetAdorner);
       }
 
-      targetAdorner = null;
+      targetAdorner = null!;
 
       // the adorner sometimes leaves some 'dust', so refresh the viewport
       RefreshViewport();
@@ -1294,15 +1266,18 @@ namespace Crystal.Graphics
     /// <returns> The restore camera setting. </returns>
     public bool RestoreCameraSetting()
     {
-      if(cameraHistory.Count > 0)
+      switch (cameraHistory.Count)
       {
-        var cs = cameraHistory.Last.Value;
-        cameraHistory.RemoveLast();
-        cs.UpdateCamera(ActualCamera);
-        return true;
+        case > 0:
+        {
+          var cs = cameraHistory.Last?.Value;
+          cameraHistory.RemoveLast();
+          cs?.UpdateCamera(ActualCamera);
+          return true;
+        }
+        default:
+          return false;
       }
-
-      return false;
     }
 
     /// <summary>
@@ -1500,7 +1475,7 @@ namespace Crystal.Graphics
       base.OnManipulationDelta(e);
 
       // number of manipulators (fingers)
-      int n = e.Manipulators.Count();
+      var n = e.Manipulators.Count();
       var position = touchPreviousPoint + e.DeltaManipulation.Translation;
       touchPreviousPoint = position;
 
@@ -1977,7 +1952,7 @@ namespace Crystal.Graphics
       {
         var point = e.GetPosition(this);
 
-        Point3D? nearestPoint = new Closest3DPointHitTester(Viewport, RotataAroundClosestVertexComplexity)
+        var nearestPoint = new Closest3DPointHitTester(Viewport, RotataAroundClosestVertexComplexity)
             .CalculateMouseDownNearestPoint(point, SnapMouseDownPoint).MouseDownNearestPoint3D;
         if(nearestPoint.HasValue)
         {

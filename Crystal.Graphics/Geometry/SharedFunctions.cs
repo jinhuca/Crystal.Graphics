@@ -76,7 +76,7 @@ namespace Crystal.Graphics
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DoubleOrSingle Length(ref Vector3D vector)
     {
-      return (DoubleOrSingle)Math.Sqrt(LengthSquared(ref vector));
+      return Math.Sqrt(LengthSquared(ref vector));
     }
 
 #if !NETFX_CORE
@@ -86,9 +86,9 @@ namespace Crystal.Graphics
     /// <param name="vector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Point3D ToPoint3D(ref Vector3D vector)
+    public static Point3D ToPoint3D(ref Vector3D vector)
     {
-      return new System.Windows.Media.Media3D.Point3D(vector.X, vector.Y, vector.Z);
+      return new Point3D(vector.X, vector.Y, vector.Z);
     }
     /// <summary>
     /// 
@@ -96,9 +96,9 @@ namespace Crystal.Graphics
     /// <param name="vector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static System.Windows.Media.Media3D.Vector3D ToVector3D(ref Vector3D vector)
+    public static Vector3D ToVector3D(ref Vector3D vector)
     {
-      return new System.Windows.Media.Media3D.Vector3D(vector.X, vector.Y, vector.Z);
+      return new Vector3D(vector.X, vector.Y, vector.Z);
     }
 #endif
     /// <summary>

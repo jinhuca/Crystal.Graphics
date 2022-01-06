@@ -31,7 +31,7 @@ namespace Crystal.Graphics
       // Point-List from Input
       // (we don't want the first and last Point to be present two times)
       var points = polygon.ToList();
-      if(points[0] == points[points.Count - 1])
+      if(points[0] == points[^1])
       {
         points.RemoveAt(points.Count - 1);
       }
@@ -72,7 +72,7 @@ namespace Crystal.Graphics
       }
       // Sort Points from highest y to lowest y
       // and if two or more Points have the same y Value from lowest x to highest x Value
-      var events = new List<PolygonPoint>(poly.Points);
+      var events = new List<PolygonPoint?>(poly.Points);
       events.Sort();
 
       // Calculate the Diagonals in the Down Sweep
@@ -123,11 +123,11 @@ namespace Crystal.Graphics
       var result = new Int32Collection();
 
       // Sort the Events
-      var events = new List<PolygonPoint>(monoton.Points);
+      var events = new List<PolygonPoint?>(monoton.Points);
       events.Sort();
 
       // Stack of Events to push to and pop from
-      var pointStack = new Stack<PolygonPoint>();
+      var pointStack = new Stack<PolygonPoint?>();
 
       // Push the first two Events
       pointStack.Push(events[0]);
@@ -260,7 +260,7 @@ namespace Crystal.Graphics
     /// <param name="events">The Events in sorted Form</param>
     /// <param name="sweepDown">True in the first Stage (sweeping down), false in the following Stages (sweeping up)</param>
     /// <returns></returns>
-    private static List<Tuple<int, int>> CalculateDiagonals(List<PolygonPoint> events, Boolean sweepDown = true)
+    private static List<Tuple<int, int>> CalculateDiagonals(List<PolygonPoint?> events, Boolean sweepDown = true)
     {
       // Diagonals to add to the Polygon to make it monotone after the Down- and Up-Sweeps
       var diagonals = new List<Tuple<int, int>>();
@@ -272,9 +272,8 @@ namespace Crystal.Graphics
       var statusAndHelper = new StatusHelper();
 
       // Sweep through the Polygon using the sorted Polygon Points
-      for(var i = 0; i < events.Count; i++)
+      foreach (var ev in events)
       {
-        var ev = events[i];
         // Get the Class of this event (depending on the sweeping direction)
         var evClass = ev.PointClass(!sweepDown);
 
@@ -367,19 +366,13 @@ namespace Crystal.Graphics
 
       var subPolygons = new List<PolygonData>();
 
-      var cnt = 0;
-      foreach(var edge in edges)
-      {
-        cnt += edge.Value.Count;
-      }
-
       // For each Diagonal
       while(edges.Count > 0)
       {
         // Start at first Diagonal Point
         var currentPoint = edges.First().Value.First().PointOne;
         var nextEdge = new PolygonEdge(null, null);
-        var subPolygonPoints = new List<PolygonPoint>();
+        var subPolygonPoints = new List<PolygonPoint?>();
         // March along the edges to form a monotone Polygon
         // Until the current Point equals the StartPoint
         do
@@ -414,7 +407,7 @@ namespace Crystal.Graphics
     /// <param name="lastEdge">The last used Edge</param>
     /// <param name="possibleEdges">The possible next Edges</param>
     /// <returns>Best next Edge</returns>
-    internal static PolygonEdge BestEdge(PolygonPoint point, PolygonEdge lastEdge, List<PolygonEdge> possibleEdges)
+    internal static PolygonEdge BestEdge(PolygonPoint? point, PolygonEdge lastEdge, List<PolygonEdge> possibleEdges)
     {
       // If just Starting, return the first possible Edge of the Point
       // If only one possibility, return that
@@ -534,7 +527,7 @@ namespace Crystal.Graphics
     /// </summary>
     /// <param name="point">The Point to search a StatusHelperElement for</param>
     /// <returns>The nearest StatusHelperElement that is positioned left of the Poin</returns>
-    internal StatusHelperElement SearchLeft(PolygonPoint point)
+    internal StatusHelperElement SearchLeft(PolygonPoint? point)
     {
       // The found StatusHelperElement and the Distance Variables
       StatusHelperElement result = null;
@@ -582,50 +575,34 @@ namespace Crystal.Graphics
     /// <summary>
     /// The Edge of the StatusHelperElement
     /// </summary>
-    public PolygonEdge Edge
-    {
-      get; set;
-    }
+    public PolygonEdge Edge { get; set; }
 
     /// <summary>
     /// The Helper of the Edge is a Polygon Point
     /// </summary>
-    public PolygonPoint Helper
-    {
-      get; set;
-    }
-
-    /// <summary>
-    /// Factor used for x-Value Calculation
-    /// </summary>
-    private double mFactor;
+    public PolygonPoint? Helper { get; set; }
 
     /// <summary>
     /// Accessor for the Factor
     /// </summary>
-    public double Factor => mFactor;
+    public double Factor { get; }
 
     /// <summary>
     /// Used to early-skip the Search for the right Status and Helper
     /// </summary>
-    public double MinX
-    {
-      get;
-      private set;
-    }
-
+    public double MinX { get; }
 
     /// <summary>
     /// Constructor taking an Edge and a Helper
     /// </summary>
     /// <param name="edge">The Edge of the StatusHelperElement</param>
     /// <param name="point">The Helper for the Edge of the StatusHelperElement</param>
-    internal StatusHelperElement(PolygonEdge edge, PolygonPoint point)
+    internal StatusHelperElement(PolygonEdge edge, PolygonPoint? point)
     {
       Edge = edge;
       Helper = point;
       var vector = edge.PointTwo.Point - edge.PointOne.Point;
-      mFactor = vector.X / vector.Y;
+      Factor = vector.X / vector.Y;
       MinX = Math.Min(edge.PointOne.X, edge.PointTwo.X);
     }
   }
@@ -696,42 +673,23 @@ namespace Crystal.Graphics
     }
 
     /// <summary>
-    /// The Index of this Point in the original Polygon
-    /// that needs to be triangulated
+    /// Accessor for the original Point-Index
     /// </summary>
-    private int mIndex;
-
-    /// <summary>
-    /// Accessor for the iriginal Point-Index
-    /// </summary>
-    public int Index
-    {
-      get => mIndex;
-      set => mIndex = value;
-    }
+    public int Index { get; set; }
 
     /// <summary>
     /// The "last" neighboring Point, which is connected throught the incoming Edge
     /// </summary>
-    public PolygonPoint Last
-    {
-      get
-      {
-        if(mEdgeOne != null && mEdgeOne.PointOne != null)
-          return mEdgeOne.PointOne;
-        else
-          return null;
-      }
-    }
+    public PolygonPoint? Last => mEdgeOne is { PointOne: { } } ? mEdgeOne.PointOne : null;
 
     /// <summary>
-    /// The "next" neighboring Point, which is connected throught the outgoing Edge
+    /// The "next" neighboring Point, which is connected through the outgoing Edge
     /// </summary>
-    public PolygonPoint Next
+    public PolygonPoint? Next
     {
       get
       {
-        if(mEdgeTwo != null && mEdgeTwo.PointTwo != null)
+        if(mEdgeTwo is { PointTwo: { } })
           return mEdgeTwo.PointTwo;
         else
           return null;
@@ -744,7 +702,7 @@ namespace Crystal.Graphics
     /// <param name="first">The first PolygonPoint</param>
     /// <param name="second">The second PolygonPoint</param>
     /// <returns>Returns true if the first PolygonPoint is smaller, compared to the second PolygonPoint, false otherwise</returns>
-    public static Boolean operator <(PolygonPoint first, PolygonPoint second)
+    public static Boolean operator <(PolygonPoint? first, PolygonPoint? second)
     {
       return first.CompareTo(second) == 1;
     }
@@ -755,7 +713,7 @@ namespace Crystal.Graphics
     /// <param name="first">The first PolygonPoint</param>
     /// <param name="second">The second PolygonPoint</param>
     /// <returns>Returns true if the first PolygonPoint is bigger, compared to the second PolygonPoint, false otherwise</returns>
-    public static Boolean operator >(PolygonPoint first, PolygonPoint second)
+    public static Boolean operator >(PolygonPoint? first, PolygonPoint? second)
     {
       return first.CompareTo(second) == -1;
     }
@@ -768,7 +726,7 @@ namespace Crystal.Graphics
     {
       // Set the Point-Data, the Index must be set later
       mPoint = p;
-      mIndex = -1;
+      Index = -1;
     }
 
     /// <summary>
@@ -862,7 +820,7 @@ namespace Crystal.Graphics
     /// </summary>
     /// <param name="second">Other Point to compare to</param>
     /// <returns>-1 if this Point is bigger, 0 if the same, 1 if smaller</returns>
-    public int CompareTo(PolygonPoint second)
+    public int CompareTo(PolygonPoint? second)
     {
       if(this == null || second == null)
         return 0;
@@ -883,12 +841,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// The "starting" Point of this Edge
     /// </summary>
-    private PolygonPoint mPointOne;
+    private PolygonPoint? mPointOne;
 
     /// <summary>
     /// Accessor to the Startpoint of this Edge
     /// </summary>
-    public PolygonPoint PointOne
+    public PolygonPoint? PointOne
     {
       get => mPointOne;
       set => mPointOne = value;
@@ -897,12 +855,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// The "ending" Point of this Edge
     /// </summary>
-    private PolygonPoint mPointTwo;
+    private PolygonPoint? mPointTwo;
 
     /// <summary>
     /// Accessor to the Endpoint of this Edge
     /// </summary>
-    public PolygonPoint PointTwo
+    public PolygonPoint? PointTwo
     {
       get => mPointTwo;
       set => mPointTwo = value;
@@ -915,7 +873,7 @@ namespace Crystal.Graphics
     {
       get
       {
-        if(mPointOne != null && mPointOne.EdgeOne != null)
+        if(mPointOne is { EdgeOne: { } })
           return mPointOne.EdgeOne;
         else
           return null;
@@ -929,7 +887,7 @@ namespace Crystal.Graphics
     {
       get
       {
-        if(mPointTwo != null && mPointTwo.EdgeTwo != null)
+        if(mPointTwo is { EdgeTwo: { } })
           return mPointTwo.EdgeTwo;
         else
           return null;
@@ -941,7 +899,7 @@ namespace Crystal.Graphics
     /// </summary>
     /// <param name="one">The Startpoint</param>
     /// <param name="two">The Endpoint</param>
-    internal PolygonEdge(PolygonPoint one, PolygonPoint two)
+    internal PolygonEdge(PolygonPoint? one, PolygonPoint? two)
     {
       mPointOne = one;
       mPointTwo = two;
@@ -965,12 +923,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// The List of Polygonpoints that define this Polygon
     /// </summary>
-    private List<PolygonPoint> mPoints;
+    private List<PolygonPoint?> mPoints;
 
     /// <summary>
     /// Accessor to the List of PolygonPoints
     /// </summary>
-    public List<PolygonPoint> Points
+    public List<PolygonPoint?> Points
     {
       get => mPoints;
       set => mPoints = value;
@@ -984,12 +942,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// The Holes of the Polygon
     /// </summary>
-    private List<List<PolygonPoint>> mHoles;
+    private readonly List<List<PolygonPoint?>> mHoles;
 
     /// <summary>
     /// Access to the Holes
     /// </summary>
-    public List<List<PolygonPoint>> Holes => mHoles;
+    public List<List<PolygonPoint?>> Holes => mHoles;
 
     /// <summary>
     /// Number of initial Points on the Polygon Boundary
@@ -1004,8 +962,8 @@ namespace Crystal.Graphics
     public PolygonData(List<Point> points, List<int> indices = null)
     {
       // Initialize
-      mPoints = new List<PolygonPoint>(points.Select(p => new PolygonPoint(p)));
-      mHoles = new List<List<PolygonPoint>>();
+      mPoints = new List<PolygonPoint?>(points.Select(p => new PolygonPoint(p)));
+      mHoles = new List<List<PolygonPoint?>>();
       mNumBoundaryPoints = mPoints.Count;
 
       // If no Indices were specified, add them manually
@@ -1035,7 +993,7 @@ namespace Crystal.Graphics
     /// Calls the first Constructor by splitting the Input-Information (Points and Indices)
     /// </summary>
     /// <param name="points">The PolygonPoints</param>
-    public PolygonData(List<PolygonPoint> points)
+    public PolygonData(List<PolygonPoint?> points)
         : this(points.Select(p => p.Point).ToList(), points.Select(p => p.Index).ToList())
     {
     }
@@ -1052,9 +1010,9 @@ namespace Crystal.Graphics
         points.Reverse();
       }
       // The Hole Points
-      var polyPoints = points.Select(p => new PolygonPoint(p)).ToList();
-      // If Endpoint equals Startpoint
-      if(polyPoints[0].Equals(polyPoints[polyPoints.Count - 1]))
+      List<PolygonPoint?> polyPoints = points.Select(p => new PolygonPoint(p)).ToList();
+      // If Endpoint equals Start-point
+      if(polyPoints[0].Equals(polyPoints[^1]))
         polyPoints.RemoveAt(polyPoints.Count - 1);
       mHoles.Add(polyPoints);
 

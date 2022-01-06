@@ -93,9 +93,9 @@
     public bool ClipLine(ref double x0, ref double y0, ref double x1, ref double y1)
     {
       // compute outcodes for P0, P1, and whatever point lies outside the clip rectangle
-      int outcode0 = ComputeOutCode(x0, y0);
-      int outcode1 = ComputeOutCode(x1, y1);
-      bool accept = false;
+      var outcode0 = ComputeOutCode(x0, y0);
+      var outcode1 = ComputeOutCode(x1, y1);
+      var accept = false;
 
       while(true)
       {
@@ -117,7 +117,7 @@
         double x = 0, y = 0;
 
         // At least one endpoint is outside the clip rectangle; pick it.
-        int outcodeOut = outcode0 != 0 ? outcode0 : outcode1;
+        var outcodeOut = outcode0 != 0 ? outcode0 : outcode1;
 
         // Now find the intersection point;
         // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
@@ -196,7 +196,7 @@
     /// </returns>
     private int ComputeOutCode(double x, double y)
     {
-      int code = INSIDE; // initialized as being inside of clip window
+      var code = INSIDE; // initialized as being inside of clip window
 
       if(x < xmin)
       {

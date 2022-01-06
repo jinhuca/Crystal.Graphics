@@ -38,15 +38,15 @@
     /// <param name="mesh">
     /// The mesh.
     /// </param>
-    public override void Calculate(TerrainModel model, MeshGeometry3D mesh)
+    public override void Calculate(TerrainModel model, MeshGeometry3D? mesh)
     {
-      var normals = MeshGeometryHelper.CalculateNormals(mesh);
+      var normals = mesh.CalculateNormals();
       var texcoords = new PointCollection();
       var up = new Vector3D(0, 0, 1);
-      for(int i = 0; i < normals.Count; i++)
+      for(var i = 0; i < normals.Count; i++)
       {
-        double slope = Math.Acos(Vector3D.DotProduct(normals[i], up)) * 180 / Math.PI;
-        double u = slope / 40;
+        var slope = Math.Acos(Vector3D.DotProduct(normals[i], up)) * 180 / Math.PI;
+        var u = slope / 40;
         if(u > 1)
         {
           u = 1;

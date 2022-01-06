@@ -40,7 +40,7 @@ namespace Crystal.Graphics
     /// <returns>The model.</returns>
     public override Model3DGroup Read(string path)
     {
-      Directory = System.IO.Path.GetDirectoryName(path);
+      Directory = Path.GetDirectoryName(path);
       Load(path);
       using(var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
       {
@@ -59,7 +59,7 @@ namespace Crystal.Graphics
       var mesh = new Mesh3D();
 
       var vertexElement = Body.Find(item => item.Name == "vertex");
-      if(vertexElement != null && vertexElement.Count > 0)
+      if(vertexElement is { Count: > 0 })
       {
         foreach(var vertProp in vertexElement.Instances)
         {
@@ -70,9 +70,9 @@ namespace Crystal.Graphics
 
           if(xProp != null && yProp != null && zProp != null)
           {
-            var xCoord = double.Parse(xProp.Value?.ToString() ?? "0");
-            var yCoord = double.Parse(yProp.Value?.ToString() ?? "0");
-            var zCoord = double.Parse(zProp.Value?.ToString() ?? "0");
+            var xCoord = double.Parse(xProp.Value.ToString() ?? "0");
+            var yCoord = double.Parse(yProp.Value.ToString() ?? "0");
+            var zCoord = double.Parse(zProp.Value.ToString() ?? "0");
             var vertex = new Point3D(xCoord, yCoord, zCoord);
             mesh.Vertices.Add(vertex);
           }
@@ -91,7 +91,7 @@ namespace Crystal.Graphics
       }
 
       var faceElement = Body.Find(item => item.Name == "face");
-      if(faceElement != null && faceElement.Count > 0)
+      if(faceElement is { Count: > 0 })
       {
         foreach(var faceProp in faceElement.Instances)
         {
@@ -101,7 +101,7 @@ namespace Crystal.Graphics
             var vertexIndices = new List<int>();
             foreach(var item in vertexIndicesProperties[0].ListContentValues)
             {
-              vertexIndices.Add(Convert.ToInt32(item ?? "0"));
+              vertexIndices.Add(Convert.ToInt32(item));
             }
             mesh.Faces.Add(vertexIndices.ToArray());
           }
@@ -118,7 +118,7 @@ namespace Crystal.Graphics
     /// <returns>
     /// A <see cref="MeshGeometry3D" />.
     /// </returns>
-    public MeshGeometry3D CreateMeshGeometry3D()
+    public MeshGeometry3D? CreateMeshGeometry3D()
     {
       var mesh = CreateMesh();
       return mesh.ToMeshGeometry3D();
@@ -177,8 +177,8 @@ namespace Crystal.Graphics
     /// <param name="path">The filepath.</param>
     public void Load(string path)
     {
-      Directory = System.IO.Path.GetDirectoryName(path);
-      using(FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+      Directory = Path.GetDirectoryName(path);
+      using(var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
       {
         Load(fs);
       }
@@ -202,7 +202,7 @@ namespace Crystal.Graphics
       plyFileStream.Seek(0, SeekOrigin.Begin);
 
       var readingHeader = true;
-      var headerLineBuilders = new List<StringBuilder>() { new StringBuilder() };
+      var headerLineBuilders = new List<StringBuilder>() { new() };
       var newLineCharMet = false;
 
       while(readingHeader && textReader.EndOfStream == false)
@@ -256,8 +256,6 @@ namespace Crystal.Graphics
         case PlyFormatTypes.binary_little_endian:
           plyBody = ReadBinary(plyFileStream, plyHeader, false);
           break;
-        default:
-          break;
       }
 
       textReader.Dispose();
@@ -283,7 +281,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// The supported version of the ply format.
     /// </summary>
-    public static readonly Version SUPPORTEDVERSION = new Version(1, 0, 0);
+    public static readonly Version SUPPORTEDVERSION = new(1, 0, 0);
 
     /// <summary>
     /// Specifies the types of ply model formats.
@@ -575,7 +573,7 @@ namespace Crystal.Graphics
           var objInfos = new List<Tuple<string, string>>();
           var elements = new List<PlyElement>();
 
-          for(int i = 2; i < headerLines.Length - 1; i++)
+          for(var i = 2; i < headerLines.Length - 1; i++)
           {
             var lineParts = headerLines[i].Split(' ');
             if(Enum.TryParse(lineParts[0], out PlyHeaderItems headerItemType))
@@ -606,7 +604,7 @@ namespace Crystal.Graphics
                           var property = new PlyProperty(propertyName, propertyType, null, false, PlyDataTypes._char, null);
 
                           var newPropertyList = new List<PlyProperty>();
-                          for(int j = 0; j < elements.Last().Instances[0].Length; j++)
+                          for(var j = 0; j < elements.Last().Instances[0].Length; j++)
                           {
                             newPropertyList.Add(elements.Last().Instances[0][j]);
                           }
@@ -626,7 +624,7 @@ namespace Crystal.Graphics
                           var property = new PlyProperty(propertyName, propertyType, null, true, listContentType, null);
 
                           var newPropertyList = new List<PlyProperty>();
-                          for(int j = 0; j < elements.Last().Instances[0].Length; j++)
+                          for(var j = 0; j < elements.Last().Instances[0].Length; j++)
                           {
                             newPropertyList.Add(elements.Last().Instances[0][j]);
                           }
@@ -719,8 +717,6 @@ namespace Crystal.Graphics
         case PlyDataTypes._double:
           result = double.Parse(propValue);
           break;
-        default:
-          break;
       }
       return result;
     }
@@ -804,10 +800,8 @@ namespace Crystal.Graphics
         var currentIdx = 0;
         var currentPlyElementProperties = new List<PlyProperty[]>();
         var currentHeadElement = plyHeader.Elements[currentElementIdx];
-        var debLineNo = 0;
         while(!reader.EndOfStream)
         {
-          debLineNo++;
           if(currentElementIdx < plyHeader.Elements.Length)
           {
             var currentLine = reader.ReadLine()?.Trim();
@@ -820,18 +814,18 @@ namespace Crystal.Graphics
               //This allows an element to contain multiple lists and properties
               var idxOffset = 0;
               var plyBodyProperties = new List<PlyProperty>();
-              for(int i = 0; i < plyHeadProperties.Length; i++)
+              for(var i = 0; i < plyHeadProperties.Length; i++)
               {
                 var currentPlyHeadProp = plyHeadProperties[i];
                 if(currentPlyHeadProp.IsList)
                 {
                   var itemsNumStr = ConvertPropValueASCII(currentPlyHeadProp.Type, lineDataArr[idxOffset]);
-                  if(int.TryParse(itemsNumStr.ToString(), out int itemsNum))
+                  if(int.TryParse(itemsNumStr.ToString(), out var itemsNum))
                   {
                     idxOffset++;
 
                     var listContentItems = new List<object>();
-                    for(int j = 0; j < itemsNum; j++)
+                    for(var j = 0; j < itemsNum; j++)
                     {
                       var listContentItem = ConvertPropValueASCII(currentPlyHeadProp.ListContentType, lineDataArr[idxOffset]);
                       listContentItems.Add(listContentItem);
@@ -899,25 +893,25 @@ namespace Crystal.Graphics
       var streamEncoding = bigEndian ? Encoding.BigEndianUnicode : Encoding.Unicode;
       using(var reader = new BinaryReader(s, streamEncoding))
       {
-        for(int i = 0; i < plyHeader.Elements.Length; i++)
+        for(var i = 0; i < plyHeader.Elements.Length; i++)
         {
           var currentHeadElement = plyHeader.Elements[i];
           var currentElementInstanceProperties = new List<PlyProperty[]>();
 
-          for(int j = 0; j < currentHeadElement.Count; j++)
+          for(var j = 0; j < currentHeadElement.Count; j++)
           {
             var currentInstanceProperties = new List<PlyProperty>();
 
-            for(int k = 0; k < currentHeadElement.Instances[0].Length; k++)
+            for(var k = 0; k < currentHeadElement.Instances[0].Length; k++)
             {
               var currentHeadProp = currentHeadElement.Instances[0][k];
               if(currentHeadProp.IsList)
               {
                 var itemsNumStr = ConvertPropValueBinary(currentHeadProp.Type, reader, bigEndian);
-                if(int.TryParse(itemsNumStr.ToString(), out int itemsNum))
+                if(int.TryParse(itemsNumStr.ToString(), out var itemsNum))
                 {
                   var listContentItems = new List<object>();
-                  for(int l = 0; l < itemsNum; l++)
+                  for(var l = 0; l < itemsNum; l++)
                   {
                     var listContentItem = ConvertPropValueBinary(currentHeadProp.ListContentType, reader, bigEndian);
                     listContentItems.Add(listContentItem);
@@ -1003,14 +997,14 @@ namespace Crystal.Graphics
                 if(property.IsList)
                 {
                   instanceBuilder.Append($" {property.ListContentValues.Length}");
-                  for(int i = 0; i < property.ListContentValues.Length; i++)
+                  foreach (var t in property.ListContentValues)
                   {
-                    instanceBuilder.Append($" {property.ListContentValues[i]}");
+                    instanceBuilder.Append($" {t}");
                   }
                 }
                 else
                 {
-                  instanceBuilder.Append($" {property.Value?.ToString()}");
+                  instanceBuilder.Append($" {property.Value.ToString()}");
                 }
               }
               sw.WriteLine(instanceBuilder.ToString().Trim());

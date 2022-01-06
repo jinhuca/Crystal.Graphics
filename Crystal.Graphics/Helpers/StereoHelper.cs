@@ -28,9 +28,9 @@
     /// </returns>
     public static double CalculateStereoBase(double L, double N, double screenWidth, double depthRatio, double hfov)
     {
-      double formatHoriz = screenWidth;
-      double F = FindFocalLength(hfov, formatHoriz);
-      double P = depthRatio * formatHoriz;
+      var formatHoriz = screenWidth;
+      var F = FindFocalLength(hfov, formatHoriz);
+      var P = depthRatio * formatHoriz;
       return CalculateStereoBase(P, L, N, F);
     }
 
@@ -68,48 +68,61 @@
     /// <returns>
     /// the clone
     /// </returns>
-    public static Visual3D CreateClone(Visual3D v)
+    public static Visual3D? CreateClone(Visual3D v)
     {
-      if(v is ModelUIElement3D)
+      switch (v)
       {
-        var m = v as ModelUIElement3D;
-        if(m.Model != null)
+        case ModelUIElement3D element3D:
         {
-          /*if (m.Model.CanFreeze)
+          var m = element3D;
+          if(m.Model != null)
+          {
+            /*if (m.Model.CanFreeze)
               m.Model.Freeze();
           if (m.Model.IsFrozen)*/
-          {
-            var clonedModel = m.Model.Clone();
-            var clonedElement = new ModelUIElement3D();
-            clonedElement.Transform = m.Transform;
-            clonedElement.Model = clonedModel;
-            return clonedElement;
+            {
+              var clonedModel = m.Model.Clone();
+              var clonedElement = new ModelUIElement3D
+              {
+                Transform = m.Transform,
+                Model = clonedModel
+              };
+              return clonedElement;
+            }
           }
-        }
-      }
 
-      if(v is ModelVisual3D)
-      {
-        var m = v as ModelVisual3D;
-        var clone = new ModelVisual3D();
-        clone.Transform = m.Transform;
-        if(m.Content != null && m.Content.CanFreeze)
-        {
-          m.Content.Freeze();
-          var clonedModel = m.Content.Clone();
-          clone.Content = clonedModel;
+          break;
         }
-
-        if(m.Children.Count > 0)
+        case ModelVisual3D visual3D:
         {
-          foreach(var child in m.Children)
+          var m = visual3D;
+          var clone = new ModelVisual3D
           {
-            var clonedChild = CreateClone(child);
-            clone.Children.Add(clonedChild);
+            Transform = m.Transform
+          };
+          if(m.Content is { CanFreeze: true })
+          {
+            m.Content.Freeze();
+            var clonedModel = m.Content.Clone();
+            clone.Content = clonedModel;
           }
-        }
 
-        return clone;
+          switch (m.Children.Count)
+          {
+            case > 0:
+            {
+              foreach(var child in m.Children)
+              {
+                var clonedChild = CreateClone(child);
+                clone.Children.Add(clonedChild);
+              }
+
+              break;
+            }
+          }
+
+          return clone;
+        }
       }
 
       return null;
@@ -144,9 +157,9 @@
     /// <param name="sameUpDirection">use the same UpDirection for both cameras (default is <c>true</c>)</param>
     /// <param name="sameDirection">use the same LookDirection for both cameras (default is <c>true</c>)</param>
     public static void UpdateStereoCameras(
-        PerspectiveCamera centerCamera,
-        PerspectiveCamera leftCamera,
-        PerspectiveCamera rightCamera,
+        PerspectiveCamera? centerCamera,
+        PerspectiveCamera? leftCamera,
+        PerspectiveCamera? rightCamera,
         double stereoBase,
         bool crossViewing = false,
         bool sameUpDirection = true,

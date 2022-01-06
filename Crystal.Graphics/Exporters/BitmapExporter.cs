@@ -41,7 +41,7 @@ namespace Crystal.Graphics
     /// Gets or sets the background brush.
     /// </summary>
     /// <value>The background.</value>
-    public Brush Background { get; set; }
+    public Brush Background { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the name of the file.
@@ -63,8 +63,7 @@ namespace Crystal.Graphics
     /// <exception cref="System.InvalidOperationException">Not supported file format.</exception>
     public void Export(Viewport3D viewport, Stream stream)
     {
-      var background = Background ?? Brushes.Transparent;
-
+      var background = Background;
       var bmp = viewport.RenderBitmap(background, OversamplingMultiplier);
       BitmapEncoder encoder;
       switch(Format)

@@ -32,15 +32,9 @@
     /// </summary>
     public event RoutedEventHandler ModelLoaded
     {
-      add
-      {
-        AddHandler(ModelLoadedEvent, value);
-      }
+      add => AddHandler(ModelLoadedEvent, value);
 
-      remove
-      {
-        RemoveHandler(ModelLoadedEvent, value);
-      }
+      remove => RemoveHandler(ModelLoadedEvent, value);
     }
 
     /// <summary>

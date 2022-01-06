@@ -6,16 +6,6 @@
   public static class Materials
   {
     /// <summary>
-    /// The black material.
-    /// </summary>
-    private static readonly Material BlackMaterial = MaterialHelper.CreateMaterial(Brushes.Black);
-
-    /// <summary>
-    /// The dark GrayMaterial material.
-    /// </summary>
-    private static readonly Material DarkGrayMaterial = MaterialHelper.CreateMaterial(Brushes.DarkGray);
-
-    /// <summary>
     /// The gray material.
     /// </summary>
     private static readonly Material GrayMaterial = MaterialHelper.CreateMaterial(Brushes.Gray);
@@ -88,12 +78,12 @@
     /// <summary>
     /// Gets the black material.
     /// </summary>
-    public static Material Black => BlackMaterial;
+    public static Material Black { get; } = MaterialHelper.CreateMaterial(Brushes.Black);
 
     /// <summary>
     /// Gets the dark GrayMaterial material.
     /// </summary>
-    public static Material DarkGray => DarkGrayMaterial;
+    public static Material DarkGray { get; } = MaterialHelper.CreateMaterial(Brushes.DarkGray);
 
     /// <summary>
     /// Gets the GrayMaterial material.

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Media;
 
 namespace SurfaceDemo
@@ -21,7 +16,7 @@ namespace SurfaceDemo
     Brush _Brush;
     public Brush Brush
     {
-      get { return _Brush; }
+      get => _Brush;
       set
       {
         _Brush = value;
@@ -32,7 +27,7 @@ namespace SurfaceDemo
     int _MeshSizeU = 140;
     public int MeshSizeU
     {
-      get { return _MeshSizeU; }
+      get => _MeshSizeU;
       set
       {
         _MeshSizeU = value;
@@ -43,7 +38,7 @@ namespace SurfaceDemo
     int _MeshSizeV = 140;
     public int MeshSizeV
     {
-      get { return _MeshSizeV; }
+      get => _MeshSizeV;
       set
       {
         _MeshSizeV = value;
@@ -54,7 +49,7 @@ namespace SurfaceDemo
     double _ParameterW = 1;
     public double ParameterW
     {
-      get { return _ParameterW; }
+      get => _ParameterW;
       set
       {
         _ParameterW = value;
@@ -65,7 +60,7 @@ namespace SurfaceDemo
     double _StereoBase = 0.05;
     public double StereoBase
     {
-      get { return _StereoBase; }
+      get => _StereoBase;
       set
       {
         _StereoBase = value;
@@ -73,10 +68,10 @@ namespace SurfaceDemo
       }
     }
 
-    ViewMode _ViewMode = SurfaceDemo.ViewMode.Normal;
+    ViewMode _ViewMode = ViewMode.Normal;
     public ViewMode ViewMode
     {
-      get { return _ViewMode; }
+      get => _ViewMode;
       set
       {
         _ViewMode = value;
@@ -87,7 +82,7 @@ namespace SurfaceDemo
     string _ModelTitle;
     public string ModelTitle
     {
-      get { return _ModelTitle; }
+      get => _ModelTitle;
       set
       {
         _ModelTitle = value;

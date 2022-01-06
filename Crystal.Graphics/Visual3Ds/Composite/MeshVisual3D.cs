@@ -238,7 +238,7 @@
         foreach(var p in Mesh.Faces)
         {
           //// var n = this.Mesh.GetFaceNormal(fi++);
-          for(int i = 0; i < p.Length; i += 1)
+          for(var i = 0; i < p.Length; i += 1)
           {
             var p0 = Mesh.Vertices[p[i]];
             var p1 = Mesh.Vertices[p[(i + 1) % p.Length]];

@@ -53,7 +53,7 @@ namespace Crystal.Graphics
     /// <param name="background">The background brush.</param>
     public static void Export(this Viewport3D viewport, string fileName, Brush background = null)
     {
-      string ext = System.IO.Path.GetExtension(fileName);
+      var ext = System.IO.Path.GetExtension(fileName);
       if(ext != null)
       {
         ext = ext.ToLower();
@@ -98,7 +98,7 @@ namespace Crystal.Graphics
     /// <exception cref="CrystalException">Not supported file format.</exception>
     public static void ExportStereo(this Viewport3D viewport, string fileName, double stereoBase, Brush background = null)
     {
-      string ext = System.IO.Path.GetExtension(fileName);
+      var ext = System.IO.Path.GetExtension(fileName);
       if(ext != null)
       {
         ext = ext.ToLower();
@@ -131,8 +131,7 @@ namespace Crystal.Graphics
     /// </returns>
     public static IList<HitResult> FindHits(this Viewport3D viewport, Point position)
     {
-      var camera = viewport.Camera as ProjectionCamera;
-      if(camera == null)
+      if(viewport.Camera is not ProjectionCamera camera)
       {
         return null;
       }
@@ -140,24 +139,20 @@ namespace Crystal.Graphics
       var result = new List<HitResult>();
       HitTestResultCallback callback = hit =>
           {
-            var rayHit = hit as RayMeshGeometry3DHitTestResult;
-            if(rayHit != null)
+            if(hit is RayMeshGeometry3DHitTestResult { MeshHit: { } } rayHit)
             {
-              if(rayHit.MeshHit != null)
-              {
-                var p = GetGlobalHitPosition(rayHit, viewport);
-                var nn = GetNormalHit(rayHit);
-                var n = nn.HasValue ? nn.Value : new Vector3D(0, 0, 1);
+              var p = GetGlobalHitPosition(rayHit, viewport);
+              var nn = GetNormalHit(rayHit);
+              var n = nn ?? new Vector3D(0, 0, 1);
 
-                result.Add(
-                          new HitResult
-                          {
-                            Distance = (camera.Position - p).Length,
-                            RayHit = rayHit,
-                            Normal = n,
-                            Position = p
-                          });
-              }
+              result.Add(
+                new HitResult
+                {
+                  Distance = (camera.Position - p).Length,
+                  RayHit = rayHit,
+                  Normal = n,
+                  Position = p
+                });
             }
 
             return HitTestResultBehavior.Continue;
@@ -187,9 +182,8 @@ namespace Crystal.Graphics
     public static IEnumerable<RectangleHitResult> FindHits(this Viewport3D viewport, Rect rectangle, SelectionHitMode mode)
     {
       const double Tolerance = 1e-10;
-      var camera = viewport.Camera as ProjectionCamera;
 
-      if(camera == null)
+      if(viewport.Camera is not ProjectionCamera camera)
       {
         throw new InvalidOperationException("No projection camera defined. Cannot find rectangle hits.");
       }
@@ -204,8 +198,7 @@ namespace Crystal.Graphics
       viewport.Children.Traverse<GeometryModel3D>(
           (model, visual, transform) =>
           {
-            var geometry = model.Geometry as MeshGeometry3D;
-            if(geometry == null || geometry.Positions == null || geometry.TriangleIndices == null)
+            if(model.Geometry is not MeshGeometry3D geometry || geometry.Positions == null || geometry.TriangleIndices == null)
             {
               return;
             }
@@ -273,8 +266,7 @@ namespace Crystal.Graphics
     /// </returns>
     public static bool FindNearest(this Viewport3D viewport, Point position, out Point3D point, out Vector3D normal, out DependencyObject visual)
     {
-      var camera = viewport.Camera as ProjectionCamera;
-      if(camera == null)
+      if(viewport.Camera is not ProjectionCamera camera)
       {
         point = new Point3D();
         normal = new Vector3D();
@@ -284,7 +276,7 @@ namespace Crystal.Graphics
 
       var htp = new PointHitTestParameters(position);
 
-      double minimumDistance = double.MaxValue;
+      var minimumDistance = double.MaxValue;
       var nearestPoint = new Point3D();
       var nearestNormal = new Vector3D();
       DependencyObject nearestObject = null;
@@ -294,8 +286,7 @@ namespace Crystal.Graphics
           null,
           delegate (HitTestResult hit)
           {
-            var rayHit = hit as RayMeshGeometry3DHitTestResult;
-            if(rayHit != null)
+            if(hit is RayMeshGeometry3DHitTestResult rayHit)
             {
               var mesh = rayHit.MeshHit;
               if(mesh != null)
@@ -303,9 +294,9 @@ namespace Crystal.Graphics
                 var p1 = mesh.Positions[rayHit.VertexIndex1];
                 var p2 = mesh.Positions[rayHit.VertexIndex2];
                 var p3 = mesh.Positions[rayHit.VertexIndex3];
-                double x = (p1.X * rayHit.VertexWeight1) + (p2.X * rayHit.VertexWeight2) + (p3.X * rayHit.VertexWeight3);
-                double y = (p1.Y * rayHit.VertexWeight1) + (p2.Y * rayHit.VertexWeight2) + (p3.Y * rayHit.VertexWeight3);
-                double z = (p1.Z * rayHit.VertexWeight1) + (p2.Z * rayHit.VertexWeight2) + (p3.Z * rayHit.VertexWeight3);
+                var x = (p1.X * rayHit.VertexWeight1) + (p2.X * rayHit.VertexWeight2) + (p3.X * rayHit.VertexWeight3);
+                var y = (p1.Y * rayHit.VertexWeight1) + (p2.Y * rayHit.VertexWeight2) + (p3.Y * rayHit.VertexWeight3);
+                var z = (p1.Z * rayHit.VertexWeight1) + (p2.Z * rayHit.VertexWeight2) + (p3.Z * rayHit.VertexWeight3);
 
                       // point in local coordinates
                       var p = new Point3D(x, y, z);
@@ -326,7 +317,7 @@ namespace Crystal.Graphics
                   p = t.Transform(p);
                 }
 
-                double distance = (camera.Position - p).LengthSquared;
+                var distance = (camera.Position - p).LengthSquared;
                 if(distance < minimumDistance)
                 {
                   minimumDistance = distance;
@@ -362,10 +353,7 @@ namespace Crystal.Graphics
     /// <returns>The nearest point, or null if no point was found.</returns>
     public static Point3D? FindNearestPoint(this Viewport3D viewport, Point position)
     {
-      Point3D p;
-      Vector3D n;
-      DependencyObject obj;
-      if(FindNearest(viewport, position, out p, out n, out obj))
+      if(FindNearest(viewport, position, out var p, out var n, out var obj))
       {
         return p;
       }
@@ -383,10 +371,7 @@ namespace Crystal.Graphics
     /// </returns>
     public static Visual3D FindNearestVisual(this Viewport3D viewport, Point position)
     {
-      Point3D p;
-      Vector3D n;
-      DependencyObject obj;
-      if(FindNearest(viewport, position, out p, out n, out obj))
+      if(FindNearest(viewport, position, out var p, out var n, out var obj))
       {
         return obj as Visual3D;
       }
@@ -443,8 +428,7 @@ namespace Crystal.Graphics
     /// </returns>
     public static Ray3D GetRay(this Viewport3D viewport, Point position)
     {
-      Point3D point1, point2;
-      bool ok = Point2DtoPoint3D(viewport, position, out point1, out point2);
+      var ok = Point2DtoPoint3D(viewport, position, out var point1, out var point2);
       if(!ok)
       {
         return null;
@@ -634,8 +618,7 @@ namespace Crystal.Graphics
     /// <returns>The ray.</returns>
     public static Ray3D Point2DtoRay3D(this Viewport3D viewport, Point pointIn)
     {
-      Point3D pointNear, pointFar;
-      if(!Point2DtoPoint3D(viewport, pointIn, out pointNear, out pointFar))
+      if(!Point2DtoPoint3D(viewport, pointIn, out var pointNear, out var pointFar))
       {
         return null;
       }
@@ -701,11 +684,11 @@ namespace Crystal.Graphics
 
       var originalCamera = view.Camera;
       var vm = originalCamera.GetViewMatrix();
-      double ar = view.ActualWidth / view.ActualHeight;
+      var ar = view.ActualWidth / view.ActualHeight;
 
-      for(int i = 0; i < m; i++)
+      for(var i = 0; i < m; i++)
       {
-        for(int j = 0; j < m; j++)
+        for(var j = 0; j < m; j++)
         {
           // change the camera viewport and scaling
           var pm = originalCamera.GetProjectionMatrix(ar);
@@ -758,8 +741,8 @@ namespace Crystal.Graphics
     /// <returns>A bitmap.</returns>
     public static BitmapSource RenderBitmap(this Viewport3D view, double width, double height, Brush background, int m = 1)
     {
-      double w = view.Width;
-      double h = view.Height;
+      var w = view.Width;
+      var h = view.Height;
       ResizeAndArrange(view, width, height);
       var rtb = RenderBitmap(view, background, m);
       ResizeAndArrange(view, w, h);
@@ -819,7 +802,7 @@ namespace Crystal.Graphics
     {
       var extension = System.IO.Path.GetExtension(fileName);
       var directory = System.IO.Path.GetDirectoryName(fileName) ?? string.Empty;
-      var name = System.IO.Path.GetFileNameWithoutExtension(fileName) ?? string.Empty;
+      var name = System.IO.Path.GetFileNameWithoutExtension(fileName);
       var leftFileName = System.IO.Path.Combine(directory, name) + "_L" + extension;
       var rightFileName = System.IO.Path.Combine(directory, name) + "_R" + extension;
 
@@ -902,8 +885,7 @@ namespace Crystal.Graphics
         return null;
       }
 
-      Point3D i;
-      return ray.PlaneIntersection(position, normal, out i) ? (Point3D?)i : null;
+      return ray.PlaneIntersection(position, normal, out var i) ? i : null;
     }
 
     /// <summary>
@@ -920,8 +902,7 @@ namespace Crystal.Graphics
     /// </returns>
     public static Point3D? UnProject(this Viewport3D viewport, Point p)
     {
-      var pc = viewport.Camera as ProjectionCamera;
-      if(pc == null)
+      if(viewport.Camera is not ProjectionCamera pc)
       {
         return null;
       }
@@ -936,11 +917,10 @@ namespace Crystal.Graphics
     /// <returns>The total number of triangles</returns>
     public static int GetTotalNumberOfTriangles(this Viewport3D viewport)
     {
-      int count = 0;
-      viewport.Children.Traverse<GeometryModel3D>((m, t) =>
+      var count = 0;
+      viewport.Children.Traverse<GeometryModel3D>((m, _) =>
           {
-            var geometry = m.Geometry as MeshGeometry3D;
-            if(geometry != null && geometry.TriangleIndices != null)
+            if(m.Geometry is MeshGeometry3D { TriangleIndices: { } } geometry)
             {
               count += geometry.TriangleIndices.Count / 3;
             }
@@ -958,7 +938,7 @@ namespace Crystal.Graphics
     private static void CopyBitmap(BitmapSource source, WriteableBitmap target, int x, int y)
     {
       // Calculate stride of source
-      int stride = source.PixelWidth * (source.Format.BitsPerPixel / 8);
+      var stride = source.PixelWidth * (source.Format.BitsPerPixel / 8);
 
       // Create data array to hold source pixel data
       var data = new byte[stride * source.PixelHeight];
@@ -1001,8 +981,7 @@ namespace Crystal.Graphics
     /// </param>
     private static void ExportKerkythea(this Viewport3D view, string fileName, Brush background, int width, int height)
     {
-      var scb = background as SolidColorBrush;
-      var backgroundColor = scb != null ? scb.Color : Colors.White;
+      var backgroundColor = background is SolidColorBrush scb ? scb.Color : Colors.White;
       var e = new KerkytheaExporter
       {
         Width = width,
@@ -1164,8 +1143,7 @@ namespace Crystal.Graphics
       // TODO: change to use Stack/Queue
       foreach(var visual in collection)
       {
-        var modelVisual = visual as ModelVisual3D;
-        if(modelVisual != null)
+        if(visual is ModelVisual3D modelVisual)
         {
           var model = modelVisual.Content;
           if(model != null)
@@ -1179,8 +1157,7 @@ namespace Crystal.Graphics
             SearchFor(modelVisual.Children, type, output);
           }
 
-          var modelGroup = model as Model3DGroup;
-          if(modelGroup != null)
+          if(model is Model3DGroup modelGroup)
           {
             SearchFor(modelGroup.Children, type, output);
           }
@@ -1209,8 +1186,7 @@ namespace Crystal.Graphics
           output.Add(model);
         }
 
-        var group = model as Model3DGroup;
-        if(group != null)
+        if(model is Model3DGroup group)
         {
           SearchFor(group.Children, type, output);
         }
@@ -1236,12 +1212,12 @@ namespace Crystal.Graphics
       /// <summary>
       /// Gets the hit model.
       /// </summary>
-      public Model3D Model { get; private set; }
+      public Model3D Model { get; }
 
       /// <summary>
       /// Gets the hit visual.
       /// </summary>
-      public Visual3D Visual { get; private set; }
+      public Visual3D Visual { get; }
     }
 
     /// <summary>

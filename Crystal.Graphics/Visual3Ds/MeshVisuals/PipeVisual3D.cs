@@ -102,9 +102,9 @@
     /// <returns>
     /// A triangular mesh geometry.
     /// </returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
-      var builder = new MeshBuilder(false, true);
+      var builder = new MeshBuilder(false);
       builder.AddPipe(Point1, Point2, InnerDiameter, Diameter, ThetaDiv);
       return builder.ToMesh();
     }

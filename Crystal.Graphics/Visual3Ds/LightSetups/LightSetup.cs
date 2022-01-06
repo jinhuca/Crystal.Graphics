@@ -14,12 +14,12 @@
     /// <summary>
     /// The light group.
     /// </summary>
-    private readonly Model3DGroup lightGroup = new Model3DGroup();
+    private readonly Model3DGroup lightGroup = new();
 
     /// <summary>
     /// The lights visual.
     /// </summary>
-    private readonly ModelVisual3D lightsVisual = new ModelVisual3D();
+    private readonly ModelVisual3D lightsVisual = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref = "LightSetup" /> class.
@@ -83,8 +83,7 @@
       {
         foreach(var light in lightGroup.Children)
         {
-          var pl = light as PointLight;
-          if(pl != null)
+          if(light is PointLight pl)
           {
             var sphere = new SphereVisual3D();
             sphere.BeginEdit();
@@ -95,8 +94,7 @@
             lightsVisual.Children.Add(sphere);
           }
 
-          var dl = light as DirectionalLight;
-          if(dl != null)
+          if(light is DirectionalLight dl)
           {
             var dir = dl.Direction;
             dir.Normalize();
@@ -123,8 +121,7 @@
             lightsVisual.Children.Add(arrow);
           }
 
-          var al = light as AmbientLight;
-          if(al != null)
+          if(light is AmbientLight al)
           {
             var pos = new Point3D(0, 0, 20);
             lightsVisual.Children.Add(

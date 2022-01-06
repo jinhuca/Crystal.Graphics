@@ -13,12 +13,12 @@
     /// <summary>
     /// The body geometry.
     /// </summary>
-    private MeshGeometry3D body;
+    private MeshGeometry3D? body;
 
     /// <summary>
     /// The head geometry.
     /// </summary>
-    private MeshGeometry3D head;
+    private MeshGeometry3D? head;
 
     /// <summary>
     /// Initializes a new instance of the <see cref = "VectorFieldVisual3D" /> class.
@@ -80,9 +80,9 @@
       CreateGeometry();
       var c = new Model3DGroup();
       var mat = MaterialHelper.CreateMaterial(Fill);
-      double l = HeadLength * Diameter;
+      var l = HeadLength * Diameter;
 
-      for(int i = 0; i < Positions.Count; i++)
+      for(var i = 0; i < Positions.Count; i++)
       {
         var p = Positions[i];
         var d = Directions[i];
@@ -121,7 +121,7 @@
     /// </returns>
     private static Transform3D CreateBodyTransform(Point3D p, Vector3D z)
     {
-      double length = z.Length;
+      var length = z.Length;
       z.Normalize();
       var x = z.FindAnyPerpendicular();
       x.Normalize();
@@ -160,11 +160,11 @@
     /// </summary>
     private void CreateGeometry()
     {
-      double r = Diameter / 2;
-      double l = HeadLength * Diameter;
+      var r = Diameter / 2;
+      var l = HeadLength * Diameter;
 
       // arrowhead
-      var pc = new PointCollection { new Point(-l, r), new Point(-l, r * 2), new Point(0, 0) };
+      var pc = new PointCollection { new(-l, r), new(-l, r * 2), new(0, 0) };
 
       var headBuilder = new MeshBuilder(false, false);
       headBuilder.AddRevolvedGeometry(pc, null, new Point3D(0, 0, 0), new Vector3D(0, 0, 1), ThetaDiv);
@@ -172,7 +172,7 @@
       head.Freeze();
 
       // body
-      pc = new PointCollection { new Point(0, 0), new Point(0, r), new Point(1, r) };
+      pc = new PointCollection { new(0, 0), new(0, r), new(1, r) };
 
       var bodyBuilder = new MeshBuilder(false, false);
       bodyBuilder.AddRevolvedGeometry(pc, null, new Point3D(0, 0, 0), new Vector3D(0, 0, 1), ThetaDiv);

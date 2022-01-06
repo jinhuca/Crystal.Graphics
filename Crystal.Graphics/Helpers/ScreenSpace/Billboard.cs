@@ -49,7 +49,7 @@
     /// <param name="worldDepthOffset">The depth offset in world coordinates.</param>
     public Billboard(Point3D position, double size, double depthOffset, double worldDepthOffset = 0)
     {
-      double halfSize = size / 2.0;
+      var halfSize = size / 2.0;
       Position = position;
       Left = -halfSize;
       Right = halfSize;
@@ -95,8 +95,8 @@
         ya = -1;
       }
 
-      double left = xa * width;
-      double top = ya * height;
+      var left = xa * width;
+      var top = ya * height;
 
       Position = position;
       Left = left;

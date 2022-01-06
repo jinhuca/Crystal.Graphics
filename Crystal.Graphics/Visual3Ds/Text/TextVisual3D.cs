@@ -380,7 +380,7 @@
         material = new DiffuseMaterial { Brush = new VisualBrush(element) };
       }
 
-      double width = element.ActualWidth / element.ActualHeight * Height;
+      var width = element.ActualWidth / element.ActualHeight * Height;
 
       var position = Position;
       var textDirection = TextDirection;
@@ -415,16 +415,16 @@
       // p1 is the upper left
       // p2 is the lower right
       // p3 is the upper right
-      Point3D p0 = position + (xa * width) * textDirection + (ya * height) * updirection;
-      Point3D p1 = p0 + updirection * height;
-      Point3D p2 = p0 + textDirection * width;
-      Point3D p3 = p0 + updirection * height + textDirection * width;
+      var p0 = position + (xa * width) * textDirection + (ya * height) * updirection;
+      var p1 = p0 + updirection * height;
+      var p2 = p0 + textDirection * width;
+      var p3 = p0 + updirection * height + textDirection * width;
 
       // Now build the geometry for the sign.  It's just a
       // rectangle made of two triangles, on each side.
       var mg = new MeshGeometry3D { Positions = new Point3DCollection { p0, p1, p2, p3 } };
 
-      bool isDoubleSided = IsDoubleSided;
+      var isDoubleSided = IsDoubleSided;
       if(isDoubleSided)
       {
         mg.Positions.Add(p0); // 4

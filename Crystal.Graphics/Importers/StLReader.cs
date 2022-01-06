@@ -13,12 +13,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// The regular expression used to parse normal vectors.
     /// </summary>
-    private static readonly Regex NormalRegex = new Regex(@"normal\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
+    private static readonly Regex NormalRegex = new(@"normal\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
 
     /// <summary>
     /// The regular expression used to parse vertices.
     /// </summary>
-    private static readonly Regex VertexRegex = new Regex(@"vertex\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
+    private static readonly Regex VertexRegex = new(@"vertex\s*(\S*)\s*(\S*)\s*(\S*)", RegexOptions.Compiled);
 
     /// <summary>
     /// The index.
@@ -53,13 +53,13 @@ namespace Crystal.Graphics
     /// Gets the materials.
     /// </summary>
     /// <value> The materials. </value>
-    public IList<Material> Materials { get; private set; }
+    public IList<Material> Materials { get; }
 
     /// <summary>
     /// Gets the meshes.
     /// </summary>
     /// <value> The meshes. </value>
-    public IList<MeshBuilder> Meshes { get; private set; }
+    public IList<MeshBuilder> Meshes { get; }
 
     /// <summary>
     /// Reads the model from the specified stream.
@@ -98,7 +98,7 @@ namespace Crystal.Graphics
           () =>
           {
             modelGroup = new Model3DGroup();
-            int i = 0;
+            var i = 0;
             foreach(var mesh in Meshes)
             {
               var gm = new GeometryModel3D
@@ -139,7 +139,7 @@ namespace Crystal.Graphics
     private static void ParseLine(string line, out string id, out string values)
     {
       line = line.Trim();
-      int idx = line.IndexOf(' ');
+      var idx = line.IndexOf(' ');
       if(idx == -1)
       {
         id = line.ToLowerInvariant();
@@ -171,9 +171,9 @@ namespace Crystal.Graphics
         throw new FileFormatException("Unexpected line.");
       }
 
-      double x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-      double y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
-      double z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+      var x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+      var y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+      var z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
 
       return new Vector3D(x, y, z);
     }
@@ -213,8 +213,7 @@ namespace Crystal.Graphics
       }
 
       var line = reader.ReadLine();
-      string id, values;
-      ParseLine(line, out id, out values);
+      ParseLine(line, out var id, out var values);
 
       if(!string.Equals(token, id, StringComparison.OrdinalIgnoreCase))
       {
@@ -274,9 +273,9 @@ namespace Crystal.Graphics
         return false;
       }
 
-      double x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-      double y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
-      double z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+      var x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+      var y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+      var z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
 
       point = new Point3D(x, y, z);
       return true;
@@ -308,15 +307,13 @@ namespace Crystal.Graphics
 
         line = line.Trim();
 
-        Point3D point;
-        if(TryParseVertex(line, out point))
+        if(TryParseVertex(line, out var point))
         {
           points.Add(point);
           continue;
         }
 
-        string id, values;
-        ParseLine(line, out id, out values);
+        ParseLine(line, out var id, out var values);
 
         if(id == "endloop")
         {
@@ -333,7 +330,7 @@ namespace Crystal.Graphics
 
       if(Meshes.Count < index + 1)
       {
-        Meshes.Add(new MeshBuilder(true, true));
+        Meshes.Add(new MeshBuilder(true));
       }
 
       Meshes[index].AddPolygon(points);
@@ -349,27 +346,27 @@ namespace Crystal.Graphics
     /// </param>
     private void ReadTriangle(BinaryReader reader)
     {
-      float ni = ReadFloat(reader);
-      float nj = ReadFloat(reader);
-      float nk = ReadFloat(reader);
+      var ni = ReadFloat(reader);
+      var nj = ReadFloat(reader);
+      var nk = ReadFloat(reader);
 
 #pragma warning disable 168
       var n = new Vector3D(ni, nj, nk);
 #pragma warning restore 168
 
-      float x1 = ReadFloat(reader);
-      float y1 = ReadFloat(reader);
-      float z1 = ReadFloat(reader);
+      var x1 = ReadFloat(reader);
+      var y1 = ReadFloat(reader);
+      var z1 = ReadFloat(reader);
       var v1 = new Point3D(x1, y1, z1);
 
-      float x2 = ReadFloat(reader);
-      float y2 = ReadFloat(reader);
-      float z2 = ReadFloat(reader);
+      var x2 = ReadFloat(reader);
+      var y2 = ReadFloat(reader);
+      var z2 = ReadFloat(reader);
       var v2 = new Point3D(x2, y2, z2);
 
-      float x3 = ReadFloat(reader);
-      float y3 = ReadFloat(reader);
-      float z3 = ReadFloat(reader);
+      var x3 = ReadFloat(reader);
+      var y3 = ReadFloat(reader);
+      var z3 = ReadFloat(reader);
       var v3 = new Point3D(x3, y3, z3);
 
       var attrib = Convert.ToString(ReadUInt16(reader), 2).PadLeft(16, '0').ToCharArray();
@@ -377,26 +374,26 @@ namespace Crystal.Graphics
 
       if(hasColor)
       {
-        int blue = attrib[15].Equals('1') ? 1 : 0;
+        var blue = attrib[15].Equals('1') ? 1 : 0;
         blue = attrib[14].Equals('1') ? blue + 2 : blue;
         blue = attrib[13].Equals('1') ? blue + 4 : blue;
         blue = attrib[12].Equals('1') ? blue + 8 : blue;
         blue = attrib[11].Equals('1') ? blue + 16 : blue;
-        int b = blue * 8;
+        var b = blue * 8;
 
-        int green = attrib[10].Equals('1') ? 1 : 0;
+        var green = attrib[10].Equals('1') ? 1 : 0;
         green = attrib[9].Equals('1') ? green + 2 : green;
         green = attrib[8].Equals('1') ? green + 4 : green;
         green = attrib[7].Equals('1') ? green + 8 : green;
         green = attrib[6].Equals('1') ? green + 16 : green;
-        int g = green * 8;
+        var g = green * 8;
 
-        int red = attrib[5].Equals('1') ? 1 : 0;
+        var red = attrib[5].Equals('1') ? 1 : 0;
         red = attrib[4].Equals('1') ? red + 2 : red;
         red = attrib[3].Equals('1') ? red + 4 : red;
         red = attrib[2].Equals('1') ? red + 8 : red;
         red = attrib[1].Equals('1') ? red + 16 : red;
-        int r = red * 8;
+        var r = red * 8;
 
         var currentColor = Color.FromRgb(Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
 
@@ -421,7 +418,7 @@ namespace Crystal.Graphics
 
       if(Meshes.Count < index + 1)
       {
-        Meshes.Add(new MeshBuilder(true, true));
+        Meshes.Add(new MeshBuilder(true));
       }
 
       Meshes[index].AddTriangle(v1, v2, v3);
@@ -441,7 +438,7 @@ namespace Crystal.Graphics
     private bool TryReadAscii(Stream stream)
     {
       var reader = new StreamReader(stream);
-      Meshes.Add(new MeshBuilder(true, true));
+      Meshes.Add(new MeshBuilder(true));
       Materials.Add(DefaultMaterial);
 
       while(!reader.EndOfStream)
@@ -459,8 +456,7 @@ namespace Crystal.Graphics
           continue;
         }
 
-        string id, values;
-        ParseLine(line, out id, out values);
+        ParseLine(line, out var id, out var values);
         switch(id)
         {
           case "solid":
@@ -491,15 +487,15 @@ namespace Crystal.Graphics
     /// </exception>
     private bool TryReadBinary(Stream stream)
     {
-      long length = stream.Length;
+      var length = stream.Length;
       if(length < 84)
       {
         throw new FileFormatException("Incomplete file");
       }
 
       var reader = new BinaryReader(stream);
-      Header = System.Text.Encoding.ASCII.GetString(reader.ReadBytes(80)).Trim();
-      uint numberTriangles = ReadUInt32(reader);
+      Header = Encoding.ASCII.GetString(reader.ReadBytes(80)).Trim();
+      var numberTriangles = ReadUInt32(reader);
 
       if(length - 84 != numberTriangles * 50)
       {
@@ -507,10 +503,10 @@ namespace Crystal.Graphics
       }
 
       index = 0;
-      Meshes.Add(new MeshBuilder(true, true));
+      Meshes.Add(new MeshBuilder(true));
       Materials.Add(DefaultMaterial);
 
-      for(int i = 0; i < numberTriangles; i++)
+      for(var i = 0; i < numberTriangles; i++)
       {
         ReadTriangle(reader);
       }

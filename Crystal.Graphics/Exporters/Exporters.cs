@@ -25,14 +25,14 @@
     /// <returns>
     /// An exporter.
     /// </returns>
-    public static IExporter Create(string path)
+    public static IExporter? Create(string path)
     {
       if(path == null)
       {
         return null;
       }
 
-      string ext = System.IO.Path.GetExtension(path);
+      var ext = System.IO.Path.GetExtension(path);
       switch(ext.ToLower())
       {
         case ".png":

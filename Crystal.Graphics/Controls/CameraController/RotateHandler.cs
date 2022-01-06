@@ -83,9 +83,7 @@ namespace Crystal.Graphics
       {
         return;
       }
-
-      CameraHelper.LookAt(Camera, target, animationTime);
-
+      Camera.LookAt(target, animationTime);
       Controller.OnLookAtChanged();
     }
 
@@ -161,10 +159,10 @@ namespace Crystal.Graphics
     {
       InitTurnballRotationAxes(p1);
 
-      Vector delta = p2 - p1;
+      var delta = p2 - p1;
 
-      Vector3D relativeTarget = rotateAround - CameraTarget;
-      Vector3D relativePosition = rotateAround - CameraPosition;
+      var relativeTarget = rotateAround - CameraTarget;
+      var relativePosition = rotateAround - CameraPosition;
 
       double d = -1;
       if(CameraMode != CameraMode.Inspect)
@@ -176,29 +174,29 @@ namespace Crystal.Graphics
 
       var q1 = new Quaternion(rotationAxisX, d * delta.X);
       var q2 = new Quaternion(rotationAxisY, d * delta.Y);
-      Quaternion q = q1 * q2;
+      var q = q1 * q2;
 
       var m = new Matrix3D();
       m.Rotate(q);
 
-      Vector3D newLookDir = m.Transform(CameraLookDirection);
-      Vector3D newUpDirection = m.Transform(CameraUpDirection);
+      var newLookDir = m.Transform(CameraLookDirection);
+      var newUpDirection = m.Transform(CameraUpDirection);
 
-      Vector3D newRelativeTarget = m.Transform(relativeTarget);
-      Vector3D newRelativePosition = m.Transform(relativePosition);
+      var newRelativeTarget = m.Transform(relativeTarget);
+      var newRelativePosition = m.Transform(relativePosition);
 
-      Vector3D newRightVector = Vector3D.CrossProduct(newLookDir, newUpDirection);
+      var newRightVector = Vector3D.CrossProduct(newLookDir, newUpDirection);
       newRightVector.Normalize();
-      Vector3D modUpDir = Vector3D.CrossProduct(newRightVector, newLookDir);
+      var modUpDir = Vector3D.CrossProduct(newRightVector, newLookDir);
       modUpDir.Normalize();
       if((newUpDirection - modUpDir).Length > 1e-8)
       {
         newUpDirection = modUpDir;
       }
 
-      Point3D newTarget = rotateAround - newRelativeTarget;
-      Point3D newPosition = rotateAround - newRelativePosition;
-      Vector3D newLookDirection = newTarget - newPosition;
+      var newTarget = rotateAround - newRelativeTarget;
+      var newPosition = rotateAround - newRelativePosition;
+      var newLookDirection = newTarget - newPosition;
 
       CameraLookDirection = newLookDirection;
       if(CameraMode == CameraMode.Inspect)
@@ -219,17 +217,17 @@ namespace Crystal.Graphics
     /// </param>
     public void RotateTurntable(Vector delta, Point3D rotateAround)
     {
-      Vector3D relativeTarget = rotateAround - CameraTarget;
-      Vector3D relativePosition = rotateAround - CameraPosition;
+      var relativeTarget = rotateAround - CameraTarget;
+      var relativePosition = rotateAround - CameraPosition;
 
-      Vector3D up = ModelUpDirection;
-      Vector3D dir = CameraLookDirection;
+      var up = ModelUpDirection;
+      var dir = CameraLookDirection;
       dir.Normalize();
 
-      Vector3D right = Vector3D.CrossProduct(dir, CameraUpDirection);
+      var right = Vector3D.CrossProduct(dir, CameraUpDirection);
       right.Normalize();
 
-      double d = -0.5;
+      var d = -0.5;
       if(CameraMode != CameraMode.Inspect)
       {
         d *= -0.2;
@@ -239,18 +237,18 @@ namespace Crystal.Graphics
 
       var q1 = new Quaternion(up, d * delta.X);
       var q2 = new Quaternion(right, d * delta.Y);
-      Quaternion q = q1 * q2;
+      var q = q1 * q2;
 
       var m = new Matrix3D();
       m.Rotate(q);
 
-      Vector3D newUpDirection = m.Transform(CameraUpDirection);
+      var newUpDirection = m.Transform(CameraUpDirection);
 
-      Vector3D newRelativeTarget = m.Transform(relativeTarget);
-      Vector3D newRelativePosition = m.Transform(relativePosition);
+      var newRelativeTarget = m.Transform(relativeTarget);
+      var newRelativePosition = m.Transform(relativePosition);
 
-      Point3D newTarget = rotateAround - newRelativeTarget;
-      Point3D newPosition = rotateAround - newRelativePosition;
+      var newTarget = rotateAround - newRelativeTarget;
+      var newPosition = rotateAround - newRelativePosition;
 
       CameraLookDirection = newTarget - newPosition;
       if(CameraMode == CameraMode.Inspect)
@@ -301,10 +299,7 @@ namespace Crystal.Graphics
 
       if(Controller.CameraMode == CameraMode.Inspect)
       {
-        if(Controller.ZoomAroundMouseDownPoint)
-          Controller.ShowTargetAdorner(MouseDownNearestPoint2D);
-        else
-          Controller.ShowTargetAdorner(MouseDownPoint);
+        Controller.ShowTargetAdorner(Controller.ZoomAroundMouseDownPoint ? MouseDownNearestPoint2D : MouseDownPoint);
       }
 
       switch(Controller.CameraRotationMode)
@@ -356,7 +351,7 @@ namespace Crystal.Graphics
     /// </param>
     protected override void OnInertiaStarting(int elapsedTime)
     {
-      Vector delta = LastPoint - MouseDownPoint;
+      var delta = LastPoint - MouseDownPoint;
 
       // Debug.WriteLine("SpinInertiaStarting: " + elapsedTime + "ms " + delta.Length + "px");
       Controller.StartSpin(
@@ -383,11 +378,11 @@ namespace Crystal.Graphics
     private static Vector3D ProjectToTrackball(Point point, double w, double h)
     {
       // Use the diagonal for scaling, making sure that the whole client area is inside the trackball
-      double r = Math.Sqrt(w * w + h * h) / 2;
-      double x = (point.X - w / 2) / r;
-      double y = (h / 2 - point.Y) / r;
-      double z2 = 1 - x * x - y * y;
-      double z = z2 > 0 ? Math.Sqrt(z2) : 0;
+      var r = Math.Sqrt(w * w + h * h) / 2;
+      var x = (point.X - w / 2) / r;
+      var y = (h / 2 - point.Y) / r;
+      var z2 = 1 - x * x - y * y;
+      var z = z2 > 0 ? Math.Sqrt(z2) : 0;
 
       return new Vector3D(x, y, z);
     }
@@ -400,14 +395,14 @@ namespace Crystal.Graphics
     /// </param>
     private void InitTurnballRotationAxes(Point p1)
     {
-      double fx = p1.X / ViewportWidth;
-      double fy = p1.Y / ViewportHeight;
+      var fx = p1.X / ViewportWidth;
+      var fy = p1.Y / ViewportHeight;
 
-      Vector3D up = CameraUpDirection;
-      Vector3D dir = CameraLookDirection;
+      var up = CameraUpDirection;
+      var dir = CameraLookDirection;
       dir.Normalize();
 
-      Vector3D right = Vector3D.CrossProduct(dir, CameraUpDirection);
+      var right = Vector3D.CrossProduct(dir, CameraUpDirection);
       right.Normalize();
 
       rotationAxisX = up;
@@ -489,18 +484,18 @@ namespace Crystal.Graphics
     {
       // http://viewport3d.com/trackball.htm
       // http://www.codeplex.com/3DTools/Thread/View.aspx?ThreadId=22310
-      Vector3D v1 = ProjectToTrackball(p1, ViewportWidth, ViewportHeight);
-      Vector3D v2 = ProjectToTrackball(p2, ViewportWidth, ViewportHeight);
+      var v1 = ProjectToTrackball(p1, ViewportWidth, ViewportHeight);
+      var v2 = ProjectToTrackball(p2, ViewportWidth, ViewportHeight);
 
       // transform the trackball coordinates to view space
-      Vector3D viewZ = CameraLookDirection;
-      Vector3D viewX = Vector3D.CrossProduct(CameraUpDirection, viewZ);
-      Vector3D viewY = Vector3D.CrossProduct(viewX, viewZ);
+      var viewZ = CameraLookDirection;
+      var viewX = Vector3D.CrossProduct(CameraUpDirection, viewZ);
+      var viewY = Vector3D.CrossProduct(viewX, viewZ);
       viewX.Normalize();
       viewY.Normalize();
       viewZ.Normalize();
-      Vector3D u1 = viewZ * v1.Z + viewX * v1.X + viewY * v1.Y;
-      Vector3D u2 = viewZ * v2.Z + viewX * v2.X + viewY * v2.Y;
+      var u1 = viewZ * v1.Z + viewX * v1.X + viewY * v1.Y;
+      var u2 = viewZ * v2.Z + viewX * v2.X + viewY * v2.Y;
 
       // Could also use the Camera ViewMatrix
       // var vm = Viewport3DHelper.GetViewMatrix(this.ActualCamera);
@@ -510,26 +505,26 @@ namespace Crystal.Graphics
       // var u2 = ct.Transform(v2);
 
       // Find the rotation axis and angle
-      Vector3D axis = Vector3D.CrossProduct(u1, u2);
+      var axis = Vector3D.CrossProduct(u1, u2);
       if(axis.LengthSquared < 1e-8)
       {
         return;
       }
 
-      double angle = Vector3D.AngleBetween(u1, u2);
+      var angle = Vector3D.AngleBetween(u1, u2);
 
       // Create the transform
       var delta = new Quaternion(axis, -angle * RotationSensitivity * 5);
       var rotate = new RotateTransform3D(new QuaternionRotation3D(delta));
 
       // Find vectors relative to the rotate-around point
-      Vector3D relativeTarget = rotateAround - CameraTarget;
-      Vector3D relativePosition = rotateAround - CameraPosition;
+      var relativeTarget = rotateAround - CameraTarget;
+      var relativePosition = rotateAround - CameraPosition;
 
       // Rotate the relative vectors
-      Vector3D newRelativeTarget = rotate.Transform(relativeTarget);
-      Vector3D newRelativePosition = rotate.Transform(relativePosition);
-      Vector3D newUpDirection = rotate.Transform(CameraUpDirection);
+      var newRelativeTarget = rotate.Transform(relativeTarget);
+      var newRelativePosition = rotate.Transform(relativePosition);
+      var newUpDirection = rotate.Transform(CameraUpDirection);
 
       // Find new camera position
       var newTarget = rotateAround - newRelativeTarget;

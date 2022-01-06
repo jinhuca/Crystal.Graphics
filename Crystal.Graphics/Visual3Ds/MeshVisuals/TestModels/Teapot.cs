@@ -68,13 +68,10 @@
     /// <returns>
     /// A triangular mesh geometry.
     /// </returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
-      var rd =
-          Application.LoadComponent(
-              new Uri("Crystal.Graphics;component/Resources/TeapotGeometry.xaml", UriKind.Relative)) as
-          ResourceDictionary;
-      if(rd == null)
+      if(Application.LoadComponent(
+           new Uri("Crystal.Graphics;component/Resources/TeapotGeometry.xaml", UriKind.Relative)) is not ResourceDictionary rd)
       {
         return null;
       }
@@ -102,9 +99,9 @@
     /// </summary>
     private void OnTransformChanged()
     {
-      Vector3D right = SpoutDirection;
-      Vector3D back = Vector3D.CrossProduct(UpDirection, right);
-      Vector3D up = UpDirection;
+      var right = SpoutDirection;
+      var back = Vector3D.CrossProduct(UpDirection, right);
+      var up = UpDirection;
 
       Transform =
           new MatrixTransform3D(

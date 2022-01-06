@@ -69,7 +69,7 @@ namespace Crystal.Graphics
     /// Gets or sets the texture.
     /// </summary>
     /// <value>The texture.</value>
-    public TerrainTexture Texture { get; set; }
+    public TerrainTexture? Texture { get; set; }
 
     /// <summary>
     /// Gets or sets the top.
@@ -94,23 +94,23 @@ namespace Crystal.Graphics
     /// </returns>
     public GeometryModel3D CreateModel(int lod)
     {
-      int ni = Height / lod;
-      int nj = Width / lod;
+      var ni = Height / lod;
+      var nj = Width / lod;
       var pts = new List<Point3D>(ni * nj);
 
-      double mx = (Left + Right) / 2;
-      double my = (Top + Bottom) / 2;
-      double mz = (MinimumZ + MaximumZ) / 2;
+      var mx = (Left + Right) / 2;
+      var my = (Top + Bottom) / 2;
+      var mz = (MinimumZ + MaximumZ) / 2;
 
       Offset = new Point3D(mx, my, mz);
 
-      for(int i = 0; i < ni; i++)
+      for(var i = 0; i < ni; i++)
       {
-        for(int j = 0; j < nj; j++)
+        for(var j = 0; j < nj; j++)
         {
-          double x = Left + (Right - Left) * j / (nj - 1);
-          double y = Top + (Bottom - Top) * i / (ni - 1);
-          double z = Data[i * lod * Width + j * lod];
+          var x = Left + (Right - Left) * j / (nj - 1);
+          var y = Top + (Bottom - Top) * i / (ni - 1);
+          var z = Data[i * lod * Width + j * lod];
 
           x -= Offset.X;
           y -= Offset.Y;
@@ -129,7 +129,7 @@ namespace Crystal.Graphics
       {
         Texture.Calculate(this, mesh);
         material = Texture.Material;
-        mesh.TextureCoordinates = Texture.TextureCoordinates;
+        mesh!.TextureCoordinates = Texture.TextureCoordinates;
       }
 
       return new GeometryModel3D { Geometry = mesh, Material = material, BackMaterial = material };
@@ -188,27 +188,27 @@ namespace Crystal.Graphics
 
         Width = reader.ReadInt32();
         Height = reader.ReadInt32();
-        short dataSize = reader.ReadInt16();
-        bool isFloatingPoint = reader.ReadInt16() == 1;
-        short horizontalUnits = reader.ReadInt16();
-        short utmZone = reader.ReadInt16();
-        short datum = reader.ReadInt16();
+        var dataSize = reader.ReadInt16();
+        var isFloatingPoint = reader.ReadInt16() == 1;
+        var horizontalUnits = reader.ReadInt16();
+        var utmZone = reader.ReadInt16();
+        var datum = reader.ReadInt16();
         Left = reader.ReadDouble();
         Right = reader.ReadDouble();
         Bottom = reader.ReadDouble();
         Top = reader.ReadDouble();
-        short proj = reader.ReadInt16();
-        float scale = reader.ReadSingle();
+        var proj = reader.ReadInt16();
+        var scale = reader.ReadSingle();
         var padding = reader.ReadBytes(190);
 
-        int index = 0;
+        var index = 0;
         Data = new double[Width * Height];
         MinimumZ = double.MaxValue;
         MaximumZ = double.MinValue;
 
-        for(int y = 0; y < Height; y++)
+        for(var y = 0; y < Height; y++)
         {
-          for(int x = 0; x < Width; x++)
+          for(var x = 0; x < Width; x++)
           {
             double z;
 

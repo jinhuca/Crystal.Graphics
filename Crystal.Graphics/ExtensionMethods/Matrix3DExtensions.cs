@@ -148,7 +148,7 @@
     /// </returns>
     internal static string ConvertToString(this Matrix3D matrix, string format, int columnWidth)
     {
-      CultureInfo provider = CultureInfo.InvariantCulture;
+      var provider = CultureInfo.InvariantCulture;
       return matrix.ConvertToString(format, "\t", "\n", columnWidth, provider);
     }
 
@@ -185,15 +185,15 @@
         CultureInfo provider)
     {
       var formatString = "{0:" + format + "}";
-      double[,] m = matrix.ToArray();
+      var m = matrix.ToArray();
 
       // indexing: m[row,column]
       var sb = new StringBuilder();
-      for(int i = 0; i < m.GetLength(0); i++)
+      for(var i = 0; i < m.GetLength(0); i++)
       {
-        for(int j = 0; j < m.GetLength(1); j++)
+        for(var j = 0; j < m.GetLength(1); j++)
         {
-          string s = string.Format(provider, formatString, m[i, j]).PadLeft(columnWidth);
+          var s = string.Format(provider, formatString, m[i, j]).PadLeft(columnWidth);
           sb.Append(s);
           if(j < 3)
           {

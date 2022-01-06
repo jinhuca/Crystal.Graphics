@@ -36,7 +36,7 @@
     /// <summary>
     /// The cut geometries.
     /// </summary>
-    private Dictionary<Model3D, Geometry3D> cutGeometries = new Dictionary<Model3D, Geometry3D>();
+    private Dictionary<Model3D, Geometry3D> cutGeometries = new();
 
     /// <summary>
     /// The new cut geometries.
@@ -51,7 +51,7 @@
     /// <summary>
     /// The original geometries.
     /// </summary>
-    private Dictionary<Model3D, Geometry3D> originalGeometries = new Dictionary<Model3D, Geometry3D>();
+    private Dictionary<Model3D, Geometry3D> originalGeometries = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref = "CuttingPlaneGroup" /> class.
@@ -175,8 +175,7 @@
         updateRequired = true;
       }
 
-      Geometry3D cutGeometry;
-      if(cutGeometries.TryGetValue(model, out cutGeometry))
+      if(cutGeometries.TryGetValue(model, out var cutGeometry))
       {
         // ReSharper disable once RedundantNameQualifier
         if(object.ReferenceEquals(cutGeometry, model.Geometry))
@@ -185,8 +184,7 @@
         }
       }
 
-      Geometry3D originalGeometry;
-      if(!originalGeometries.TryGetValue(model, out originalGeometry))
+      if(!originalGeometries.TryGetValue(model, out var originalGeometry))
       {
         originalGeometry = model.Geometry;
         updateRequired = true;
@@ -251,7 +249,7 @@
     /// <param name="plane">The plane.</param>
     /// <param name="complement">Cut with the complement set if set to <c>true</c>.</param>
     /// <returns>The intersected geometry.</returns>
-    private MeshGeometry3D Intersect(MeshGeometry3D source, GeneralTransform3D inverseTransform, Plane3D plane, bool complement)
+    private MeshGeometry3D? Intersect(MeshGeometry3D? source, GeneralTransform3D inverseTransform, Plane3D plane, bool complement)
     {
       var p = inverseTransform.Transform(plane.Position);
       var p2 = inverseTransform.Transform(plane.Position + plane.Normal);
@@ -262,7 +260,7 @@
         n *= -1;
       }
 
-      return MeshGeometryHelper.Cut(source, p, n);
+      return source.Cut(p, n);
     }
   }
 }

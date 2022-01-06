@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Crystal.Graphics
+﻿namespace Crystal.Graphics
 {
   public class PointPlotViewport3D : PlotViewport3D
   {
@@ -31,7 +25,7 @@ namespace Crystal.Graphics
 
     #region Private Methods
 
-    private static new void ModelChanged(DependencyObject dpObj, DependencyPropertyChangedEventArgs e)
+    private new static void ModelChanged(DependencyObject dpObj, DependencyPropertyChangedEventArgs e)
     {
       ((PointPlotViewport3D)dpObj).UpdateModel();
     }
@@ -46,18 +40,18 @@ namespace Crystal.Graphics
       Model3DGroup? plotModel = new();
       if(Points == null || Values == null) return plotModel;
 
-      int minX = (int)Math.Floor(Points.Min(p => p.X));
-      int maxX = (int)Math.Ceiling(Points.Max(p => p.X));
-      int minY = (int)Math.Floor(Points.Min(p => p.Y));
-      int maxY = (int)Math.Ceiling(Points.Max(p => p.Y));
-      int minZ = (int)Math.Floor(Points.Min(p => p.Z));
-      int maxZ = (int)Math.Ceiling(Points.Max(p => p.Z));
+      var minX = (int)Math.Floor(Points.Min(p => p.X));
+      var maxX = (int)Math.Ceiling(Points.Max(p => p.X));
+      var minY = (int)Math.Floor(Points.Min(p => p.Y));
+      var maxY = (int)Math.Ceiling(Points.Max(p => p.Y));
+      var minZ = (int)Math.Floor(Points.Min(p => p.Z));
+      var maxZ = (int)Math.Ceiling(Points.Max(p => p.Z));
 
-      double minValue = Values.Min();
-      double maxValue = Values.Max();
+      var minValue = Values.Min();
+      var maxValue = Values.Max();
 
       var valueRange = maxValue - minValue;
-      var scatterMeshBuilder = new MeshBuilder(true, true);
+      var scatterMeshBuilder = new MeshBuilder(true);
       var oldTCCount = 0;
 
       for(var i = 0; i < Points.Length; ++i)
@@ -73,8 +67,8 @@ namespace Crystal.Graphics
         oldTCCount = newTCCount;
       }
 
-      MeshGeometry3D? mesh = scatterMeshBuilder.ToMesh(true);
-      Material? material = MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0);
+      var mesh = scatterMeshBuilder.ToMesh(true);
+      var material = MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0);
 
       var scatterModel = new GeometryModel3D(mesh, material);
 
@@ -86,33 +80,33 @@ namespace Crystal.Graphics
 
       for(double x = minX; x <= maxX; x += IntervalX)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           $"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
-      GeometryModel3D xAxisTitle = TextCreator.CreateTextLabelModel3D(
+      var xAxisTitle = TextCreator.CreateTextLabelModel3D(
         XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 6, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
       plotModel.Children.Add(xAxisTitle);
 
       for(double y = minY; y <= maxY + 1; y += IntervalY)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           $"{y:0}", YAxisLabelBrush, true, YAxisLabelFontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(YAxisTitleContent, YAxisTitleBrush, true, YAxisTitleFontSize, new Point3D(minX - (FontSize * 10), (minY + maxY) * 0.5, minZ), new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
+        var label = TextCreator.CreateTextLabelModel3D(YAxisTitleContent, YAxisTitleBrush, true, YAxisTitleFontSize, new Point3D(minX - (FontSize * 10), (minY + maxY) * 0.5, minZ), new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
         plotModel.Children.Add(label);
       }
 
-      double z0 = (int)(minZ / IntervalZ) * IntervalZ;
-      for(double z = z0; z <= maxZ; z += IntervalZ)
+      var z0 = (int)(minZ / IntervalZ) * IntervalZ;
+      for(var z = z0; z <= maxZ; z += IntervalZ)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D($"{z:0}", ZAxisLabelBrush, true, ZAxisLabelFontSize, new Point3D(minX - FontSize * 3, maxY, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
+        var label = TextCreator.CreateTextLabelModel3D($"{z:0}", ZAxisLabelBrush, true, ZAxisLabelFontSize, new Point3D(minX - FontSize * 3, maxY, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
         plotModel.Children.Add(label);
       }
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(ZAxisTitleContent, ZAxisTitleBrush, true, ZAxisTitleFontSize, new Point3D(minX - FontSize * 10, maxY, (minZ + maxZ) * 0.5), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
+        var label = TextCreator.CreateTextLabelModel3D(ZAxisTitleContent, ZAxisTitleBrush, true, ZAxisTitleFontSize, new Point3D(minX - FontSize * 10, maxY, (minZ + maxZ) * 0.5), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
         plotModel.Children.Add(label);
       }
 

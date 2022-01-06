@@ -38,19 +38,19 @@
     /// <param name="mesh">
     /// The mesh.
     /// </param>
-    public override void Calculate(TerrainModel model, MeshGeometry3D mesh)
+    public override void Calculate(TerrainModel model, MeshGeometry3D? mesh)
     {
-      var normals = MeshGeometryHelper.CalculateNormals(mesh);
+      var normals = mesh.CalculateNormals();
       var texcoords = new PointCollection();
-      for(int i = 0; i < normals.Count; i++)
+      for(var i = 0; i < normals.Count; i++)
       {
-        double slopedir = Math.Atan2(normals[i].Y, normals[i].X) * 180 / Math.PI;
+        var slopedir = Math.Atan2(normals[i].Y, normals[i].X) * 180 / Math.PI;
         if(slopedir < 0)
         {
           slopedir += 360;
         }
 
-        double u = slopedir / 360;
+        var u = slopedir / 360;
         texcoords.Add(new Point(u, u));
       }
 

@@ -24,7 +24,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// Gets the metadata.
     /// </summary>
-    public Dictionary<string, string> Metadata { get; private set; }
+    public Dictionary<string, string> Metadata { get; }
 
     /// <summary>
     /// Sets the title.
@@ -92,15 +92,14 @@ namespace Crystal.Graphics
     /// <param name="inheritedTransform">The inherited transform.</param>
     protected override void ExportModel(XmlWriter writer, GeometryModel3D model, Transform3D inheritedTransform)
     {
-      var mesh = model.Geometry as MeshGeometry3D;
-      if(mesh == null)
+      if(model.Geometry is not MeshGeometry3D mesh)
       {
         // Only MeshGeometry3D is supported.
         return;
       }
 
       var triangleIndices = new StringBuilder();
-      foreach(int i in mesh.TriangleIndices)
+      foreach(var i in mesh.TriangleIndices)
       {
         triangleIndices.Append(i + " ");
       }

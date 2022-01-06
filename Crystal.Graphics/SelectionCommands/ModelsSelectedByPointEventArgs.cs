@@ -22,6 +22,6 @@
     /// <summary>
     /// Gets the rectangle of selection.
     /// </summary>
-    public Point Position { get; private set; }
+    public Point Position { get; }
   }
 }

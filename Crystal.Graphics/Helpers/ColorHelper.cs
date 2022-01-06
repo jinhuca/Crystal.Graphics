@@ -61,11 +61,11 @@
     {
       // http://en.wikipedia.org/wiki/Color_difference
       // http://mathworld.wolfram.com/L2-Norm.html
-      double dr = (c1.R - c2.R) / 255.0;
-      double dg = (c1.G - c2.G) / 255.0;
-      double db = (c1.B - c2.B) / 255.0;
-      double da = (c1.A - c2.A) / 255.0;
-      double e = dr * dr + dg * dg + db * db + da * da;
+      var dr = (c1.R - c2.R) / 255.0;
+      var dg = (c1.G - c2.G) / 255.0;
+      var db = (c1.B - c2.B) / 255.0;
+      var da = (c1.A - c2.A) / 255.0;
+      var e = dr * dr + dg * dg + db * db + da * da;
       return Math.Sqrt(e);
     }
 
@@ -79,7 +79,7 @@
     /// </returns>
     public static string ColorToHex(Color color)
     {
-      return string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", color.A, color.R, color.G, color.B);
+      return $"#{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}";
     }
 
     /// <summary>
@@ -92,15 +92,15 @@
     /// </returns>
     public static double[] ColorToHsv(Color color)
     {
-      byte r = color.R;
-      byte g = color.G;
-      byte b = color.B;
+      var r = color.R;
+      var g = color.G;
+      var b = color.B;
 
-      double h = 0, s, v;
+      double h = 0, s;
 
       double min = Math.Min(Math.Min(r, g), b);
-      v = Math.Max(Math.Max(r, g), b);
-      double delta = v - min;
+      double v = Math.Max(Math.Max(r, g), b);
+      var delta = v - min;
 
       if(v == 0.0)
       {
@@ -154,7 +154,7 @@
     /// </returns>
     public static byte[] ColorToHsvBytes(Color color)
     {
-      double[] hsv1 = ColorToHsv(color);
+      var hsv1 = ColorToHsv(color);
       var hsv2 = new byte[3];
       hsv2[0] = (byte)(hsv1[0] * 255);
       hsv2[1] = (byte)(hsv1[1] * 255);
@@ -172,7 +172,7 @@
     /// </returns>
     public static uint ColorToUint(Color c)
     {
-      uint u = (UInt32)c.A << 24;
+      var u = (UInt32)c.A << 24;
       u += (UInt32)c.R << 16;
       u += (UInt32)c.G << 8;
       u += c.B;
@@ -192,8 +192,8 @@
     {
       // http://en.wikipedia.org/wiki/Complementary_color
       // todo...
-      double[] hsv = ColorToHsv(c);
-      double newHue = hsv[0] - 0.5;
+      var hsv = ColorToHsv(c);
+      var newHue = hsv[0] - 0.5;
 
       // clamp to [0,1]
       if(newHue < 0)
@@ -224,8 +224,7 @@
         value = "FF" + value.PadLeft(6, '0');
       }
 
-      uint u;
-      if(uint.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out u))
+      if(uint.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var u))
       {
         return UIntToColor(u);
       }
@@ -250,9 +249,9 @@
     public static Color HsvToColor(byte hue, byte saturation, byte value)
     {
       double r, g, b;
-      double h = hue * 360.0 / 255;
-      double s = saturation / 255.0;
-      double v = value / 255.0;
+      var h = hue * 360.0 / 255;
+      var s = saturation / 255.0;
+      var v = value / 255.0;
 
       if(s == 0)
       {
@@ -262,24 +261,14 @@
       }
       else
       {
-        int i;
-        double f, p, q, t;
+        h = h == 360 ? 0 : h / 60;
 
-        if(h == 360)
-        {
-          h = 0;
-        }
-        else
-        {
-          h = h / 60;
-        }
+        var i = (int)Math.Truncate(h);
+        var f = h - i;
 
-        i = (int)Math.Truncate(h);
-        f = h - i;
-
-        p = v * (1.0 - s);
-        q = v * (1.0 - (s * f));
-        t = v * (1.0 - (s * (1.0 - f)));
+        var p = v * (1.0 - s);
+        var q = v * (1.0 - (s * f));
+        var t = v * (1.0 - (s * (1.0 - f)));
 
         switch(i)
         {
@@ -360,10 +349,8 @@
     /// </returns>
     public static Color HsvToColor(double hue, double sat, double val)
     {
-      int i;
-      double aa, bb, cc, f;
-      double r, g, b;
-      r = g = b = 0;
+      double g, b;
+      var r = g = b = 0;
 
       if(sat == 0)
       {
@@ -378,11 +365,11 @@
         }
 
         hue *= 6.0;
-        i = (int)Math.Floor(hue);
-        f = hue - i;
-        aa = val * (1 - sat);
-        bb = val * (1 - (sat * f));
-        cc = val * (1 - (sat * (1 - f)));
+        var i = (int)Math.Floor(hue);
+        var f = hue - i;
+        var aa = val * (1 - sat);
+        var bb = val * (1 - (sat * f));
+        var cc = val * (1 - (sat * (1 - f)));
         switch(i)
         {
           case 0:
@@ -433,9 +420,9 @@
     /// </returns>
     public static double HueDifference(Color c1, Color c2)
     {
-      double[] hsv1 = ColorToHsv(c1);
-      double[] hsv2 = ColorToHsv(c2);
-      double dh = hsv1[0] - hsv2[0];
+      var hsv1 = ColorToHsv(c1);
+      var hsv2 = ColorToHsv(c2);
+      var dh = hsv1[0] - hsv2[0];
 
       // clamp to [-0.5,0.5]
       if(dh > 0.5)
@@ -448,7 +435,7 @@
         dh += 1.0;
       }
 
-      double e = dh * dh;
+      var e = dh * dh;
       return Math.Sqrt(e);
     }
 
@@ -465,10 +452,10 @@
     /// </returns>
     public static Color Interpolate(Color c0, Color c1, double x)
     {
-      double r = c0.R * (1 - x) + c1.R * x;
-      double g = c0.G * (1 - x) + c1.G * x;
-      double b = c0.B * (1 - x) + c1.B * x;
-      double a = c0.A * (1 - x) + c1.A * x;
+      var r = c0.R * (1 - x) + c1.R * x;
+      var g = c0.G * (1 - x) + c1.G * x;
+      var b = c0.B * (1 - x) + c1.B * x;
+      var a = c0.A * (1 - x) + c1.A * x;
       return Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
     }
 

@@ -67,7 +67,7 @@
         return;
       }
 
-      Rect3D bb = BoundingBox;
+      var bb = BoundingBox;
 
       var p0 = new Point3D(bb.X, bb.Y, bb.Z);
       var p1 = new Point3D(bb.X, bb.Y + bb.SizeY, bb.Z);

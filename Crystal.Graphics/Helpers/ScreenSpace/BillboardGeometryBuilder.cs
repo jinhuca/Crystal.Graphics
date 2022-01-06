@@ -28,7 +28,7 @@
     public static Int32Collection CreateIndices(int n)
     {
       var indices = new Int32Collection(n * 6);
-      for(int i = 0; i < n; i++)
+      for(var i = 0; i < n; i++)
       {
         // bottom right triangle
         indices.Add((i * 4) + 0);
@@ -68,14 +68,14 @@
           screenPoint = (Point4D)bb.Position * visualToScreen;
         }
 
-        double spw = screenPoint.W;
-        double spx = screenPoint.X;
-        double spy = screenPoint.Y;
-        double spz = screenPoint.Z - (bb.DepthOffset * spw);
+        var spw = screenPoint.W;
+        var spx = screenPoint.X;
+        var spy = screenPoint.Y;
+        var spz = screenPoint.Z - (bb.DepthOffset * spw);
 
         // Convert bottom-left corner to visual space
         var p = new Point4D(spx + ((bb.Left + offset.X) * spw), spy + ((bb.Bottom + offset.Y) * spw), spz, spw) * screenToVisual;
-        double wi = 1 / p.W;
+        var wi = 1 / p.W;
         positions.Add(new Point3D(p.X * wi, p.Y * wi, p.Z * wi));
 
         // Convert bottom-right corner to visual space
@@ -133,15 +133,15 @@
           screenPoint = (Point4D)bb.Position * visualToScreen;
         }
 
-        double spw = screenPoint.W;
-        double spx = screenPoint.X;
-        double spy = screenPoint.Y;
-        double spz = screenPoint.Z - ((bb.DepthOffset - 1e-5) * spw);
+        var spw = screenPoint.W;
+        var spx = screenPoint.X;
+        var spy = screenPoint.Y;
+        var spz = screenPoint.Z - ((bb.DepthOffset - 1e-5) * spw);
 
         foreach(var pinPoint in pinPoints)
         {
           var p = new Point4D(spx + (pinPoint.X * spw), spy + (pinPoint.Y * spw), spz, spw) * screenToVisual;
-          double wi = 1 / p.W;
+          var wi = 1 / p.W;
           positions.Add(new Point3D(p.X * wi, p.Y * wi, p.Z * wi));
         }
       }

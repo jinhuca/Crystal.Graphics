@@ -42,7 +42,7 @@ namespace Crystal.Graphics
     {
       base.Delta(e);
 
-      double ar = Controller.ActualHeight / Controller.ActualWidth;
+      var ar = Controller.ActualHeight / Controller.ActualWidth;
       var delta = MouseDownPoint - e.CurrentPosition;
 
       if(Math.Abs(delta.Y / delta.X) < ar)
@@ -88,7 +88,7 @@ namespace Crystal.Graphics
         return;
       }
 
-      CameraHelper.ZoomToRectangle(Camera, Viewport, rectangle);
+      Camera.ZoomToRectangle(Viewport, rectangle);
       Controller.OnZoomedByRectangle();
     }
 

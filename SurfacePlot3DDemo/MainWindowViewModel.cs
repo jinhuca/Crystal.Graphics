@@ -107,16 +107,16 @@ namespace SurfacePlot3DDemo
 
     public Point GetPointFromIndex(int i, int j)
     {
-      double x = MinX + (double)j / (Columns - 1) * (MaxX - MinX);
-      double y = MinY + (double)i / (Rows - 1) * (MaxY - MinY);
+      var x = MinX + (double)j / (Columns - 1) * (MaxX - MinX);
+      var y = MinY + (double)i / (Rows - 1) * (MaxY - MinY);
       return new Point(x, y);
     }
 
     public Point3D[,] CreateDataArray(Func<double, double, double> f)
     {
       var data = new Point3D[Rows, Columns];
-      for(int i = 0; i < Rows; i++)
-        for(int j = 0; j < Columns; j++)
+      for(var i = 0; i < Rows; i++)
+        for(var j = 0; j < Columns; j++)
         {
           var pt = GetPointFromIndex(i, j);
           data[i, j] = new Point3D(pt.X, pt.Y, f(pt.X, pt.Y));
@@ -127,11 +127,11 @@ namespace SurfacePlot3DDemo
     // http://en.wikipedia.org/wiki/Numerical_differentiation
     public double[,] FindGradientY(Point3D[,] data)
     {
-      int n = data.GetUpperBound(0) + 1;
-      int m = data.GetUpperBound(1) + 1;
+      var n = data.GetUpperBound(0) + 1;
+      var m = data.GetUpperBound(1) + 1;
       var K = new double[n, m];
-      for(int i = 0; i < n; i++)
-        for(int j = 0; j < m; j++)
+      for(var i = 0; i < n; i++)
+        for(var j = 0; j < m; j++)
         {
           // Finite difference approximation
           var p10 = data[i + 1 < n ? i + 1 : i, j - 1 > 0 ? j - 1 : j];
@@ -143,8 +143,8 @@ namespace SurfacePlot3DDemo
           //double dz = p01.Z - p00.Z;
           //double Fx = dz / dx;
 
-          double dy = p10.Y - p00.Y;
-          double dz = p10.Z - p00.Z;
+          var dy = p10.Y - p00.Y;
+          var dz = p10.Z - p00.Z;
 
           K[i, j] = dz / dy;
         }

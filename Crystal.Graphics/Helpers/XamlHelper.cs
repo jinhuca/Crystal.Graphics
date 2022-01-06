@@ -24,10 +24,10 @@ namespace Crystal.Graphics
         var xw = new XmlTextWriter(tw) { Formatting = Formatting.Indented };
         XamlWriter.Save(view, xw);
 
-        string xaml = sb.ToString();
+        var xaml = sb.ToString();
         xaml =
             xaml.Replace(
-                string.Format("<Viewport3D Height=\"{0}\" Width=\"{1}\" ", view.ActualHeight, view.ActualWidth),
+              $"<Viewport3D Height=\"{view.ActualHeight}\" Width=\"{view.ActualWidth}\" ",
                 "<Viewport3D ");
 
         return xaml;

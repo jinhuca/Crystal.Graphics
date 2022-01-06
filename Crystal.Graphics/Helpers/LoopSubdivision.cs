@@ -346,7 +346,7 @@
     /// </param>
     public void Subdivide(int n)
     {
-      for(int i = 0; i < n; i++)
+      for(var i = 0; i < n; i++)
       {
         Subdivide();
       }
@@ -362,12 +362,12 @@
 
       newVertices = new List<Vector3D>(vertices);
       newTriangleIndices = new List<int>();
-      int nVertices = vertices.Count;
-      int nFaces = triangleIndices.Count / 3;
+      var nVertices = vertices.Count;
+      var nFaces = triangleIndices.Count / 3;
 
 #if !METHOD2
       edgeVertice = new Dictionary<int, int[]>[nVertices];
-      for(int i = 0; i < nVertices; i++)
+      for(var i = 0; i < nVertices; i++)
       {
         edgeVertice[i] = new Dictionary<int, int[]>();
       }
@@ -379,15 +379,15 @@
             // edgeVertice.Clear();
 #endif
 
-      for(int i = 0; i < nFaces; i++)
+      for(var i = 0; i < nFaces; i++)
       {
-        int vaIndex = triangleIndices[i * 3];
-        int vbIndex = triangleIndices[i * 3 + 1];
-        int vcIndex = triangleIndices[i * 3 + 2];
+        var vaIndex = triangleIndices[i * 3];
+        var vbIndex = triangleIndices[i * 3 + 1];
+        var vcIndex = triangleIndices[i * 3 + 2];
 
-        int vpIndex = AddEdgeVertice(vaIndex, vbIndex, vcIndex);
-        int vqIndex = AddEdgeVertice(vbIndex, vcIndex, vaIndex);
-        int vrIndex = AddEdgeVertice(vaIndex, vcIndex, vbIndex);
+        var vpIndex = AddEdgeVertice(vaIndex, vbIndex, vcIndex);
+        var vqIndex = AddEdgeVertice(vbIndex, vcIndex, vaIndex);
+        var vrIndex = AddEdgeVertice(vaIndex, vcIndex, vbIndex);
 
         Add(vaIndex, vpIndex, vrIndex);
         Add(vpIndex, vbIndex, vqIndex);
@@ -396,15 +396,15 @@
       }
 
       // positions of the new vertices
-      for(int v1 = 0; v1 < nVertices - 1; v1++)
+      for(var v1 = 0; v1 < nVertices - 1; v1++)
       {
-        for(int v2 = v1; v2 < nVertices; v2++)
+        for(var v2 = v1; v2 < nVertices; v2++)
         {
-          int vNIndex = GetEdgeVertice(v1, v2, 0);
+          var vNIndex = GetEdgeVertice(v1, v2, 0);
           if(vNIndex != 0)
           {
-            int vNOpposite1Index = GetEdgeVertice(v1, v2, 1);
-            int vNOpposite2Index = GetEdgeVertice(v1, v2, 2);
+            var vNOpposite1Index = GetEdgeVertice(v1, v2, 1);
+            var vNOpposite2Index = GetEdgeVertice(v1, v2, 2);
 
             if(vNOpposite2Index == 0)
             {
@@ -427,10 +427,10 @@
       // adjacent vertices
       var adjVertice = new List<int>[nVertices];
 
-      for(int v = 0; v < nVertices; v++)
+      for(var v = 0; v < nVertices; v++)
       {
         adjVertice[v] = new List<int>();
-        for(int vTmp = 0; vTmp < nVertices; vTmp++)
+        for(var vTmp = 0; vTmp < nVertices; vTmp++)
         {
           if((v < vTmp && GetEdgeVertice(v, vTmp, 0) != 0)
               || (v > vTmp && GetEdgeVertice(vTmp, v, 0) != 0))
@@ -441,14 +441,14 @@
       }
 
       // new positions of the original vertices
-      for(int v = 0; v < nVertices; v++)
+      for(var v = 0; v < nVertices; v++)
       {
-        int k = adjVertice[v].Count;
+        var k = adjVertice[v].Count;
 
         var adjBoundaryVertices = new List<int>();
-        for(int i = 0; i < k; i++)
+        for(var i = 0; i < k; i++)
         {
-          int vi = adjVertice[v][i];
+          var vi = adjVertice[v][i];
           if((vi > v) && (GetEdgeVertice(v, vi, 2) == 0)
               || (vi < v) && (GetEdgeVertice(vi, v, 2) == 0))
           {
@@ -503,9 +503,7 @@
     {
       if(v1Index > v2Index)
       {
-        int vTmp = v1Index;
-        v1Index = v2Index;
-        v2Index = vTmp;
+        (v1Index, v2Index) = (v2Index, v1Index);
       }
 
       if(GetEdgeVertice(v1Index, v2Index, 0) == 0)

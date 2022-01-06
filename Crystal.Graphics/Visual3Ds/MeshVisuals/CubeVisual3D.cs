@@ -43,9 +43,9 @@
     /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
     /// </summary>
     /// <returns>The mesh geometry.</returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
-      var b = new MeshBuilder(false, true);
+      var b = new MeshBuilder(false);
       b.AddCubeFace(
           Center,
           new Vector3D(-1, 0, 0),

@@ -21,7 +21,7 @@ namespace Crystal.Graphics
     /// <returns>
     /// Collection of normal vectors.
     /// </returns>
-    public static Vector3DCollection CalculateNormals(this MeshGeometry3D mesh)
+    public static Vector3DCollection CalculateNormals(this MeshGeometry3D? mesh)
     {
       return CalculateNormals(mesh.Positions, mesh.TriangleIndices);
     }
@@ -113,8 +113,7 @@ namespace Crystal.Graphics
         // find edges only used by 1 triangle
         if(kvp.Value == 1)
         {
-          uint i0, i1;
-          ReverseKey(kvp.Key, out i0, out i1);
+          ReverseKey(kvp.Key, out var i0, out var i1);
           edges.Add((int)i0);
           edges.Add((int)i1);
         }
@@ -310,7 +309,7 @@ namespace Crystal.Graphics
     public static MeshGeometry3D Simplify(this MeshGeometry3D mesh, DoubleOrSingle eps)
     {
       // Find common positions
-      var dict = new Dictionary<int, int>(); // map position index to first occurence of same position
+      var dict = new Dictionary<int, int>(); // map position index to first occurrence of same position
       for(var i = 0; i < mesh.Positions.Count; i++)
       {
         for(var j = i + 1; j < mesh.Positions.Count; j++)
@@ -345,8 +344,7 @@ namespace Crystal.Graphics
       // Update triangle indices
       foreach(var index in mesh.TriangleIndices)
       {
-        int j;
-        ti.Add(dict.TryGetValue(index, out j) ? newIndex[j] : newIndex[index]);
+        ti.Add(dict.TryGetValue(index, out var j) ? newIndex[j] : newIndex[index]);
       }
 #if SHARPDX
             var result = new MeshGeometry3D { Positions = p, TriangleIndices = new IntCollection(ti), };
@@ -409,10 +407,10 @@ namespace Crystal.Graphics
     /// <returns>
     /// The <see cref="MeshGeometry3D"/>.
     /// </returns>
-    public static MeshGeometry3D Cut(this MeshGeometry3D mesh, Point3D plane, Vector3D normal)
+    public static MeshGeometry3D? Cut(this MeshGeometry3D? mesh, Point3D plane, Vector3D normal)
     {
-      var hasTextureCoordinates = mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0;
-      var hasNormals = mesh.Normals != null && mesh.Normals.Count > 0;
+      var hasTextureCoordinates = mesh.TextureCoordinates is { Count: > 0 };
+      var hasNormals = mesh.Normals is { Count: > 0 };
       var meshBuilder = new MeshBuilder(hasNormals, hasTextureCoordinates);
       var contourHelper = new ContourHelper(plane, normal, mesh);
       foreach(var position in mesh.Positions)
@@ -442,12 +440,7 @@ namespace Crystal.Graphics
         var index1 = mesh.TriangleIndices[i + 1];
         var index2 = mesh.TriangleIndices[i + 2];
 
-        Point3D[] positions;
-        Vector3D[] normals;
-        Point[] textureCoordinates;
-        int[] triangleIndices;
-
-        contourHelper.ContourFacet(index0, index1, index2, out positions, out normals, out textureCoordinates, out triangleIndices);
+        contourHelper.ContourFacet(index0, index1, index2, out var positions, out var normals, out var textureCoordinates, out var triangleIndices);
 
         foreach(var p in positions)
         {
@@ -488,25 +481,20 @@ namespace Crystal.Graphics
     /// <returns>
     /// The segments of the contour.
     /// </returns>
-    public static IList<Point3D> GetContourSegments(this MeshGeometry3D mesh, Point3D plane, Vector3D normal)
+    public static IList<Point3D> GetContourSegments(this MeshGeometry3D? mesh, Point3D plane, Vector3D normal)
     {
       var segments = new List<Point3D>();
       var contourHelper = new ContourHelper(plane, normal, mesh);
       for(var i = 0; i < mesh.TriangleIndices.Count; i += 3)
       {
-        Point3D[] positions;
-        Vector3D[] normals;
-        Point[] textureCoordinates;
-        int[] triangleIndices;
-
         contourHelper.ContourFacet(
             mesh.TriangleIndices[i],
             mesh.TriangleIndices[i + 1],
             mesh.TriangleIndices[i + 2],
-            out positions,
-            out normals,
-            out textureCoordinates,
-            out triangleIndices);
+            out var positions,
+            out var normals,
+            out var textureCoordinates,
+            out var triangleIndices);
         segments.AddRange(positions);
       }
 
@@ -528,7 +516,7 @@ namespace Crystal.Graphics
     /// </returns>
     public static IEnumerable<IList<Point3D>> CombineSegments(IList<Point3D> segments, DoubleOrSingle eps)
     {
-      // This is a simple, slow, naïve method - should be improved:
+      // This is a simple, slow, naive method - should be improved:
       // http://stackoverflow.com/questions/1436091/joining-unordered-line-segments
       var curve = new List<Point3D>();
       var curveCount = 0;
@@ -679,11 +667,7 @@ namespace Crystal.Graphics
     /// <returns></returns>
     public static MeshGeometry3D RemoveIsolatedVertices(this MeshGeometry3D mesh)
     {
-      Point3DCollection vertNew;
-      Int32Collection triNew;
-      PointCollection textureNew;
-      Vector3DCollection normalNew;
-      RemoveIsolatedVertices(mesh.Positions, mesh.TriangleIndices, mesh.TextureCoordinates, mesh.Normals, out vertNew, out triNew, out textureNew, out normalNew);
+      RemoveIsolatedVertices(mesh.Positions, mesh.TriangleIndices, mesh.TextureCoordinates, mesh.Normals, out var vertNew, out var triNew, out var textureNew, out var normalNew);
       var newMesh = new MeshGeometry3D() { Positions = vertNew, TriangleIndices = triNew, TextureCoordinates = textureNew, Normals = normalNew };
       return newMesh;
     }
@@ -707,7 +691,7 @@ namespace Crystal.Graphics
       textureOut = null;
       normalOut = null;
       var tracking = new List<List<int>>(vertices.Count);
-      Debug.WriteLine(string.Format("NumVert:{0}; NumTriangle:{1};", vertices.Count, triangles.Count));
+      Debug.WriteLine($"NumVert:{vertices.Count}; NumTriangle:{triangles.Count};");
       for(var i = 0; i < vertices.Count; ++i)
       {
         tracking.Add(new List<int>());
@@ -763,7 +747,7 @@ namespace Crystal.Graphics
           ++counter;
         }
       }
-      Debug.WriteLine(string.Format("Remesh finished. Output NumVert:{0};", verticesOut.Count));
+      Debug.WriteLine($"Remesh finished. Output NumVert:{verticesOut.Count};");
     }
 
     /// <summary>

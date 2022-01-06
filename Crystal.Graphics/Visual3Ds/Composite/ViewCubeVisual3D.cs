@@ -121,7 +121,7 @@ namespace Crystal.Graphics
     /// Identifies the <see cref="EnableEdgeClicks"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty EnableEdgeClicksProperty =
-        DependencyProperty.Register("EnableEdgeClicks", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, (d, e) =>
+        DependencyProperty.Register("EnableEdgeClicks", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, (d, _) =>
         {
           (d as ViewCubeVisual3D).EnableDisableEdgeClicks();
         }));
@@ -129,25 +129,25 @@ namespace Crystal.Graphics
     /// <summary>
     /// The normal vectors.
     /// </summary>
-    private readonly Dictionary<object, Vector3D> faceNormals = new Dictionary<object, Vector3D>();
+    private readonly Dictionary<object, Vector3D> faceNormals = new();
 
     /// <summary>
     /// The up vectors.
     /// </summary>
-    private readonly Dictionary<object, Vector3D> faceUpVectors = new Dictionary<object, Vector3D>();
+    private readonly Dictionary<object, Vector3D> faceUpVectors = new();
 
     private readonly IList<ModelUIElement3D> CubeFaceModels = new List<ModelUIElement3D>(6);
     private readonly IList<ModelUIElement3D> EdgeModels = new List<ModelUIElement3D>(4 * 3);
     private readonly IList<ModelUIElement3D> CornerModels = new List<ModelUIElement3D>(8);
-    private static readonly Point3D[] xAligned = { new Point3D(0, -1, -1), new Point3D(0, 1, -1), new Point3D(0, -1, 1), new Point3D(0, 1, 1) }; //x
-    private static readonly Point3D[] yAligned = { new Point3D(-1, 0, -1), new Point3D(1, 0, -1), new Point3D(-1, 0, 1), new Point3D(1, 0, 1) };//y
-    private static readonly Point3D[] zAligned = { new Point3D(-1, -1, 0), new Point3D(-1, 1, 0), new Point3D(1, -1, 0), new Point3D(1, 1, 0) };//z
+    private static readonly Point3D[] xAligned = { new(0, -1, -1), new(0, 1, -1), new(0, -1, 1), new(0, 1, 1) }; //x
+    private static readonly Point3D[] yAligned = { new(-1, 0, -1), new(1, 0, -1), new(-1, 0, 1), new(1, 0, 1) };//y
+    private static readonly Point3D[] zAligned = { new(-1, -1, 0), new(-1, 1, 0), new(1, -1, 0), new(1, 1, 0) };//z
 
     private static readonly Point3D[] cornerPoints =   {
-                new Point3D(-1,-1,-1 ), new Point3D(1, -1, -1), new Point3D(1, 1, -1), new Point3D(-1, 1, -1),
-                new Point3D(-1,-1,1 ),new Point3D(1,-1,1 ),new Point3D(1,1,1 ),new Point3D(-1,1,1 )};
+                new(-1,-1,-1 ), new(1, -1, -1), new(1, 1, -1), new(-1, 1, -1),
+                new(-1,-1,1 ),new(1,-1,1 ),new(1,1,1 ),new(-1,1,1 )};
 
-    private readonly PieSliceVisual3D circle = new PieSliceVisual3D();
+    private readonly PieSliceVisual3D circle = new();
 
     private readonly Brush CornerBrush = Brushes.Gold;
     private readonly Brush EdgeBrush = Brushes.Silver;
@@ -326,7 +326,7 @@ namespace Crystal.Graphics
 
     private void InitialModels()
     {
-      for(int i = 0; i < 6; ++i)
+      for(var i = 0; i < 6; ++i)
       {
         var element = new ModelUIElement3D();
         CubeFaceModels.Add(element);
@@ -335,21 +335,21 @@ namespace Crystal.Graphics
       }
       Children.Add(circle);
 
-      for(int i = 0; i < xAligned.Length + yAligned.Length + zAligned.Length; ++i)
+      for(var i = 0; i < xAligned.Length + yAligned.Length + zAligned.Length; ++i)
       {
         var element = new ModelUIElement3D();
         EdgeModels.Add(element);
         element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-        element.MouseEnter += EdggesMouseEnters;
+        element.MouseEnter += EdgesMouseEnters;
         element.MouseLeave += EdgesMouseLeaves;
       }
 
-      for(int i = 0; i < cornerPoints.Length; ++i)
+      for(var i = 0; i < cornerPoints.Length; ++i)
       {
         var element = new ModelUIElement3D();
         CornerModels.Add(element);
         element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-        element.MouseEnter += EdggesMouseEnters;
+        element.MouseEnter += EdgesMouseEnters;
         element.MouseLeave += EdgesMouseLeaves;
       }
 
@@ -476,31 +476,31 @@ namespace Crystal.Graphics
       var halfSize = Size / 2;
       var sideLength = halfSize / 2;
 
-      int counter = 0;
+      var counter = 0;
       foreach(var p in xAligned)
       {
-        Point3D center = p.Multiply(halfSize);
+        var center = p.Multiply(halfSize);
         AddEdge(EdgeModels[counter++], center, 1.5 * halfSize, sideLength, sideLength, p.ToVector3D());
       }
 
 
       foreach(var p in yAligned)
       {
-        Point3D center = p.Multiply(halfSize);
+        var center = p.Multiply(halfSize);
         AddEdge(EdgeModels[counter++], center, sideLength, 1.5 * halfSize, sideLength, p.ToVector3D());
       }
 
 
       foreach(var p in zAligned)
       {
-        Point3D center = p.Multiply(halfSize);
+        var center = p.Multiply(halfSize);
         AddEdge(EdgeModels[counter++], center, sideLength, sideLength, 1.5 * halfSize, p.ToVector3D());
       }
     }
 
     private void AddEdge(ModelUIElement3D element, Point3D center, double x, double y, double z, Vector3D faceNormal)
     {
-      var builder = new MeshBuilder(false, true);
+      var builder = new MeshBuilder(false);
 
       builder.AddBox(center, x, y, z);
 
@@ -518,12 +518,12 @@ namespace Crystal.Graphics
     {
       var a = Size / 2;
       var sideLength = a / 2;
-      int counter = 0;
+      var counter = 0;
       foreach(var p in cornerPoints)
       {
-        var builder = new MeshBuilder(false, true);
+        var builder = new MeshBuilder(false);
 
-        Point3D center = p.Multiply(a);
+        var center = p.Multiply(a);
         builder.AddBox(center, sideLength, sideLength, sideLength);
         var geometry = builder.ToMesh();
         geometry.Freeze();
@@ -538,26 +538,26 @@ namespace Crystal.Graphics
 
     private void EdgesMouseLeaves(object sender, MouseEventArgs e)
     {
-      ModelUIElement3D s = sender as ModelUIElement3D;
-      (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Silver);
+      var s = sender as ModelUIElement3D;
+      ((s?.Model as GeometryModel3D)!).Material = MaterialHelper.CreateMaterial(Colors.Silver);
     }
 
-    private void EdggesMouseEnters(object sender, MouseEventArgs e)
+    private void EdgesMouseEnters(object sender, MouseEventArgs e)
     {
-      ModelUIElement3D s = sender as ModelUIElement3D;
-      (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Goldenrod);
+      var s = sender as ModelUIElement3D;
+      ((s?.Model as GeometryModel3D)!).Material = MaterialHelper.CreateMaterial(Colors.Goldenrod);
     }
 
     private void CornersMouseLeave(object sender, MouseEventArgs e)
     {
-      ModelUIElement3D s = sender as ModelUIElement3D;
-      (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Gold);
+      var s = sender as ModelUIElement3D;
+      ((s?.Model as GeometryModel3D)!).Material = MaterialHelper.CreateMaterial(Colors.Gold);
     }
 
     private void CornersMouseEnters(object sender, MouseEventArgs e)
     {
-      ModelUIElement3D s = sender as ModelUIElement3D;
-      (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Goldenrod);
+      var s = sender as ModelUIElement3D;
+      ((s?.Model as GeometryModel3D)!).Material = MaterialHelper.CreateMaterial(Colors.Goldenrod);
     }
 
     /// <summary>
@@ -581,9 +581,9 @@ namespace Crystal.Graphics
     {
       var material = CreateTextMaterial(b, text);
 
-      double a = Size;
+      var a = Size;
 
-      var builder = new MeshBuilder(false, true);
+      var builder = new MeshBuilder(false);
       builder.AddCubeFace(Center, normal, up, a, a, a);
       var geometry = builder.ToMesh();
       geometry.Freeze();
@@ -652,17 +652,13 @@ namespace Crystal.Graphics
         }
       }
 
-      if(Viewport != null)
+      if(Viewport is { Camera: ProjectionCamera camera })
       {
-        var camera = Viewport.Camera as ProjectionCamera;
-        if(camera != null)
-        {
-          var target = camera.Position + camera.LookDirection;
-          double distance = camera.LookDirection.Length;
-          lookDirection *= distance;
-          var newPosition = target - lookDirection;
-          CameraHelper.AnimateTo(camera, newPosition, lookDirection, upDirection, 500);
-        }
+        var target = camera.Position + camera.LookDirection;
+        var distance = camera.LookDirection.Length;
+        lookDirection *= distance;
+        var newPosition = target - lookDirection;
+        camera.AnimateTo(newPosition, lookDirection, upDirection, 500);
       }
 
       e.Handled = true;

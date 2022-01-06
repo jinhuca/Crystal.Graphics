@@ -22,7 +22,7 @@
     /// <summary>
     /// Gets or sets OuterDictionary.
     /// </summary>
-    private Dictionary<K, Dictionary<T, V>> OuterDictionary { get; } = new Dictionary<K, Dictionary<T, V>>();
+    private Dictionary<K, Dictionary<T, V>> OuterDictionary { get; } = new();
 
     /// <summary>
     /// Gets or sets the value with the specified indices.
@@ -42,7 +42,7 @@
     {
       foreach(var dict in OuterDictionary.Values)
       {
-        dict?.Clear();
+        dict.Clear();
       }
       OuterDictionary.Clear();
     }
@@ -61,8 +61,7 @@
     /// </param>
     public void Add(K key1, T key2, V value)
     {
-      Dictionary<T, V> inner;
-      if(OuterDictionary.TryGetValue(key1, out inner))
+      if(OuterDictionary.TryGetValue(key1, out var inner))
       {
         if(inner.ContainsKey(key2))
         {
@@ -75,8 +74,7 @@
       }
       else
       {
-        inner = new Dictionary<T, V>();
-        inner.Add(key2, value);
+        inner = new Dictionary<T, V> { { key2, value } };
         OuterDictionary.Add(key1, inner);
       }
     }
@@ -214,18 +212,15 @@
     /// <param name="key2"></param>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public bool TryGetValue(K key1, T key2, out V obj)
+    public bool TryGetValue(K key1, T key2, out V? obj)
     {
-      Dictionary<T, V> inner = null;
-      if(OuterDictionary.TryGetValue(key1, out inner) && inner.TryGetValue(key2, out obj))
+      if(OuterDictionary.TryGetValue(key1, out var inner) && inner.TryGetValue(key2, out obj))
       {
         return true;
       }
-      else
-      {
-        obj = default(V);
-        return false;
-      }
+
+      obj = default(V);
+      return false;
     }
     /// <summary>
     /// Gets the values.

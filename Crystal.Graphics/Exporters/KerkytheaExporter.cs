@@ -10,7 +10,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// Dictionary of registered materials.
     /// </summary>
-    private readonly Dictionary<Material, XmlDocument> registeredMaterials = new Dictionary<Material, XmlDocument>();
+    private readonly Dictionary<Material, XmlDocument> registeredMaterials = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="KerkytheaExporter"/> class.
@@ -161,7 +161,7 @@ namespace Crystal.Graphics
     /// Gets or sets the texture path.
     /// </summary>
     /// <value>The texture path.</value>
-    public string TexturePath { get; set; }
+    public string TexturePath { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the width of the texture.
@@ -205,18 +205,18 @@ namespace Crystal.Graphics
 
       writer.WriteFullEndElement();
 
-      int triangles = m.TriangleIndices.Count / 3;
+      var triangles = m.TriangleIndices.Count / 3;
 
       // NORMALS
       // todo: write normal list per vertex instead of per triangle index
-      if(m.Normals != null && m.Normals.Count > 0)
+      if(m.Normals is { Count: > 0 })
       {
         writer.WriteStartElement("Parameter");
         {
           writer.WriteAttributeString("Name", "Normal List");
           writer.WriteAttributeString("Type", "Point3D List");
           writer.WriteAttributeString("Value", m.TriangleIndices.Count.ToString());
-          foreach(int index in m.TriangleIndices)
+          foreach(var index in m.TriangleIndices)
           {
             if(index >= m.Normals.Count)
             {
@@ -239,14 +239,14 @@ namespace Crystal.Graphics
         writer.WriteAttributeString("Name", "Index List");
         writer.WriteAttributeString("Type", "Triangle Index List");
         writer.WriteAttributeString("Value", triangles.ToString());
-        for(int a = 0; a < triangles; a++)
+        for(var a = 0; a < triangles; a++)
         {
-          int a3 = a * 3;
-          int i = m.TriangleIndices[a3];
-          int j = m.TriangleIndices[a3 + 1];
-          int k = m.TriangleIndices[a3 + 2];
+          var a3 = a * 3;
+          var i = m.TriangleIndices[a3];
+          var j = m.TriangleIndices[a3 + 1];
+          var k = m.TriangleIndices[a3 + 2];
           writer.WriteStartElement("F");
-          writer.WriteAttributeString("ijk", string.Format("{0} {1} {2}", i, j, k));
+          writer.WriteAttributeString("ijk", $"{i} {j} {k}");
           writer.WriteEndElement();
         }
       }
@@ -343,7 +343,7 @@ namespace Crystal.Graphics
     public void WriteThreadedRaytracer(KerkytheaWriter writer, int threads)
     {
       writer.WriteStartObject("./Ray Tracers/Threaded Ray Tracer", "Threaded Ray Tracer", "Threaded Ray Tracer", "Ray Tracer");
-      for(int i = 0; i < threads; i++)
+      for(var i = 0; i < threads; i++)
       {
         writer.WriteParameter("Thread #" + i, "#" + i);
       }
@@ -372,8 +372,7 @@ namespace Crystal.Graphics
     /// <exception cref="System.InvalidOperationException">Only perspective cameras are supported.</exception>
     protected override void ExportCamera(KerkytheaWriter writer, Camera c)
     {
-      var pc = c as PerspectiveCamera;
-      if(pc == null)
+      if(c is not PerspectiveCamera pc)
       {
         throw new InvalidOperationException("Only perspective cameras are supported.");
       }
@@ -388,9 +387,9 @@ namespace Crystal.Graphics
 
       // PerspectiveCamera.FieldOfView: Horizontal field of view
       // Must multiply by ratio of Viewport Width/Height
-      double ratio = Width / (double)Height;
+      var ratio = Width / (double)Height;
       const double x = 40;
-      double f = 0.5 * ratio * x / Math.Tan(0.5 * pc.FieldOfView / 180.0 * Math.PI);
+      var f = 0.5 * ratio * x / Math.Tan(0.5 * pc.FieldOfView / 180.0 * Math.PI);
 
       writer.WriteParameter("Focal Length (mm)", f);
       writer.WriteParameter("Film Height (mm)", x);
@@ -445,7 +444,7 @@ namespace Crystal.Graphics
       writer.WriteEndObject();
 
       // add ray tracer module.
-      for(int i = 0; i < Threads; i++)
+      for(var i = 0; i < Threads; i++)
       {
         WriteStandardRayTracer(writer, "#" + i);
       }
@@ -488,7 +487,7 @@ namespace Crystal.Graphics
         return;
       }
 
-      string name = GetUniqueName(writer, l, l.GetType().Name);
+      var name = GetUniqueName(writer, l, l.GetType().Name);
 
       var d = l as DirectionalLight;
       var s = l as SpotLight;
@@ -496,7 +495,7 @@ namespace Crystal.Graphics
 
       writer.WriteStartObject("./Lights/" + name, "Default Light", name, "Light");
       {
-        string stype = "Projector Light";
+        var stype = "Projector Light";
         if(s != null)
         {
           stype = "Spot Light";
@@ -598,13 +597,12 @@ namespace Crystal.Graphics
     /// <param name="transform">The transform.</param>
     protected override void ExportModel(KerkytheaWriter writer, GeometryModel3D g, Transform3D transform)
     {
-      var mesh = g.Geometry as MeshGeometry3D;
-      if(mesh == null)
+      if(g.Geometry is not MeshGeometry3D mesh)
       {
         return;
       }
 
-      string name = GetUniqueName(writer, g, g.GetType().Name);
+      var name = GetUniqueName(writer, g, g.GetType().Name);
       writer.WriteStartObject("./Models/" + name, "Default Model", name, "Model");
 
       ExportMesh(writer, mesh);
@@ -820,9 +818,9 @@ namespace Crystal.Graphics
       {
         writer.WriteAttributeString("Name", "Map Channel");
         writer.WriteAttributeString("Type", "Point2D List");
-        int n = m.TriangleIndices.Count;
+        var n = m.TriangleIndices.Count;
         writer.WriteAttributeString("Value", n.ToString());
-        foreach(int index in m.TriangleIndices)
+        foreach(var index in m.TriangleIndices)
         {
           if(index >= m.TextureCoordinates.Count)
           {
@@ -848,8 +846,7 @@ namespace Crystal.Graphics
     /// <param name="weights">The weights.</param>
     private void ExportMaterial(KerkytheaWriter writer, string name, Material material, IList<double> weights)
     {
-      var g = material as MaterialGroup;
-      if(g != null)
+      if(material is MaterialGroup g)
       {
         foreach(var m in g.Children)
         {
@@ -857,12 +854,11 @@ namespace Crystal.Graphics
         }
       }
 
-      var d = material as DiffuseMaterial;
-      if(d != null)
+      if(material is DiffuseMaterial d)
       {
         string texture = null;
         Color? color = null;
-        double alpha = 1.0;
+        var alpha = 1.0;
         if(d.Brush is SolidColorBrush)
         {
           color = GetSolidColor(d.Brush, d.Color);
@@ -875,32 +871,30 @@ namespace Crystal.Graphics
 
         if(alpha > 0)
         {
-          WriteWhittedMaterial(writer, string.Format("#{0}", weights.Count), texture, color, null, null);
+          WriteWhittedMaterial(writer, $"#{weights.Count}", texture, color, null, null);
           weights.Add(alpha);
         }
 
         // The refractive part
         if(alpha < 1)
         {
-          WriteWhittedMaterial(writer, string.Format("#{0}", weights.Count), null, null, null, Colors.White);
+          WriteWhittedMaterial(writer, $"#{weights.Count}", null, null, null, Colors.White);
           weights.Add(1 - alpha);
         }
       }
 
-      var s = material as SpecularMaterial;
-      if(s != null)
+      if(material is SpecularMaterial s)
       {
         var color = GetSolidColor(s.Brush, s.Color);
 
         // color = Color.FromArgb((byte)(color.A * factor), (byte)(color.R * factor), (byte)(color.G * factor), (byte)(color.B * factor));
-        WriteWhittedMaterial(writer, string.Format("#{0}", weights.Count), null, null, color, null, s.SpecularPower * 0.5);
-        double weight = color.A / 255.0;
+        WriteWhittedMaterial(writer, $"#{weights.Count}", null, null, color, null, s.SpecularPower * 0.5);
+        var weight = color.A / 255.0;
         weight *= 0.01;
         weights.Add(weight);
       }
 
-      var e = material as EmissiveMaterial;
-      if(e != null)
+      if(material is EmissiveMaterial e)
       {
         // TODO
         System.Diagnostics.Debug.WriteLine("KerkytheaExporter: Emissive materials are not yet supported.");
@@ -924,7 +918,7 @@ namespace Crystal.Graphics
       if(registeredMaterials.ContainsKey(material))
       {
         var doc = registeredMaterials[material];
-        if(doc != null && doc.DocumentElement != null)
+        if(doc is { DocumentElement: { } })
         {
           foreach(XmlNode e in doc.DocumentElement.ChildNodes)
           {
@@ -935,7 +929,7 @@ namespace Crystal.Graphics
         return;
       }
 
-      string name = GetUniqueName(writer, material, "Material");
+      var name = GetUniqueName(writer, material, "Material");
       writer.WriteStartObject(name, "Layered Material", name, "Material");
 
       var weights = new List<double>();
@@ -946,7 +940,7 @@ namespace Crystal.Graphics
       // {
       // WriteConstantTexture("Reflection", ReflectionColor);
       // }
-      for(int i = 0; i < weights.Count; i++)
+      for(var i = 0; i < weights.Count; i++)
       {
         WriteWeight(writer, "Weight #" + i, weights[i]);
       }
@@ -988,8 +982,7 @@ namespace Crystal.Graphics
     /// </returns>
     private Color GetSolidColor(Brush brush, Color defaultColor)
     {
-      var scb = brush as SolidColorBrush;
-      if(scb != null)
+      if(brush is SolidColorBrush scb)
       {
         return scb.Color;
       }
@@ -1009,14 +1002,13 @@ namespace Crystal.Graphics
     private string GetTexture(KerkytheaWriter writer, Brush brush, string name)
     {
       // reuse textures
-      string textureFile;
-      if(writer.TryGetTexture(brush, out textureFile))
+      if(writer.TryGetTexture(brush, out var textureFile))
       {
         return textureFile;
       }
 
-      string filename = name + ".png";
-      string path = Path.Combine(TexturePath, filename);
+      var filename = name + ".png";
+      var path = Path.Combine(TexturePath, filename);
       using(var s = FileCreator(path))
       {
         RenderBrush(s, brush, TextureWidth, TextureHeight);
@@ -1150,14 +1142,12 @@ namespace Crystal.Graphics
     /// <param name="refraction">The refraction.</param>
     /// <param name="indexOfRefraction">The index of refraction.</param>
     /// <param name="dispersion">The dispersion.</param>
-    /// <param name="nkfile">The nkfile.</param>
     private void WriteDielectricMaterial(KerkytheaWriter writer,
         string identifier,
         Color? reflection,
         Color? refraction,
         double indexOfRefraction = 1.0,
-        double dispersion = 0.0,
-        string nkfile = null)
+        double dispersion = 0.0)
     {
       writer.WriteStartObject(identifier, "Ashikhmin Material", identifier, "Material");
 
@@ -1281,12 +1271,12 @@ namespace Crystal.Graphics
       /// <summary>
       /// The names.
       /// </summary>
-      private readonly HashSet<string> names = new HashSet<string>();
+      private readonly HashSet<string> names = new();
 
       /// <summary>
       /// Texture bitmaps are reused. This dictionary contains a map from brush to filename
       /// </summary>
-      private readonly Dictionary<Brush, string> textureFiles = new Dictionary<Brush, string>();
+      private readonly Dictionary<Brush, string> textureFiles = new();
 
       /// <summary>
       /// Initializes a new instance of the <see cref="KerkytheaWriter"/> class.
@@ -1451,7 +1441,7 @@ namespace Crystal.Graphics
       /// </param>
       public void WriteTransform(string name, Matrix3D m)
       {
-        string value = string.Format(
+        var value = string.Format(
             CultureInfo.InvariantCulture,
             "{0:0.######} {1:0.######} {2:0.######} {3:0.######} {4:0.######} {5:0.######} {6:0.######} {7:0.######} {8:0.######} {9:0.######} {10:0.######} {11:0.######}",
             m.M11,
@@ -1571,7 +1561,7 @@ namespace Crystal.Graphics
       {
         if(string.IsNullOrEmpty(name))
         {
-          int n = 1;
+          var n = 1;
           while(true)
           {
             // name = defaultName + " #" + n;

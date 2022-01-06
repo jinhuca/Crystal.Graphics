@@ -37,7 +37,7 @@ namespace Crystal.Graphics
         return;
       }
 
-      Vector3D delta3D = LastPoint3D.Value - thisPoint3D.Value;
+      var delta3D = LastPoint3D.Value - thisPoint3D.Value;
       Pan(delta3D);
 
       LastPoint = e.CurrentPosition;
@@ -82,7 +82,7 @@ namespace Crystal.Graphics
         return;
       }
 
-      Vector3D delta3D = LastPoint3D.Value - thisPoint3D.Value;
+      var delta3D = LastPoint3D.Value - thisPoint3D.Value;
       Pan(delta3D);
 
       LastPoint3D = UnProject(mousePoint, panPoint3D, Controller.CameraLookDirection);

@@ -47,8 +47,7 @@
         return;
       }
 
-      var dl = Light as DirectionalLight;
-      if(dl != null)
+      if(Light is DirectionalLight dl)
       {
         var arrow = new ArrowVisual3D();
         double distance = 10;
@@ -62,8 +61,7 @@
         Children.Add(arrow);
       }
 
-      var sl = Light as SpotLight;
-      if(sl != null)
+      if(Light is SpotLight sl)
       {
         var sphere = new SphereVisual3D();
         sphere.BeginEdit();
@@ -81,8 +79,7 @@
         Children.Add(arrow);
       }
 
-      var pl = Light as PointLight;
-      if(pl != null)
+      if(Light is PointLight pl)
       {
         var sphere = new SphereVisual3D();
         sphere.BeginEdit();

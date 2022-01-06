@@ -57,8 +57,8 @@ namespace Crystal.Graphics
     /// </summary>
     protected ColorAxis()
     {
-      SizeChanged += (s, e) => UpdateVisuals();
-      Loaded += (s, e) => UpdateVisuals();
+      SizeChanged += (_, _) => UpdateVisuals();
+      Loaded += (_, _) => UpdateVisuals();
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// Gets the canvas.
     /// </summary>
-    protected Canvas Canvas { get; private set; }
+    protected Canvas? Canvas { get; private set; }
 
     /// <summary>
     /// Gets the color rectangle area.
@@ -167,14 +167,14 @@ namespace Crystal.Graphics
               Padding.Left,
               Padding.Top,
               BarWidth,
-              System.Math.Max(0, ActualHeight - Padding.Bottom - Padding.Top));
+              Math.Max(0, ActualHeight - Padding.Bottom - Padding.Top));
           break;
         case ColorAxisPosition.Right:
           ColorArea = new Rect(
-              System.Math.Max(0, ActualWidth - Padding.Right - BarWidth),
+              Math.Max(0, ActualWidth - Padding.Right - BarWidth),
               Padding.Top,
               BarWidth,
-              System.Math.Max(0, ActualHeight - Padding.Bottom - Padding.Top));
+              Math.Max(0, ActualHeight - Padding.Bottom - Padding.Top));
           break;
       }
 
@@ -196,7 +196,7 @@ namespace Crystal.Graphics
       Canvas.Children.Add(r);
 
       Canvas.Children.Add(
-        new System.Windows.Shapes.Line
+        new Line
         {
           Stroke = Foreground,
           StrokeThickness = 1,
@@ -207,7 +207,7 @@ namespace Crystal.Graphics
           Y2 = ColorArea.Bottom
         });
       Canvas.Children.Add(
-        new System.Windows.Shapes.Line
+        new Line
         {
           Stroke = Foreground,
           StrokeThickness = 1,

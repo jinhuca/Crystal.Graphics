@@ -14,7 +14,7 @@
     /// <summary>
     /// Gets or sets the <see cref="MeshGeometry3D"/> defining the shape of the visual.
     /// </summary>
-    public MeshGeometry3D MeshGeometry
+    public MeshGeometry3D? MeshGeometry
     {
       get => (MeshGeometry3D)GetValue(GeometryProperty);
       set => SetValue(GeometryProperty, value);
@@ -26,7 +26,7 @@
     /// <returns>
     /// A triangular mesh geometry.
     /// </returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
       return MeshGeometry;
     }

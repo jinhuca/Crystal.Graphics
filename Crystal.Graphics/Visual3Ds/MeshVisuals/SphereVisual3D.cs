@@ -80,9 +80,9 @@
     /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.
     /// </summary>
     /// <returns>A triangular mesh geometry.</returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
-      var builder = new MeshBuilder(true, true);
+      var builder = new MeshBuilder(true);
       builder.AddSphere(Center, Radius, ThetaDiv, PhiDiv);
       return builder.ToMesh();
     }

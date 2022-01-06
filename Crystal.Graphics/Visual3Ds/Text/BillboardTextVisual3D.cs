@@ -251,15 +251,12 @@
 
       var brush = new ImageBrush(rtb);
 
-      if(MaterialType == MaterialType.Diffuse)
+      Material = MaterialType switch
       {
-        Material = new DiffuseMaterial(brush);
-      }
-
-      if(MaterialType == MaterialType.Emissive)
-      {
-        Material = new EmissiveMaterial(brush);
-      }
+        MaterialType.Diffuse => new DiffuseMaterial(brush),
+        MaterialType.Emissive => new EmissiveMaterial(brush),
+        _ => Material
+      };
 
       Width = element.ActualWidth;
       Height = element.ActualHeight * HeightFactor;

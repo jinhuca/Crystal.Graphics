@@ -25,7 +25,7 @@
 
     #region Private Methods
 
-    private static new void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private new static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
       ((SurfacePlotViewport3D)d).UpdateModel();
     }
@@ -39,22 +39,22 @@
     {
       var plotModel = new Model3DGroup();
 
-      int rows = Points.GetUpperBound(0) + 1;
-      int columns = Points.GetUpperBound(1) + 1;
-      double minX = double.MaxValue;
-      double maxX = double.MinValue;
-      double minY = double.MaxValue;
-      double maxY = double.MinValue;
-      double minZ = double.MaxValue;
-      double maxZ = double.MinValue;
-      double minColorValue = double.MaxValue;
-      double maxColorValue = double.MinValue;
-      for(int i = 0; i < rows; i++)
-        for(int j = 0; j < columns; j++)
+      var rows = Points.GetUpperBound(0) + 1;
+      var columns = Points.GetUpperBound(1) + 1;
+      var minX = double.MaxValue;
+      var maxX = double.MinValue;
+      var minY = double.MaxValue;
+      var maxY = double.MinValue;
+      var minZ = double.MaxValue;
+      var maxZ = double.MinValue;
+      var minColorValue = double.MaxValue;
+      var maxColorValue = double.MinValue;
+      for(var i = 0; i < rows; i++)
+        for(var j = 0; j < columns; j++)
         {
-          double x = Points[i, j].X;
-          double y = Points[i, j].Y;
-          double z = Points[i, j].Z;
+          var x = Points[i, j].X;
+          var y = Points[i, j].Y;
+          var z = Points[i, j].Z;
           maxX = Math.Max(maxX, x);
           maxY = Math.Max(maxY, y);
           maxZ = Math.Max(maxZ, z);
@@ -76,10 +76,10 @@
 
       // set the texture coordinates by z-value or ColorValue
       var texcoords = new Point[rows, columns];
-      for(int i = 0; i < rows; i++)
-        for(int j = 0; j < columns; j++)
+      for(var i = 0; i < rows; i++)
+        for(var j = 0; j < columns; j++)
         {
-          double u = (Points[i, j].Z - minZ) / (maxZ - minZ);
+          var u = (Points[i, j].Z - minZ) / (maxZ - minZ);
           if(ColorValues != null)
             u = (ColorValues[i, j] - minColorValue) / (maxColorValue - minColorValue);
           texcoords[i, j] = new Point(u, u);
@@ -92,56 +92,56 @@
       surfaceModel.BackMaterial = surfaceModel.Material;
 
       var axesMeshBuilder = new MeshBuilder();
-      for(double x = minX; x <= maxX; x += IntervalX)
+      for(var x = minX; x <= maxX; x += IntervalX)
       {
-        double j = (x - minX) / (maxX - minX) * (columns - 1);
-        var path = new List<Point3D> { new Point3D(x, minY, minZ) };
-        for(int i = 0; i < rows; i++)
+        var j = (x - minX) / (maxX - minX) * (columns - 1);
+        var path = new List<Point3D> { new(x, minY, minZ) };
+        for(var i = 0; i < rows; i++)
         {
           path.Add(BilinearInterpolation(Points, i, j));
         }
         path.Add(new Point3D(x, maxY, minZ));
 
         axesMeshBuilder.AddTube(path, BoundingBoxThickness, 9, false);
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           $"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 6, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
 
-      for(double y = minY; y <= maxY; y += IntervalY)
+      for(var y = minY; y <= maxY; y += IntervalY)
       {
-        double i = (y - minY) / (maxY - minY) * (rows - 1);
-        var path = new List<Point3D> { new Point3D(minX, y, minZ) };
-        for(int j = 0; j < columns; j++)
+        var i = (y - minY) / (maxY - minY) * (rows - 1);
+        var path = new List<Point3D> { new(minX, y, minZ) };
+        for(var j = 0; j < columns; j++)
         {
           path.Add(BilinearInterpolation(Points, i, j));
         }
         path.Add(new Point3D(maxX, y, minZ));
         axesMeshBuilder.AddTube(path, BoundingBoxThickness, 9, false);
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           $"{y:0}", YAxisLabelBrush, true, YAxisLabelFontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           YAxisTitleContent, YAxisTitleBrush, true, YAxisTitleFontSize, new Point3D(minX - FontSize * 10,(minY + maxY) * 0.5, minZ), new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
         plotModel.Children.Add(label);
       }
 
-      double z0 = (int)(minZ / IntervalZ) * IntervalZ;
-      for(double z = z0; z <= maxZ + double.Epsilon; z += IntervalZ)
+      var z0 = (int)(minZ / IntervalZ) * IntervalZ;
+      for(var z = z0; z <= maxZ + double.Epsilon; z += IntervalZ)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           $"{z:0}", ZAxisLabelBrush, true, ZAxisLabelFontSize, new Point3D(minX - FontSize * 3, maxY, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
         plotModel.Children.Add(label);
       }
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           ZAxisTitleContent, ZAxisTitleBrush, true, ZAxisTitleFontSize, new Point3D(minX - FontSize * 10, maxY, (minZ + maxZ) * 0.5), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
         plotModel.Children.Add(label);
       }
@@ -157,8 +157,8 @@
 
     private static Point3D BilinearInterpolation(Point3D[,] p, double i, double j)
     {
-      int n = p.GetUpperBound(0);
-      int m = p.GetUpperBound(1);
+      var n = p.GetUpperBound(0);
+      var m = p.GetUpperBound(1);
       var i0 = (int)i;
       var j0 = (int)j;
       if(i0 + 1 >= n) i0 = n - 2;
@@ -166,14 +166,14 @@
 
       if(i < 0) i = 0;
       if(j < 0) j = 0;
-      double u = i - i0;
-      double v = j - j0;
-      Vector3D v00 = p[i0, j0].ToVector3D();
-      Vector3D v01 = p[i0, j0 + 1].ToVector3D();
-      Vector3D v10 = p[i0 + 1, j0].ToVector3D();
-      Vector3D v11 = p[i0 + 1, j0 + 1].ToVector3D();
-      Vector3D v0 = v00 * (1 - u) + v10 * u;
-      Vector3D v1 = v01 * (1 - u) + v11 * u;
+      var u = i - i0;
+      var v = j - j0;
+      var v00 = p[i0, j0].ToVector3D();
+      var v01 = p[i0, j0 + 1].ToVector3D();
+      var v10 = p[i0 + 1, j0].ToVector3D();
+      var v11 = p[i0 + 1, j0 + 1].ToVector3D();
+      var v0 = v00 * (1 - u) + v10 * u;
+      var v1 = v01 * (1 - u) + v11 * u;
       return (v0 * (1 - v) + v1 * v).ToPoint3D();
     }
 

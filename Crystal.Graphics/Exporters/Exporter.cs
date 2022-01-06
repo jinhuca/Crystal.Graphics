@@ -153,15 +153,10 @@ namespace Crystal.Graphics
     /// <returns>RenderTargetBitmap.</returns>
     protected RenderTargetBitmap RenderBrush(Brush brush, int w, int h)
     {
-      var ib = brush as ImageBrush;
-      if(ib != null)
+      if(brush is ImageBrush { ImageSource: BitmapImage bi })
       {
-        var bi = ib.ImageSource as BitmapImage;
-        if(bi != null)
-        {
-          w = bi.PixelWidth;
-          h = bi.PixelHeight;
-        }
+        w = bi.PixelWidth;
+        h = bi.PixelHeight;
       }
 
       var bmp = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);

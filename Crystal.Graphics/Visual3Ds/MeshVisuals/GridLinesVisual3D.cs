@@ -157,7 +157,7 @@
     /// <returns>
     /// A triangular mesh geometry.
     /// </returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
       lengthDirection = LengthDirection;
       lengthDirection.Normalize();
@@ -177,16 +177,16 @@
       // #136 
 
       var mesh = new MeshBuilder(true, false);
-      double minX = -Width / 2;
-      double minY = -Length / 2;
-      double maxX = Width / 2;
-      double maxY = Length / 2;
+      var minX = -Width / 2;
+      var minY = -Length / 2;
+      var maxX = Width / 2;
+      var maxY = Length / 2;
 
-      double x = minX;
-      double eps = MinorDistance / 10;
+      var x = minX;
+      var eps = MinorDistance / 10;
       while(x <= maxX + eps)
       {
-        double t = Thickness;
+        var t = Thickness;
         if(IsMultipleOf(x, MajorDistance))
         {
           t *= 2;
@@ -196,10 +196,10 @@
         x += MinorDistance;
       }
 
-      double y = minY;
+      var y = minY;
       while(y <= maxY + eps)
       {
-        double t = Thickness;
+        var t = Thickness;
         if(IsMultipleOf(y, MajorDistance))
         {
           t *= 2;
@@ -210,7 +210,7 @@
       }
 
       var m = mesh.ToMesh();
-      m.Freeze();
+      m?.Freeze();
       return m;
     }
 
@@ -228,7 +228,7 @@
     /// </returns>
     private static bool IsMultipleOf(double y, double d)
     {
-      double y2 = d * (int)(y / d);
+      var y2 = d * (int)(y / d);
       return Math.Abs(y - y2) < 1e-3;
     }
 
@@ -252,7 +252,7 @@
     /// </param>
     private void AddLineX(MeshBuilder mesh, double x, double minY, double maxY, double thickness)
     {
-      int i0 = mesh.Positions.Count;
+      var i0 = mesh.Positions.Count;
       mesh.Positions.Add(GetPoint(x - (thickness / 2), minY));
       mesh.Positions.Add(GetPoint(x - (thickness / 2), maxY));
       mesh.Positions.Add(GetPoint(x + (thickness / 2), maxY));
@@ -289,7 +289,7 @@
     /// </param>
     private void AddLineY(MeshBuilder mesh, double y, double minX, double maxX, double thickness)
     {
-      int i0 = mesh.Positions.Count;
+      var i0 = mesh.Positions.Count;
       mesh.Positions.Add(GetPoint(minX, y + (thickness / 2)));
       mesh.Positions.Add(GetPoint(maxX, y + (thickness / 2)));
       mesh.Positions.Add(GetPoint(maxX, y - (thickness / 2)));

@@ -17,7 +17,7 @@ namespace Crystal.Graphics
     /// </param>
     public static void Compress(string source)
     {
-      var ext = System.IO.Path.GetExtension(source);
+      var ext = Path.GetExtension(source);
       byte[] input;
       using(var infile = File.OpenRead(source))
       {
@@ -25,7 +25,7 @@ namespace Crystal.Graphics
         infile.Read(input, 0, input.Length);
       }
 
-      var dest = System.IO.Path.ChangeExtension(source, ext + "z");
+      var dest = Path.ChangeExtension(source, ext + "z");
       using(var outfile = File.OpenWrite(dest))
       {
         var zip = new GZipStream(outfile, CompressionMode.Compress);

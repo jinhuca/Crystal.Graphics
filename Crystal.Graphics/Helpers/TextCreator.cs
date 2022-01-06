@@ -63,7 +63,7 @@
       var mat = new DiffuseMaterial { Brush = new VisualBrush(tb) };
 
       // We just assume the characters are square
-      double width = text.Length * height;
+      var width = text.Length * height;
 
       // tb.Measure(new Size(text.Length * height * 2, height * 2));
       // width=tb.DesiredSize.Width;

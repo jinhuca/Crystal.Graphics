@@ -77,7 +77,7 @@ namespace Crystal.Graphics
         camera.Changed -= CameraChanged;
       }
 
-      camera = viewport != null ? viewport.Camera : null;
+      camera = viewport?.Camera;
       if(camera != null)
       {
         camera.Changed += CameraChanged;
@@ -131,8 +131,7 @@ namespace Crystal.Graphics
         light.Color = Color;
       }
 
-      var projectionCamera = camera as ProjectionCamera;
-      if(projectionCamera != null)
+      if(camera is ProjectionCamera projectionCamera)
       {
         var y = projectionCamera.LookDirection;
         var x = Vector3D.CrossProduct(projectionCamera.LookDirection, projectionCamera.UpDirection);
@@ -144,15 +143,13 @@ namespace Crystal.Graphics
         var lightDirection = target - lightPosition;
         lightDirection.Normalize();
 
-        var spotLight = light as SpotLight;
-        if(spotLight != null)
+        if(light is SpotLight spotLight)
         {
           spotLight.Position = lightPosition;
           spotLight.Direction = lightDirection;
         }
 
-        var directionalLight = light as DirectionalLight;
-        if(directionalLight != null)
+        if(light is DirectionalLight directionalLight)
         {
           directionalLight.Direction = lightDirection;
         }

@@ -77,8 +77,8 @@
     {
       // http://en.wikipedia.org/wiki/Line-plane_intersection
       var l = lb - la;
-      double a = Vector3D.DotProduct(position - la, normal);
-      double b = Vector3D.DotProduct(l, normal);
+      var a = Vector3D.DotProduct(position - la, normal);
+      var b = Vector3D.DotProduct(l, normal);
       if(a.Equals(0) && b.Equals(0))
       {
         return null;

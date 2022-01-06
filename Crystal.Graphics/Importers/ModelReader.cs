@@ -35,7 +35,7 @@ namespace Crystal.Graphics
     /// Gets the dispatcher.
     /// </summary>
     /// <value>The dispatcher.</value>
-    public Dispatcher Dispatcher { get; private set; }
+    public Dispatcher Dispatcher { get; }
 
     /// <summary>
     /// Gets or sets the directory.

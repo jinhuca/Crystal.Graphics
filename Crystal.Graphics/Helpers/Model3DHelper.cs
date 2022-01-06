@@ -28,8 +28,7 @@
         return currentTransform;
       }
 
-      var mg = current as Model3DGroup;
-      if(mg != null)
+      if(current is Model3DGroup mg)
       {
         foreach(var m in mg.Children)
         {
@@ -79,8 +78,7 @@
     public static void Traverse<T>(this Model3D model, Transform3D transform, Action<T, Transform3D> action)
         where T : Model3D
     {
-      var mg = model as Model3DGroup;
-      if(mg != null)
+      if(model is Model3DGroup mg)
       {
         var childTransform = Transform3DHelper.CombineTransform(model.Transform, transform);
         foreach(var m in mg.Children)
@@ -89,8 +87,7 @@
         }
       }
 
-      var gm = model as T;
-      if(gm != null)
+      if(model is T gm)
       {
         var childTransform = Transform3DHelper.CombineTransform(model.Transform, transform);
         action(gm, childTransform);
@@ -118,8 +115,7 @@
     public static void Traverse<T>(this Model3D model, Visual3D visual, Transform3D transform, Action<T, Visual3D, Transform3D> action)
         where T : Model3D
     {
-      var mg = model as Model3DGroup;
-      if(mg != null)
+      if(model is Model3DGroup mg)
       {
         var childTransform = Transform3DHelper.CombineTransform(model.Transform, transform);
         foreach(var m in mg.Children)
@@ -128,8 +124,7 @@
         }
       }
 
-      var gm = model as T;
-      if(gm != null)
+      if(model is T gm)
       {
         var childTransform = Transform3DHelper.CombineTransform(model.Transform, transform);
         action(gm, visual, childTransform);

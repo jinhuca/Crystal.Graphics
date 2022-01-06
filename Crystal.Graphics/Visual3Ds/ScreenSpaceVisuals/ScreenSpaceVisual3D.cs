@@ -103,7 +103,7 @@
     /// <value>
     /// The points collection.
     /// </value>
-    public Point3DCollection Points
+    public Point3DCollection? Points
     {
       get => (Point3DCollection)GetValue(PointsProperty);
 
@@ -153,13 +153,13 @@
       var screenSpaceVisual3D = (ScreenSpaceVisual3D)sender;
       screenSpaceVisual3D.UpdateGeometry();
 
-      if(screenSpaceVisual3D.collectionBeingListenedTo != null && !screenSpaceVisual3D.collectionBeingListenedTo.IsFrozen)
+      if(screenSpaceVisual3D.collectionBeingListenedTo is { IsFrozen: false } && screenSpaceVisual3D != null)
       {
         screenSpaceVisual3D.collectionBeingListenedTo.Changed -= screenSpaceVisual3D.HandlePointsChanged;
       }
 
       var pc = e.NewValue as Point3DCollection;
-      if(pc != null && !pc.IsFrozen)
+      if(pc is { IsFrozen: false })
       {
         screenSpaceVisual3D.collectionBeingListenedTo = pc;
 
@@ -168,7 +168,7 @@
       }
       else
       {
-        screenSpaceVisual3D.collectionBeingListenedTo = pc;
+        screenSpaceVisual3D.collectionBeingListenedTo = pc!;
       }
     }
 
@@ -185,7 +185,7 @@
     {
       if(isRendering)
       {
-        if(!Visual3DHelper.IsAttachedToViewport3D(this))
+        if(!this.IsAttachedToViewport3D())
         {
           return;
         }

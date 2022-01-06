@@ -15,7 +15,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// The exported materials.
     /// </summary>
-    private readonly Dictionary<Material, string> exportedMaterials = new Dictionary<Material, string>();
+    private readonly Dictionary<Material, string> exportedMaterials = new();
 
     /// <summary>
     /// The group no.
@@ -149,7 +149,7 @@ namespace Crystal.Graphics
       var textureIndexMap = new Dictionary<int, int>();
       var normalIndexMap = new Dictionary<int, int>();
 
-      int index = 0;
+      var index = 0;
       if(m.Positions != null)
       {
         foreach(var v in m.Positions)
@@ -165,7 +165,7 @@ namespace Crystal.Graphics
                   SwitchYZ ? -p.Y : p.Z));
         }
 
-        writer.WriteLine(string.Format("# {0} vertices", index));
+        writer.WriteLine($"# {index} vertices");
       }
 
       if(m.TextureCoordinates != null)
@@ -177,7 +177,7 @@ namespace Crystal.Graphics
           writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "vt {0} {1}", vt.X, 1 - vt.Y));
         }
 
-        writer.WriteLine(string.Format("# {0} texture coordinates", index));
+        writer.WriteLine($"# {index} texture coordinates");
       }
 
       if(m.Normals != null && ExportNormals)
@@ -190,43 +190,43 @@ namespace Crystal.Graphics
               string.Format(CultureInfo.InvariantCulture, "vn {0} {1} {2}", vn.X, SwitchYZ ? vn.Z : vn.Y, SwitchYZ ? -vn.Y : vn.Z));
         }
 
-        writer.WriteLine(string.Format("# {0} normals", index));
+        writer.WriteLine($"# {index} normals");
       }
 
-      Func<int, string> formatIndices = i0 =>
-          {
-            bool hasTextureIndex = textureIndexMap.ContainsKey(i0);
-            bool hasNormalIndex = normalIndexMap.ContainsKey(i0);
-            if(hasTextureIndex && hasNormalIndex)
-            {
-              return string.Format("{0}/{1}/{2}", vertexIndexMap[i0], textureIndexMap[i0], normalIndexMap[i0]);
-            }
+      string FormatIndices(int i0)
+      {
+        var hasTextureIndex = textureIndexMap.ContainsKey(i0);
+        var hasNormalIndex = normalIndexMap.ContainsKey(i0);
+        if (hasTextureIndex && hasNormalIndex)
+        {
+          return $"{vertexIndexMap[i0]}/{textureIndexMap[i0]}/{normalIndexMap[i0]}";
+        }
 
-            if(hasTextureIndex)
-            {
-              return string.Format("{0}/{1}", vertexIndexMap[i0], textureIndexMap[i0]);
-            }
+        if (hasTextureIndex)
+        {
+          return $"{vertexIndexMap[i0]}/{textureIndexMap[i0]}";
+        }
 
-            if(hasNormalIndex)
-            {
-              return string.Format("{0}//{1}", vertexIndexMap[i0], normalIndexMap[i0]);
-            }
+        if (hasNormalIndex)
+        {
+          return $"{vertexIndexMap[i0]}//{normalIndexMap[i0]}";
+        }
 
-            return vertexIndexMap[i0].ToString();
-          };
+        return vertexIndexMap[i0].ToString();
+      }
 
       if(m.TriangleIndices != null)
       {
-        for(int i = 0; i < m.TriangleIndices.Count; i += 3)
+        for(var i = 0; i < m.TriangleIndices.Count; i += 3)
         {
-          int i0 = m.TriangleIndices[i];
-          int i1 = m.TriangleIndices[i + 1];
-          int i2 = m.TriangleIndices[i + 2];
+          var i0 = m.TriangleIndices[i];
+          var i1 = m.TriangleIndices[i + 1];
+          var i2 = m.TriangleIndices[i + 2];
 
-          writer.WriteLine("f {0} {1} {2}", formatIndices(i0), formatIndices(i1), formatIndices(i2));
+          writer.WriteLine("f {0} {1} {2}", FormatIndices(i0), FormatIndices(i1), FormatIndices(i2));
         }
 
-        writer.WriteLine(string.Format("# {0} faces", m.TriangleIndices.Count / 3));
+        writer.WriteLine($"# {m.TriangleIndices.Count / 3} faces");
       }
 
       writer.WriteLine();
@@ -282,14 +282,14 @@ namespace Crystal.Graphics
 
       if(exportedMaterials.ContainsKey(model.Material))
       {
-        string matName = exportedMaterials[model.Material];
+        var matName = exportedMaterials[model.Material];
         writer.ObjWriter.WriteLine("usemtl {0}", matName);
       }
       else
       {
-        string matName = string.Format("mat{0}", matNo++);
+        var matName = $"mat{matNo++}";
         writer.ObjWriter.WriteLine("usemtl {0}", matName);
-        ExportMaterial(writer.MaterialsWriter, matName, model.Material, model.BackMaterial);
+        ExportMaterial(writer.MaterialsWriter, matName, model.Material);
         exportedMaterials.Add(model.Material, matName);
       }
 
@@ -303,25 +303,23 @@ namespace Crystal.Graphics
     /// <param name="materialWriter">The material writer.</param>
     /// <param name="matName">The mat name.</param>
     /// <param name="material">The material.</param>
-    /// <param name="backMaterial">The back material.</param>
-    private void ExportMaterial(StreamWriter materialWriter, string matName, Material material, Material backMaterial)
+    private void ExportMaterial(StreamWriter materialWriter, string matName, Material material)
     {
       materialWriter.WriteLine("newmtl {0}", matName);
       var dm = material as DiffuseMaterial;
       var sm = material as SpecularMaterial;
-      var mg = material as MaterialGroup;
-      if(mg != null)
+      if(material is MaterialGroup mg)
       {
         foreach(var m in mg.Children)
         {
-          if(m is DiffuseMaterial)
+          switch (m)
           {
-            dm = m as DiffuseMaterial;
-          }
-
-          if(m is SpecularMaterial)
-          {
-            sm = m as SpecularMaterial;
+            case DiffuseMaterial diffuseMaterial:
+              dm = diffuseMaterial;
+              break;
+            case SpecularMaterial specularMaterial:
+              sm = specularMaterial;
+              break;
           }
         }
       }
@@ -331,23 +329,14 @@ namespace Crystal.Graphics
         var adjustedAmbientColor = dm.AmbientColor.ChangeIntensity(0.2);
 
         // materialWriter.WriteLine(string.Format("Ka {0}", this.ToColorString(adjustedAmbientColor)));
-        var scb = dm.Brush as SolidColorBrush;
-        if(scb != null)
+        if(dm.Brush is SolidColorBrush scb)
         {
-          materialWriter.WriteLine(string.Format("Kd {0}", ToColorString(scb.Color)));
+          materialWriter.WriteLine($"Kd {ToColorString(scb.Color)}");
 
-          if(UseDissolveForTransparency)
-          {
-            // Dissolve factor
-            materialWriter.WriteLine(
-                string.Format(CultureInfo.InvariantCulture, "d {0:F4}", scb.Color.A / 255.0));
-          }
-          else
-          {
-            // Transparency
-            materialWriter.WriteLine(
-                string.Format(CultureInfo.InvariantCulture, "Tr {0:F4}", scb.Color.A / 255.0));
-          }
+          materialWriter.WriteLine(
+            UseDissolveForTransparency
+              ? string.Format(CultureInfo.InvariantCulture, "d {0:F4}", scb.Color.A / 255.0)
+              : string.Format(CultureInfo.InvariantCulture, "Tr {0:F4}", scb.Color.A / 255.0));
         }
         else
         {
@@ -366,7 +355,7 @@ namespace Crystal.Graphics
             }
           }
 
-          materialWriter.WriteLine(string.Format("map_Kd {0}", textureFilename));
+          materialWriter.WriteLine($"map_Kd {textureFilename}");
         }
       }
 
@@ -375,14 +364,13 @@ namespace Crystal.Graphics
       // color includes an ambient constant term and a diffuse shading term for
       // each light source.  The formula is
       // color = KaIa + Kd { SUM j=1..ls, (N * Lj)Ij }
-      int illum = 1; // Lambertian
+      var illum = 1; // Lambertian
 
       if(sm != null)
       {
         var scb = sm.Brush as SolidColorBrush;
         materialWriter.WriteLine(
-            string.Format(
-                "Ks {0}", ToColorString(scb != null ? scb.Color : Color.FromScRgb(1.0f, 0.2f, 0.2f, 0.2f))));
+          $"Ks {ToColorString(scb?.Color ?? Color.FromScRgb(1.0f, 0.2f, 0.2f, 0.2f))}");
 
         // Illumination model 2
         // This is a diffuse and specular illumination model using Lambertian
@@ -398,13 +386,13 @@ namespace Crystal.Graphics
       }
 
       // roughness
-      materialWriter.WriteLine(string.Format("Ns {0}", 2));
+      materialWriter.WriteLine($"Ns {2}");
 
       // Optical density (index of refraction)
-      materialWriter.WriteLine(string.Format("Ni {0}", 1));
+      materialWriter.WriteLine($"Ni {1}");
 
       // Transmission filter
-      materialWriter.WriteLine(string.Format("Tf {0} {1} {2}", 1, 1, 1));
+      materialWriter.WriteLine($"Tf {1} {1} {1}");
 
       // Illumination model
       // Illumination    Properties that are turned on in the

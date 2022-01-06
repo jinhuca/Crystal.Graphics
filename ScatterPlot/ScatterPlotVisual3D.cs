@@ -1,4 +1,5 @@
-﻿using Crystal.Graphics;
+﻿using System.Globalization;
+using Crystal.Graphics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -116,17 +117,17 @@ namespace ScatterPlot
       var plotModel = new Model3DGroup();
       if(Points == null || Values == null) return plotModel;
 
-      double minX = Points.Min(p => p.X);
-      double maxX = Points.Max(p => p.X);
-      double minY = Points.Min(p => p.Y);
-      double maxY = Points.Max(p => p.Y);
-      double minZ = Points.Min(p => p.Z);
-      double maxZ = Points.Max(p => p.Z);
-      double minValue = Values.Min();
-      double maxValue = Values.Max();
+      var minX = Points.Min(p => p.X);
+      var maxX = Points.Max(p => p.X);
+      var minY = Points.Min(p => p.Y);
+      var maxY = Points.Max(p => p.Y);
+      var minZ = Points.Min(p => p.Z);
+      var maxZ = Points.Max(p => p.Z);
+      var minValue = Values.Min();
+      var maxValue = Values.Max();
 
       var valueRange = maxValue - minValue;
-      var scatterMeshBuilder = new MeshBuilder(true, true);
+      var scatterMeshBuilder = new MeshBuilder(true);
       var oldTCCount = 0;
 
       for(var i = 0; i < Points.Length; ++i)
@@ -147,41 +148,41 @@ namespace ScatterPlot
 
       // create bounding box with axes indications
       var axesMeshBuilder = new MeshBuilder();
-      for(double x = minX; x <= maxX; x += IntervalX)
+      for(var x = minX; x <= maxX; x += IntervalX)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
-          x.ToString(), Brushes.Black, true, FontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        var label = TextCreator.CreateTextLabelModel3D(
+          x.ToString(CultureInfo.InvariantCulture), Brushes.Black, true, FontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
 
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           "X-axis", Brushes.Black, true, FontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 6, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
 
-      for(double y = minY; y <= maxY; y += IntervalY)
+      for(var y = minY; y <= maxY; y += IntervalY)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
-          y.ToString(), Brushes.Black, true, FontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        var label = TextCreator.CreateTextLabelModel3D(
+          y.ToString(CultureInfo.InvariantCulture), Brushes.Black, true, FontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           "Y-axis", Brushes.Black, true, FontSize, new Point3D(minX - FontSize * 10, (minY + maxY) * 0.5, minZ), new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
         plotModel.Children.Add(label);
       }
       
-      double z0 = (int)(minZ / IntervalZ) * IntervalZ;
-      for(double z = z0; z <= maxZ + double.Epsilon; z += IntervalZ)
+      var z0 = (int)(minZ / IntervalZ) * IntervalZ;
+      for(var z = z0; z <= maxZ + double.Epsilon; z += IntervalZ)
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
-          z.ToString(), Brushes.Black, true, FontSize, new Point3D(minX - FontSize * 3, maxY, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
+        var label = TextCreator.CreateTextLabelModel3D(
+          z.ToString(CultureInfo.InvariantCulture), Brushes.Black, true, FontSize, new Point3D(minX - FontSize * 3, maxY, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
         plotModel.Children.Add(label);
       }
       
       {
-        GeometryModel3D label = TextCreator.CreateTextLabelModel3D(
+        var label = TextCreator.CreateTextLabelModel3D(
           "Z-axis", Brushes.Black, true, FontSize, new Point3D(minX - FontSize * 10, maxY, (minZ + maxZ) * 0.5), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
         plotModel.Children.Add(label);
       }

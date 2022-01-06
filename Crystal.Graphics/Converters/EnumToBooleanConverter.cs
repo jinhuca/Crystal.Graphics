@@ -36,9 +36,9 @@
         return DependencyProperty.UnsetValue;
       }
 
-      string checkValue = value.ToString();
-      string targetValue = parameter.ToString();
-      return checkValue.Equals(targetValue, StringComparison.OrdinalIgnoreCase);
+      var checkValue = value.ToString();
+      var targetValue = parameter.ToString();
+      return checkValue != null && checkValue.Equals(targetValue, StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>
@@ -68,10 +68,10 @@
 
       try
       {
-        bool boolValue = System.Convert.ToBoolean(value, culture);
+        var boolValue = System.Convert.ToBoolean(value, culture);
         if(boolValue)
         {
-          return Enum.Parse(targetType, parameter.ToString());
+          return Enum.Parse(targetType, parameter.ToString()!);
         }
       }
       catch(ArgumentException)

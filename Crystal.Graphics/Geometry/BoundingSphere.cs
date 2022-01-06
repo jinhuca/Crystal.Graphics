@@ -174,7 +174,7 @@
     /// </returns>
     public bool Intersects(BoundingSphere sphere)
     {
-      double d2 = center.DistanceToSquared(sphere.center);
+      var d2 = center.DistanceToSquared(sphere.center);
       return (radius * radius) + (2.0 * radius * sphere.radius) + (sphere.radius * sphere.radius) > d2;
     }
 
@@ -186,37 +186,37 @@
     /// <returns>The intersection points sorted by distance from the ray origin.</returns>
     public bool RayIntersection(Ray3D ray, out Point3D[] result)
     {
-      double cx = center.X;
-      double cy = center.Y;
-      double cz = center.Z;
-      double r = radius;
+      var cx = center.X;
+      var cy = center.Y;
+      var cz = center.Z;
+      var r = radius;
 
-      double x1 = ray.Origin.X;
-      double y1 = ray.Origin.Y;
-      double z1 = ray.Origin.Z;
+      var x1 = ray.Origin.X;
+      var y1 = ray.Origin.Y;
+      var z1 = ray.Origin.Z;
 
-      double dx = ray.Direction.X;
-      double dy = ray.Direction.Y;
-      double dz = ray.Direction.Z;
+      var dx = ray.Direction.X;
+      var dy = ray.Direction.Y;
+      var dz = ray.Direction.Z;
 
       // Quadratic solving
-      double a = (dx * dx) + (dy * dy) + (dz * dz);
-      double b = (2 * dx * (x1 - cx)) + (2 * dy * (y1 - cy)) + (2 * dz * (z1 - cz));
-      double c = (x1 * x1) + (y1 * y1) + (z1 * z1) + (cx * cx) + (cz * cz) + (cy * cy) - (2 * ((cy * y1) + (cz * z1) + (cx * x1))) - (r * r);
+      var a = (dx * dx) + (dy * dy) + (dz * dz);
+      var b = (2 * dx * (x1 - cx)) + (2 * dy * (y1 - cy)) + (2 * dz * (z1 - cz));
+      var c = (x1 * x1) + (y1 * y1) + (z1 * z1) + (cx * cx) + (cz * cz) + (cy * cy) - (2 * ((cy * y1) + (cz * z1) + (cx * x1))) - (r * r);
 
       // Discriminant
-      double q = (b * b) - (4 * a * c);
+      var q = (b * b) - (4 * a * c);
 
       // We have at least one possible intersection
       if(q >= 0)
       {
-        double q2 = Math.Sqrt((b * b) - (4 * a * c));
+        var q2 = Math.Sqrt((b * b) - (4 * a * c));
 
         // First root
-        double t1 = (-b + q2) / (2 * a);
+        var t1 = (-b + q2) / (2 * a);
 
         // Second root
-        double t2 = (-b - q2) / (2 * a);
+        var t2 = (-b - q2) / (2 * a);
 
         if(t1 >= 0 && t2 >= 0 && !t1.Equals(t2))
         {

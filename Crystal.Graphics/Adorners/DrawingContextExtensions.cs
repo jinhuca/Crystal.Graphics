@@ -18,7 +18,7 @@
     /// <param name="radiusY">The radius Y.</param>
     public static void DrawArc(
         this DrawingContext dc,
-        Brush brush,
+        Brush? brush,
         Pen pen,
         Point start,
         Point end,
@@ -72,7 +72,7 @@
     /// </param>
     public static void DrawArc(
         this DrawingContext dc,
-        Brush brush,
+        Brush? brush,
         Pen pen,
         Point position,
         double startAngle,
@@ -81,8 +81,8 @@
         double radiusX,
         double radiusY)
     {
-      double startRadians = startAngle / 180 * Math.PI;
-      double endRadians = endAngle / 180 * Math.PI;
+      var startRadians = startAngle / 180 * Math.PI;
+      var endRadians = endAngle / 180 * Math.PI;
       var start = position + new Vector(Math.Cos(startRadians) * radiusX, -Math.Sin(startRadians) * radiusY);
       var end = position + new Vector(Math.Cos(endRadians) * radiusX, -Math.Sin(endRadians) * radiusY);
       dc.DrawArc(brush, pen, start, end, direction, radiusX, radiusY);
@@ -117,7 +117,7 @@
     /// </param>
     public static void DrawArc(
         this DrawingContext dc,
-        Brush brush,
+        Brush? brush,
         Pen pen,
         Point position,
         double startAngle,

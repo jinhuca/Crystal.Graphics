@@ -2,11 +2,7 @@
 using Microsoft.CSharp;
 using System;
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Media3D;
 
@@ -25,8 +21,8 @@ namespace SurfaceDemo
 
     public string Source
     {
-      get { return (string)GetValue(SourceProperty); }
-      set { SetValue(SourceProperty, value); }
+      get => (string)GetValue(SourceProperty);
+      set => SetValue(SourceProperty, value);
     }
 
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
@@ -58,11 +54,11 @@ namespace SurfaceDemo
 
       var provider = new CSharpCodeProvider();
       var options = new CompilerParameters { GenerateInMemory = true };
-      string qn = typeof(Point3D).Assembly.Location;
+      var qn = typeof(Point3D).Assembly.Location;
       options.ReferencedAssemblies.Add("System.dll");
       options.ReferencedAssemblies.Add(qn);
-      string src = template.Replace("#code#", Source);
-      CompilerResults compilerResults = provider.CompileAssemblyFromSource(options, src);
+      var src = template.Replace("#code#", Source);
+      var compilerResults = provider.CompileAssemblyFromSource(options, src);
       if(!compilerResults.Errors.HasErrors)
       {
         Errors = null;
@@ -74,7 +70,7 @@ namespace SurfaceDemo
       {
         // correct line numbers
         Errors = compilerResults.Errors;
-        for(int i = 0; i < Errors.Count; i++)
+        for(var i = 0; i < Errors.Count; i++)
           Errors[i].Line -= 17;
       }
 
@@ -90,11 +86,11 @@ namespace SurfaceDemo
         return new Point3D(0, 0, 0);
       }
 
-      object[] parameters = new object[3];
+      var parameters = new object[3];
       parameters[0] = u;
       parameters[1] = v;
       parameters[2] = _w;
-      object result = _codeType.InvokeMember("Evaluate", BindingFlags.InvokeMethod, null, _codeInstance, parameters);
+      var result = _codeType.InvokeMember("Evaluate", BindingFlags.InvokeMethod, null, _codeInstance, parameters);
       var p = (Point4D)result;
 
       // todo: why doesn't this work??

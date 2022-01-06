@@ -1,8 +1,6 @@
-﻿using System.Windows;
-
-namespace SurfacePlot3DDemo
+﻿namespace SurfacePlot3DDemo
 {
-  public partial class MainWindow : Window
+  public partial class MainWindow
   {
     public MainWindow()
     {

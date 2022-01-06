@@ -6,16 +6,11 @@
   public class Polygon3D
   {
     /// <summary>
-    /// The points.
-    /// </summary>
-    private IList<Point3D> points;
-
-    /// <summary>
     /// Initializes a new instance of the <see cref = "Polygon3D" /> class.
     /// </summary>
     public Polygon3D()
     {
-      points = new List<Point3D>();
+      Points = new List<Point3D>();
     }
 
     /// <summary>
@@ -26,19 +21,14 @@
     /// </param>
     public Polygon3D(IList<Point3D> pts)
     {
-      points = pts;
+      Points = pts;
     }
 
     /// <summary>
     /// Gets or sets the points.
     /// </summary>
     /// <value>The points.</value>
-    public IList<Point3D> Points
-    {
-      get => points;
-
-      set => points = value;
-    }
+    public IList<Point3D> Points { get; set; }
 
     //// http://en.wikipedia.org/wiki/Polygon_triangulation
     //// http://en.wikipedia.org/wiki/Monotone_polygon
@@ -130,7 +120,7 @@
 #if SHARPDX
             var result = Vector3D.Cross(v1, this.Points[2] - this.Points[0]);
 #else
-      Vector3D result = Vector3D.CrossProduct(v1, Points[2] - Points[0]);
+      var result = Vector3D.CrossProduct(v1, Points[2] - Points[0]);
 #endif
       result.Normalize();
       return result;

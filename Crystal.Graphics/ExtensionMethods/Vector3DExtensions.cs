@@ -17,7 +17,7 @@
         public static Vector3D FindAnyPerpendicular(this Vector3D n)
         {
             n.Normalize();
-            Vector3D u = Vector3D.CrossProduct(new Vector3D(0, 1, 0), n);
+            var u = Vector3D.CrossProduct(new Vector3D(0, 1, 0), n);
             if (u.LengthSquared < 1e-3)
             {
                 u = Vector3D.CrossProduct(new Vector3D(1, 0, 0), n);

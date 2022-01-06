@@ -12,7 +12,7 @@ namespace Crystal.Graphics
   /// </remarks>
   public class OffReader : ModelReader
     {
-        private static readonly char[] Delimiters = new char[] { ' ', '\t' };
+        private static readonly char[] Delimiters = new[] { ' ', '\t' };
         /// <summary>
         /// Initializes a new instance of the <see cref="OffReader" /> class.
         /// </summary>
@@ -37,12 +37,12 @@ namespace Crystal.Graphics
         /// <summary>
         /// Gets the faces.
         /// </summary>
-        public IList<int[]> Faces { get; private set; }
+        public IList<int[]> Faces { get; }
 
         /// <summary>
         /// Gets the vertices.
         /// </summary>
-        public IList<Point3D> Vertices { get; private set; }
+        public IList<Point3D> Vertices { get; }
 
         /// <summary>
         /// Creates a mesh from the loaded file.
@@ -72,7 +72,7 @@ namespace Crystal.Graphics
         /// <returns>
         /// A <see cref="MeshGeometry3D" />.
         /// </returns>
-        public MeshGeometry3D CreateMeshGeometry3D()
+        public MeshGeometry3D? CreateMeshGeometry3D()
         {
             var mb = new MeshBuilder(false, false);
             foreach (var p in Vertices)
@@ -127,15 +127,15 @@ namespace Crystal.Graphics
         {
             using (var reader = new StreamReader(s))
             {
-                bool containsNormals = false;
-                bool containsTextureCoordinates = false;
-                bool containsColors = false;
-                bool containsHomogeneousCoordinates = false;
-                int vertexDimension = 3;
-                bool nextLineContainsVertexDimension = false;
-                bool nextLineContainsNumberOfVertices = false;
-                int numberOfVertices = 0;
-                int numberOfFaces = 0;
+                var containsNormals = false;
+                var containsTextureCoordinates = false;
+                var containsColors = false;
+                var containsHomogeneousCoordinates = false;
+                var vertexDimension = 3;
+                var nextLineContainsVertexDimension = false;
+                var nextLineContainsNumberOfVertices = false;
+                var numberOfVertices = 0;
+                var numberOfFaces = 0;
 
                 while (!reader.EndOfStream)
                 {
@@ -193,8 +193,8 @@ namespace Crystal.Graphics
                     {
                         var x = new double[vertexDimension];
                         var values = GetValues(line);
-                        int i = 0;
-                        for (int j = 0; j < vertexDimension; j++)
+                        var i = 0;
+                        for (var j = 0; j < vertexDimension; j++)
                         {
                             x[j] = values[i++];
                         }
@@ -202,18 +202,16 @@ namespace Crystal.Graphics
                         var n = new double[vertexDimension];
                         var uv = new double[2];
 
-#pragma warning disable 219
                         double w = 0;
                         if (containsHomogeneousCoordinates)
                         {
                             // ReSharper disable once RedundantAssignment
                             w = values[i++];
                         }
-#pragma warning restore 219
 
                         if (containsNormals)
                         {
-                            for (int j = 0; j < vertexDimension; j++)
+                            for (var j = 0; j < vertexDimension; j++)
                             {
                                 n[j] = values[i++];
                             }
@@ -226,7 +224,7 @@ namespace Crystal.Graphics
 
                         if (containsTextureCoordinates)
                         {
-                            for (int j = 0; j < 2; j++)
+                            for (var j = 0; j < 2; j++)
                             {
                                 uv[j] = values[i++];
                             }
@@ -240,9 +238,9 @@ namespace Crystal.Graphics
                     if (Faces.Count < numberOfFaces)
                     {
                         var values = GetIntValues(line);
-                        int nv = values[0];
+                        var nv = values[0];
                         var vertices = new int[nv];
-                        for (int i = 0; i < nv; i++)
+                        for (var i = 0; i < nv; i++)
                         {
                             vertices[i] = values[i + 1];
                         }
@@ -280,9 +278,9 @@ namespace Crystal.Graphics
         /// </returns>
         private static int[] GetIntValues(string input)
         {
-            var fields = RemoveComments(input).Split(Delimiters, System.StringSplitOptions.RemoveEmptyEntries);
+            var fields = RemoveComments(input).Split(Delimiters, StringSplitOptions.RemoveEmptyEntries);
             var result = new int[fields.Length];
-            for (int i = 0; i < fields.Length; i++)
+            for (var i = 0; i < fields.Length; i++)
             {
                 result[i] = (int)double.Parse(fields[i], CultureInfo.InvariantCulture);
             }
@@ -301,9 +299,9 @@ namespace Crystal.Graphics
         /// </returns>
         private static double[] GetValues(string input)
         {
-            var fields = RemoveComments(input).Split(Delimiters, System.StringSplitOptions.RemoveEmptyEntries);
+            var fields = RemoveComments(input).Split(Delimiters, StringSplitOptions.RemoveEmptyEntries);
             var result = new double[fields.Length];
-            for (int i = 0; i < fields.Length; i++)
+            for (var i = 0; i < fields.Length; i++)
             {
                 result[i] = double.Parse(fields[i], CultureInfo.InvariantCulture);
             }
@@ -322,7 +320,7 @@ namespace Crystal.Graphics
         /// </returns>
         private static string RemoveComments(string input)
         {
-            int commentIndex = input.IndexOf('#');
+            var commentIndex = input.IndexOf('#');
             if (commentIndex >= 0)
             {
                 return input.Substring(0, commentIndex);

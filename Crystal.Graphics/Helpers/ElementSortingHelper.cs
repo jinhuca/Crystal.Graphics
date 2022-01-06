@@ -45,7 +45,7 @@
     /// </returns>
     public static double GetDistanceSquared(Point3D position, Visual3D visual)
     {
-      var bounds = Visual3DHelper.FindBounds(visual, Transform3D.Identity);
+      var bounds = visual.FindBounds(Transform3D.Identity);
       return Point3D.Subtract(bounds.Location, position).LengthSquared;
     }
 
@@ -77,8 +77,7 @@
     /// </returns>
     public static bool IsTransparent(Visual3D v)
     {
-      var mv3D = v as ModelVisual3D;
-      if(mv3D != null)
+      if(v is ModelVisual3D mv3D)
       {
         // check if Model3D is transparent
         if(IsTransparent(mv3D.Content))
@@ -104,8 +103,7 @@
     /// </returns>
     public static bool IsTransparent(Model3D model)
     {
-      var gm3D = model as GeometryModel3D;
-      if(gm3D != null)
+      if(model is GeometryModel3D gm3D)
       {
         if(IsTransparent(gm3D))
         {
@@ -113,8 +111,7 @@
         }
       }
 
-      var mg = model as Model3DGroup;
-      if(mg != null)
+      if(model is Model3DGroup mg)
       {
         return mg.Children.Any(IsTransparent);
       }
@@ -157,8 +154,7 @@
     /// </returns>
     public static bool IsTransparent(Material material)
     {
-      var g = material as MaterialGroup;
-      if(g != null)
+      if(material is MaterialGroup g)
       {
         if(g.Children.Any(IsTransparent))
         {
@@ -166,8 +162,7 @@
         }
       }
 
-      var dm = material as DiffuseMaterial;
-      if(dm != null)
+      if(material is DiffuseMaterial dm)
       {
         if(IsTransparent(dm.Brush))
         {
@@ -199,14 +194,12 @@
         return true;
       }
 
-      var scb = brush as SolidColorBrush;
-      if(scb != null)
+      if(brush is SolidColorBrush scb)
       {
         return scb.Color.A < 255;
       }
 
-      var gb = brush as GradientBrush;
-      if(gb != null)
+      if(brush is GradientBrush gb)
       {
         return gb.GradientStops.Any(gs => gs.Color.A < 255);
       }

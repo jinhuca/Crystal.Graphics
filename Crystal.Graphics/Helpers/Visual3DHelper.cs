@@ -34,14 +34,9 @@
         }
       }
 
-      var model = parent as ModelVisual3D;
-      if(model != null)
+      if(parent is ModelVisual3D { Content: Model3DGroup modelGroup })
       {
-        var modelGroup = model.Content as Model3DGroup;
-        if(modelGroup != null)
-        {
-          return modelGroup.Children.OfType<T>().FirstOrDefault();
-        }
+        return modelGroup.Children.OfType<T>().FirstOrDefault();
       }
 
       return null;
@@ -134,7 +129,7 @@
         {
           return totalTransform;
         }
-        else if(obj is Visual3D mv && mv.Transform != null)
+        else if(obj is Visual3D { Transform: { } } mv)
         {
           totalTransform.Append(mv.Transform.Value);
         }
@@ -158,8 +153,7 @@
       DependencyObject obj = visual;
       while(obj != null)
       {
-        var vis = obj as Viewport3DVisual;
-        if(vis != null)
+        if(obj is Viewport3DVisual vis)
         {
           return VisualTreeHelper.GetParent(obj) as Viewport3D;
         }
@@ -186,21 +180,16 @@
       DependencyObject obj = visual;
       while(obj != null)
       {
-        var viewport3DVisual = obj as Viewport3DVisual;
-        if(viewport3DVisual != null)
+        if(obj is Viewport3DVisual viewport3DVisual)
         {
           var viewportTotalTransform = viewport3DVisual.GetTotalTransform();
           totalTransform.Append(viewportTotalTransform);
           return totalTransform;
         }
 
-        var mv = obj as ModelVisual3D;
-        if(mv != null)
+        if(obj is ModelVisual3D { Transform: { } } mv)
         {
-          if(mv.Transform != null)
-          {
-            totalTransform.Append(mv.Transform.Value);
-          }
+          totalTransform.Append(mv.Transform.Value);
         }
 
         obj = VisualTreeHelper.GetParent(obj);
@@ -225,8 +214,7 @@
       DependencyObject obj = visual;
       while(obj != null)
       {
-        var vis = obj as Viewport3DVisual;
-        if(vis != null)
+        if(obj is Viewport3DVisual vis)
         {
           return true;
         }
@@ -338,8 +326,7 @@
       DependencyObject parent = visual;
       while(parent != null)
       {
-        var vp = parent as Viewport3DVisual;
-        if(vp != null)
+        if(parent is Viewport3DVisual vp)
         {
           return (Viewport3D)vp.Parent;
         }
@@ -361,8 +348,8 @@
     /// </returns>
     private static IEnumerable<Visual3D> GetChildren(this Visual3D parent)
     {
-      int n = VisualTreeHelper.GetChildrenCount(parent);
-      for(int i = 0; i < n; i++)
+      var n = VisualTreeHelper.GetChildrenCount(parent);
+      for(var i = 0; i < n; i++)
       {
         var child = VisualTreeHelper.GetChild(parent, i) as Visual3D;
         if(child == null)
@@ -386,8 +373,7 @@
     private static Model3D GetModel(this Visual3D visual)
     {
       Model3D model;
-      var mv = visual as ModelVisual3D;
-      if(mv != null)
+      if(visual is ModelVisual3D mv)
       {
         model = mv.Content;
       }

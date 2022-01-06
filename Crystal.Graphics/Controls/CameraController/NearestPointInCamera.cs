@@ -14,7 +14,8 @@
     public Point3D? MouseDownNearestPoint3D { get; set; }
 
     /// <summary>
-    /// The 2D coordinate corresponding to said 3D point. This will usually coïncide with the mouse position, but may differ if there is no geometry directly under the mouse postion.
+    /// The 2D coordinate corresponding to said 3D point.
+    /// This will usually coincide with the mouse position, but may differ if there is no geometry directly under the mouse position.
     /// </summary>
     public Point MouseDownNearestPoint2D { get; set; }
   }

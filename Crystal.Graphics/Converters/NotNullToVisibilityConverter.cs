@@ -37,11 +37,11 @@
     /// <returns>
     /// A converted value. If the method returns null, the valid null value is used.
     /// </returns>
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
       if(targetType == typeof(Visibility))
       {
-        bool isNotNull = value != null;
+        var isNotNull = value != null;
         if(isNotNull != Inverted)
         {
           return Visibility.Visible;

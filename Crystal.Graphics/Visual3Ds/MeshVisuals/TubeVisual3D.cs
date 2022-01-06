@@ -99,8 +99,8 @@
 
       // If Diameters is not set, create a unit circle
       // otherwise, create a circle with the specified diameter
-      double r = Diameters != null ? 1 : Diameter / 2;
-      for(int j = 0; j < ThetaDiv; j++)
+      var r = Diameters != null ? 1 : Diameter / 2;
+      for(var j = 0; j < ThetaDiv; j++)
       {
         pc.Add(new Point(circle[j].X * r, circle[j].Y * r));
       }
@@ -116,7 +116,7 @@
     /// <returns>
     /// A triangular mesh geometry.
     /// </returns>
-    protected override MeshGeometry3D Tessellate()
+    protected override MeshGeometry3D? Tessellate()
     {
       if(Path == null || Path.Count < 2)
       {

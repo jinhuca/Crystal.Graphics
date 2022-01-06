@@ -142,7 +142,7 @@ namespace Crystal.Graphics
     /// </returns>
     private GeometryModel3D AddCubeSide(Vector3D normal, Vector3D up, string fileName)
     {
-      string fullPath = Path.GetFullPath(fileName);
+      var fullPath = Path.GetFullPath(fileName);
 
       if(!File.Exists(fullPath))
       {
@@ -164,16 +164,16 @@ namespace Crystal.Graphics
       var mesh = new MeshGeometry3D();
       var right = Vector3D.CrossProduct(normal, up);
       var origin = new Point3D(0, 0, 0);
-      double f = ShowSeams ? 0.995 : 1;
+      var f = ShowSeams ? 0.995 : 1;
       f *= Size;
       var n = normal * Size;
 
       right *= f;
       up *= f;
-      Point3D p1 = origin + n - up - right;
-      Point3D p2 = origin + n - up + right;
-      Point3D p3 = origin + n + up + right;
-      Point3D p4 = origin + n + up - right;
+      var p1 = origin + n - up - right;
+      var p2 = origin + n - up + right;
+      var p3 = origin + n + up + right;
+      var p4 = origin + n + up - right;
       mesh.Positions.Add(p1);
       mesh.Positions.Add(p2);
       mesh.Positions.Add(p3);
@@ -197,8 +197,8 @@ namespace Crystal.Graphics
     /// </summary>
     private void UpdateModel()
     {
-      string directory = Path.GetDirectoryName(Source);
-      string prefix = Path.GetFileName(Source);
+      var directory = Path.GetDirectoryName(Source);
+      var prefix = Path.GetFileName(Source);
 
       if(string.IsNullOrEmpty(prefix))
       {

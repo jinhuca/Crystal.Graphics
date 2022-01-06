@@ -19,7 +19,7 @@
     /// <summary>
     /// Gets the selected models.
     /// </summary>
-    public IList<Model3D> SelectedModels { get; private set; }
+    public IList<Model3D> SelectedModels { get; }
 
     /// <summary>
     /// Gets a value indicating whether the selected models are sorted by distance in ascending order.
@@ -27,6 +27,6 @@
     /// <value>
     /// <c>true</c> if the selected models are sorted by distance in ascending order; otherwise, <c>false</c>.
     /// </value>
-    public bool AreSortedByDistanceAscending { get; private set; }
+    public bool AreSortedByDistanceAscending { get; }
   }
 }

@@ -29,7 +29,7 @@
     {
       var indices = new Int32Collection(n * 6);
 
-      for(int i = 0; i < n; i++)
+      for(var i = 0; i < n; i++)
       {
         indices.Add(i * 4 + 2);
         indices.Add(i * 4 + 1);
@@ -59,10 +59,10 @@
     /// <returns>
     /// The positions collection.
     /// </returns>
-    public Point3DCollection CreatePositions(IList<Point3D> points, double size = 1.0, double depthOffset = 0.0)
+    public Point3DCollection CreatePositions(IList<Point3D>? points, double size = 1.0, double depthOffset = 0.0)
     {
-      double halfSize = size / 2.0;
-      int numPoints = points.Count;
+      var halfSize = size / 2.0;
+      var numPoints = points.Count;
 
       var outline = new[]
           {
@@ -72,14 +72,14 @@
 
       var positions = new Point3DCollection(numPoints * 4);
 
-      for(int i = 0; i < numPoints; i++)
+      for(var i = 0; i < numPoints; i++)
       {
         var screenPoint = (Point4D)points[i] * visualToScreen;
 
-        double spx = screenPoint.X;
-        double spy = screenPoint.Y;
-        double spz = screenPoint.Z;
-        double spw = screenPoint.W;
+        var spx = screenPoint.X;
+        var spy = screenPoint.Y;
+        var spz = screenPoint.Z;
+        var spw = screenPoint.W;
 
         if(!depthOffset.Equals(0))
         {
@@ -87,7 +87,7 @@
         }
 
         var p0 = new Point4D(spx, spy, spz, spw) * screenToVisual;
-        double pwinverse = 1 / p0.W;
+        var pwinverse = 1 / p0.W;
 
         foreach(var v in outline)
         {

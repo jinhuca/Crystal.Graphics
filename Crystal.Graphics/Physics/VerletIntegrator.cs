@@ -37,7 +37,7 @@
     /// Gets or sets the constraints.
     /// </summary>
     /// <value>The constraints.</value>
-    public List<Constraint> Constraints { get; private set; }
+    public List<Constraint> Constraints { get; }
 
     /// <summary>
     /// Gets or sets the damping.
@@ -83,10 +83,12 @@
     /// </param>
     public void AddConstraint(int A, int B, double relax)
     {
-      var c = new DistanceConstraint(A, B);
-      c.Restlength = (Positions[A] - Positions[B]).Length;
-      c.RelaxationFactor = relax;
-      c.Iterations = Iterations;
+      var c = new DistanceConstraint(A, B)
+      {
+        Restlength = (Positions[A] - Positions[B]).Length,
+        RelaxationFactor = relax,
+        Iterations = Iterations
+      };
       Constraints.Add(c);
     }
 
@@ -98,7 +100,7 @@
     /// </param>
     public void AddFloor(double friction)
     {
-      for(int i = 0; i < Positions.Length; i++)
+      for(var i = 0; i < Positions.Length; i++)
       {
         var c = new FloorConstraint(i, friction);
         Constraints.Add(c);
@@ -116,7 +118,7 @@
     /// </param>
     public void AddSphere(Point3D center, double radius)
     {
-      for(int i = 0; i < Positions.Length; i++)
+      for(var i = 0; i < Positions.Length; i++)
       {
         var c = new SphereConstraint(i, center, radius);
         Constraints.Add(c);
@@ -131,7 +133,7 @@
     /// </param>
     public void ApplyGravity(Vector3D gravity)
     {
-      for(int i = 0; i < Positions.Length; i++)
+      for(var i = 0; i < Positions.Length; i++)
       {
         Accelerations[i] = gravity * InverseMass[i];
       }
@@ -148,11 +150,11 @@
     /// </param>
     public void CreateConstraintsByMesh(MeshGeometry3D mesh, double relax)
     {
-      for(int i = 0; i < mesh.TriangleIndices.Count; i += 3)
+      for(var i = 0; i < mesh.TriangleIndices.Count; i += 3)
       {
-        int i0 = mesh.TriangleIndices[i];
-        int i1 = mesh.TriangleIndices[i + 1];
-        int i2 = mesh.TriangleIndices[i + 2];
+        var i0 = mesh.TriangleIndices[i];
+        var i1 = mesh.TriangleIndices[i + 1];
+        var i2 = mesh.TriangleIndices[i + 2];
         AddConstraint(i0, i1, relax);
         AddConstraint(i1, i2, relax);
         AddConstraint(i2, i0, relax);
@@ -179,7 +181,7 @@
     public void Init(MeshGeometry3D mesh)
     {
       Resize(mesh.Positions.Count);
-      for(int i = 0; i < mesh.Positions.Count; i++)
+      for(var i = 0; i < mesh.Positions.Count; i++)
       {
         Positions[i] = mesh.Positions[i];
         Positions0[i] = Positions[i];
@@ -233,7 +235,7 @@
     /// </param>
     public void SetInverseMass(double invmass)
     {
-      for(int i = 0; i < Positions.Length; i++)
+      for(var i = 0; i < Positions.Length; i++)
       {
         InverseMass[i] = invmass;
       }
@@ -249,7 +251,7 @@
     {
       Integrate(dt);
 
-      for(int j = 0; j < Iterations; j++)
+      for(var j = 0; j < Iterations; j++)
       {
         SatisfyConstraints(j);
       }
@@ -266,7 +268,7 @@
       lock(Positions)
       {
         var pc = new Point3DCollection(Positions.Length);
-        for(int i = 0; i < Positions.Length; i++)
+        for(var i = 0; i < Positions.Length; i++)
         {
           pc.Add(Positions[i]);
         }
@@ -292,14 +294,14 @@
 
       lock(Positions)
       {
-        for(int i = 0; i < Positions.Length; i++)
+        for(var i = 0; i < Positions.Length; i++)
         {
           if(InverseMass[i] == 0)
           {
             continue;
           }
 
-          Point3D temp = Positions[i];
+          var temp = Positions[i];
           Positions[i] += (Positions[i] - Positions0[i]) * dt / dtprev * Damping
                                + Accelerations[i] * dt * dt;
           Positions0[i] = temp;
@@ -403,7 +405,7 @@
     /// </param>
     public override void Satisfy(VerletIntegrator vs, int iteration)
     {
-      Vector3D vec = Point3D.Subtract(vs.Positions[Index], Center);
+      var vec = Point3D.Subtract(vs.Positions[Index], Center);
       if(vec.LengthSquared < RadiusSquared)
       {
         vec.Normalize();
@@ -457,14 +459,14 @@
     /// </param>
     public override void Satisfy(VerletIntegrator vs, int iteration)
     {
-      int i = Index;
-      Point3D x = vs.Positions[i];
+      var i = Index;
+      var x = vs.Positions[i];
       if(x.Z <= 0)
       {
         if(Friction != 0)
         {
-          double f = -x.Z * Friction;
-          Vector3D v = vs.Positions[i] - vs.Positions0[i];
+          var f = -x.Z * Friction;
+          var v = vs.Positions[i] - vs.Positions0[i];
           v.Z = 0;
 
           if(v.X > 0)
@@ -573,14 +575,14 @@
     {
       if(Iterations > iteration)
       {
-        Point3D x1 = vs.Positions[Index1];
-        Point3D x2 = vs.Positions[Index2];
-        Vector3D delta = x2 - x1;
+        var x1 = vs.Positions[Index1];
+        var x2 = vs.Positions[Index2];
+        var delta = x2 - x1;
 
-        double deltalength = delta.Length;
-        double diff = deltalength - Restlength;
+        var deltalength = delta.Length;
+        var diff = deltalength - Restlength;
 
-        double div = deltalength * (vs.InverseMass[Index1] + vs.InverseMass[Index2]);
+        var div = deltalength * (vs.InverseMass[Index1] + vs.InverseMass[Index2]);
 
         if(Math.Abs(div) > 1e-8)
         {

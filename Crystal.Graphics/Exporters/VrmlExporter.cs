@@ -52,8 +52,7 @@ namespace Crystal.Graphics
     /// <param name="inheritedTransform">The inherited transform.</param>
     protected override void ExportModel(StreamWriter writer, GeometryModel3D model, Transform3D inheritedTransform)
     {
-      var mesh = model.Geometry as MeshGeometry3D;
-      if(mesh == null)
+      if(model.Geometry is not MeshGeometry3D mesh)
       {
         return;
       }
@@ -84,7 +83,7 @@ namespace Crystal.Graphics
       writer.WriteLine("    }");
 
       writer.WriteLine("    coordIndex [");
-      for(int i = 0; i < mesh.TriangleIndices.Count; i += 3)
+      for(var i = 0; i < mesh.TriangleIndices.Count; i += 3)
       {
         writer.WriteLine(
             string.Format(

@@ -113,7 +113,7 @@
 
           nv--;
 
-          // resest error detection counter
+          // reset error detection counter
           count = 2 * nv;
         }
       }
@@ -170,25 +170,22 @@
     /// </returns>
     private static bool InsideTriangle(double Ax, double Ay, double Bx, double By, double Cx, double Cy, double Px, double Py)
     {
-      double ax, ay, bx, by, cx, cy, apx, apy, bpx, bpy, cpx, cpy;
-      double cCROSSap, bCROSScp, aCROSSbp;
+      var ax = Cx - Bx;
+      var ay = Cy - By;
+      var bx = Ax - Cx;
+      var by = Ay - Cy;
+      var cx = Bx - Ax;
+      var cy = By - Ay;
+      var apx = Px - Ax;
+      var apy = Py - Ay;
+      var bpx = Px - Bx;
+      var bpy = Py - By;
+      var cpx = Px - Cx;
+      var cpy = Py - Cy;
 
-      ax = Cx - Bx;
-      ay = Cy - By;
-      bx = Ax - Cx;
-      by = Ay - Cy;
-      cx = Bx - Ax;
-      cy = By - Ay;
-      apx = Px - Ax;
-      apy = Py - Ay;
-      bpx = Px - Bx;
-      bpy = Py - By;
-      cpx = Px - Cx;
-      cpy = Py - Cy;
-
-      aCROSSbp = ax * bpy - ay * bpx;
-      cCROSSap = cx * apy - cy * apx;
-      bCROSScp = bx * cpy - by * cpx;
+      var aCROSSbp = ax * bpy - ay * bpx;
+      var cCROSSap = cx * apy - cy * apx;
+      var bCROSScp = bx * cpy - by * cpx;
 
       // use an absolute tolerance when comparing floating point values
       const double EPSILON = -1e-10;
@@ -208,16 +205,15 @@
     private static bool Snip(IList<Point> contour, int u, int v, int w, int n, int[] V)
     {
       int p;
-      double Ax, Ay, Bx, By, Cx, Cy, Px, Py;
 
-      Ax = contour[V[u]].X;
-      Ay = contour[V[u]].Y;
+      var Ax = contour[V[u]].X;
+      var Ay = contour[V[u]].Y;
 
-      Bx = contour[V[v]].X;
-      By = contour[V[v]].Y;
+      var Bx = contour[V[v]].X;
+      var By = contour[V[v]].Y;
 
-      Cx = contour[V[w]].X;
-      Cy = contour[V[w]].Y;
+      var Cx = contour[V[w]].X;
+      var Cy = contour[V[w]].Y;
 
       if(Epsilon > (((Bx - Ax) * (Cy - Ay)) - ((By - Ay) * (Cx - Ax))))
       {
@@ -231,8 +227,8 @@
           continue;
         }
 
-        Px = contour[V[p]].X;
-        Py = contour[V[p]].Y;
+        var Px = contour[V[p]].X;
+        var Py = contour[V[p]].Y;
         if(InsideTriangle(Ax, Ay, Bx, By, Cx, Cy, Px, Py))
         {
           return false;

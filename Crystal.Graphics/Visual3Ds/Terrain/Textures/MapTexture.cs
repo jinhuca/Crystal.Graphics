@@ -13,7 +13,7 @@
     /// </param>
     public MapTexture(string source)
     {
-      Material = MaterialHelper.CreateImageMaterial(source, 1);
+      Material = MaterialHelper.CreateImageMaterial(source);
     }
 
     /// <summary>
@@ -49,15 +49,15 @@
     /// <param name="mesh">
     /// The mesh.
     /// </param>
-    public override void Calculate(TerrainModel model, MeshGeometry3D mesh)
+    public override void Calculate(TerrainModel model, MeshGeometry3D? mesh)
     {
       var texcoords = new PointCollection();
-      foreach(var p in mesh.Positions)
+      foreach(var p in mesh?.Positions)
       {
-        double x = p.X + model.Offset.X;
-        double y = p.Y + model.Offset.Y;
-        double u = (x - Left) / (Right - Left);
-        double v = (y - Top) / (Bottom - Top);
+        var x = p.X + model.Offset.X;
+        var y = p.Y + model.Offset.Y;
+        var u = (x - Left) / (Right - Left);
+        var v = (y - Top) / (Bottom - Top);
         texcoords.Add(new Point(u, v));
       }
 

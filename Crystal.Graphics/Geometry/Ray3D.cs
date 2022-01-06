@@ -104,8 +104,7 @@
     /// </returns>
     public Point3D? PlaneIntersection(Point3D position, Vector3D normal)
     {
-      Point3D intersection;
-      if(PlaneIntersection(position, normal, out intersection))
+      if(PlaneIntersection(position, normal, out var intersection))
       {
         return intersection;
       }
@@ -125,14 +124,14 @@
     public bool PlaneIntersection(Point3D position, Vector3D normal, out Point3D intersection)
     {
       // http://paulbourke.net/geometry/planeline/
-      double dn = Vector3D.DotProduct(normal, Direction);
+      var dn = Vector3D.DotProduct(normal, Direction);
       if(dn.Equals(0))
       {
         intersection = default(Point3D);
         return false;
       }
 
-      double u = Vector3D.DotProduct(normal, position - origin) / dn;
+      var u = Vector3D.DotProduct(normal, position - origin) / dn;
       intersection = Origin + (u * direction);
       return true;
     }

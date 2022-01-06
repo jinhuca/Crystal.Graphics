@@ -112,8 +112,7 @@ namespace Crystal.Graphics
           ChangeCameraDistance(delta, zoomAround);
 
           // Modify the camera width
-          var ocamera = Camera as OrthographicCamera;
-          if(ocamera != null)
+          if(Camera is OrthographicCamera ocamera)
           {
             ocamera.Width *= Math.Pow(2.5, delta);
           }
@@ -130,8 +129,7 @@ namespace Crystal.Graphics
     /// </param>
     public void ZoomByChangingFieldOfView(double delta)
     {
-      var pcamera = Camera as PerspectiveCamera;
-      if(pcamera == null)
+      if(Camera is not PerspectiveCamera pcamera)
       {
         return;
       }
@@ -141,9 +139,9 @@ namespace Crystal.Graphics
         return;
       }
 
-      double fov = pcamera.FieldOfView;
-      double d = CameraLookDirection.Length;
-      double r = d * Math.Tan(0.5 * fov / 180 * Math.PI);
+      var fov = pcamera.FieldOfView;
+      var d = CameraLookDirection.Length;
+      var r = d * Math.Tan(0.5 * fov / 180 * Math.PI);
 
       fov *= 1 + (delta * 0.5);
       if(fov < Controller.MinimumFieldOfView)
@@ -157,11 +155,11 @@ namespace Crystal.Graphics
       }
 
       pcamera.FieldOfView = fov;
-      double d2 = r / Math.Tan(0.5 * fov / 180 * Math.PI);
-      Vector3D newLookDirection = CameraLookDirection;
+      var d2 = r / Math.Tan(0.5 * fov / 180 * Math.PI);
+      var newLookDirection = CameraLookDirection;
       newLookDirection.Normalize();
       newLookDirection *= d2;
-      Point3D target = CameraPosition + CameraLookDirection;
+      var target = CameraPosition + CameraLookDirection;
       CameraPosition = target - newLookDirection;
       CameraLookDirection = newLookDirection;
     }

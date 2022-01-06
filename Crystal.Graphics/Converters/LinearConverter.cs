@@ -37,8 +37,8 @@
     /// </returns>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      double m = GetDoubleValue(parameter, M);
-      double v = GetDoubleValue(value, 0.0);
+      var m = GetDoubleValue(parameter, M);
+      var v = GetDoubleValue(value, 0.0);
       return (m * v) + B;
     }
 
@@ -62,8 +62,8 @@
     /// </returns>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      double m = GetDoubleValue(parameter, M);
-      double v = GetDoubleValue(value, 0.0);
+      var m = GetDoubleValue(parameter, M);
+      var v = GetDoubleValue(value, 0.0);
       return (v - B) / m;
     }
 

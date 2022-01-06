@@ -11,7 +11,7 @@ namespace Crystal.Graphics
     /// Identifies the <see cref="Color"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-        "Color", typeof(Color), typeof(Manipulator), new UIPropertyMetadata((s, e) => ((Manipulator)s).ColorChanged()));
+        "Color", typeof(Color), typeof(Manipulator), new UIPropertyMetadata((s, _) => ((Manipulator)s).ColorChanged()));
 
     /// <summary>
     /// Identifies the <see cref="Offset"/> dependency property.
@@ -176,7 +176,7 @@ namespace Crystal.Graphics
     public virtual void Bind(ModelVisual3D source)
     {
       BindingOperations.SetBinding(this, TargetTransformProperty, new Binding("Transform") { Source = source });
-      BindingOperations.SetBinding(this, Visual3D.TransformProperty, new Binding("Transform") { Source = source });
+      BindingOperations.SetBinding(this, TransformProperty, new Binding("Transform") { Source = source });
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ namespace Crystal.Graphics
     public virtual void UnBind()
     {
       BindingOperations.ClearBinding(this, TargetTransformProperty);
-      BindingOperations.ClearBinding(this, Visual3D.TransformProperty);
+      BindingOperations.ClearBinding(this, TransformProperty);
     }
 
     /// <summary>
@@ -219,7 +219,7 @@ namespace Crystal.Graphics
     /// </returns>
     protected virtual Point3D? GetHitPlanePoint(Point p, Point3D hitPlaneOrigin, Vector3D hitPlaneNormal)
     {
-      return Viewport3DHelper.UnProject(ParentViewport, p, hitPlaneOrigin, hitPlaneNormal);
+      return ParentViewport.UnProject(p, hitPlaneOrigin, hitPlaneNormal);
     }
 
     /// <summary>
@@ -234,7 +234,7 @@ namespace Crystal.Graphics
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {
       base.OnMouseDown(e);
-      ParentViewport = Visual3DHelper.GetViewport3D(this);
+      ParentViewport = this.GetViewport3D();
       Camera = ParentViewport.Camera as ProjectionCamera;
       var projectionCamera = Camera;
       if(projectionCamera != null)
@@ -284,7 +284,7 @@ namespace Crystal.Graphics
     /// </returns>
     protected Point3D ToLocal(Point3D worldPoint)
     {
-      var mat = Visual3DHelper.GetTransform(this);
+      var mat = this.GetTransform();
       mat.Invert();
       var t = new MatrixTransform3D(mat);
       return t.Transform(worldPoint);
@@ -301,7 +301,7 @@ namespace Crystal.Graphics
     /// </returns>
     protected Point3D ToWorld(Point3D point)
     {
-      var mat = Visual3DHelper.GetTransform(this);
+      var mat = this.GetTransform();
       var t = new MatrixTransform3D(mat);
       return t.Transform(point);
     }
@@ -317,7 +317,7 @@ namespace Crystal.Graphics
     /// </returns>
     protected Vector3D ToWorld(Vector3D vector)
     {
-      var mat = Visual3DHelper.GetTransform(this);
+      var mat = this.GetTransform();
       var t = new MatrixTransform3D(mat);
       return t.Transform(vector);
     }

@@ -77,7 +77,7 @@ namespace Crystal.Graphics
     /// Gets or sets the camera.
     /// </summary>
     /// <value>The camera.</value>
-    public PerspectiveCamera Camera
+    public PerspectiveCamera? Camera
     {
       get => (PerspectiveCamera)GetValue(CameraProperty);
       set => SetValue(CameraProperty, value);
@@ -97,7 +97,7 @@ namespace Crystal.Graphics
     /// Gets the children.
     /// </summary>
     /// <value>The children.</value>
-    public ObservableCollection<Visual3D> Children { get; private set; }
+    public ObservableCollection<Visual3D> Children { get; }
 
     /// <summary>
     /// Gets or sets a value indicating whether [copy direction vector].
@@ -133,7 +133,7 @@ namespace Crystal.Graphics
     /// Gets or sets the left camera.
     /// </summary>
     /// <value>The left camera.</value>
-    public PerspectiveCamera LeftCamera { get; set; }
+    public PerspectiveCamera? LeftCamera { get; set; }
 
     /// <summary>
     /// Gets or sets the left viewport.
@@ -145,7 +145,7 @@ namespace Crystal.Graphics
     /// Gets or sets the right camera.
     /// </summary>
     /// <value>The right camera.</value>
-    public PerspectiveCamera RightCamera { get; set; }
+    public PerspectiveCamera? RightCamera { get; set; }
 
     /// <summary>
     /// Gets or sets the right viewport.
@@ -209,10 +209,10 @@ namespace Crystal.Graphics
         }
         else
         {
-          CameraHelper.Reset(LeftViewport.Camera as PerspectiveCamera);
+          (LeftViewport.Camera as PerspectiveCamera).Reset();
         }
 
-        if(RightViewport != null && RightViewport.Camera == null)
+        if(RightViewport is { Camera: null })
         {
           RightViewport.Camera = new PerspectiveCamera();
         }
@@ -298,7 +298,7 @@ namespace Crystal.Graphics
         LeftViewport.Children.Add(v);
         if(RightViewport != null)
         {
-          Visual3D clone = StereoHelper.CreateClone(v);
+          var clone = StereoHelper.CreateClone(v);
           if(clone != null)
           {
             RightViewport.Children.Add(clone);

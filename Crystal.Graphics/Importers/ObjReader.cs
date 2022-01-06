@@ -8,7 +8,7 @@ namespace Crystal.Graphics
   /// </summary>
   public class ObjReader : ModelReader
   {
-    private static readonly char[] Delimiters = new char[] { ' ' };
+    private static readonly char[] Delimiters = new[] { ' ' };
     /// <summary>
     /// The smoothing group maps.
     /// </summary>
@@ -99,13 +99,13 @@ namespace Crystal.Graphics
     /// Gets the groups of the file.
     /// </summary>
     /// <value>The groups.</value>
-    public IList<Group> Groups { get; private set; }
+    public IList<Group> Groups { get; }
 
     /// <summary>
     /// Gets the materials in the imported material files.
     /// </summary>
     /// <value>The materials.</value>
-    public Dictionary<string, MaterialDefinition> Materials { get; private set; }
+    public Dictionary<string, MaterialDefinition> Materials { get; }
 
     /// <summary>
     /// Gets or sets the current material.
@@ -131,12 +131,12 @@ namespace Crystal.Graphics
     /// <summary>
     /// Gets or sets the normal vectors.
     /// </summary>
-    private IList<Vector3D> Normals { get; set; }
+    private IList<Vector3D> Normals { get; }
 
     /// <summary>
     /// Gets or sets the points.
     /// </summary>
-    private IList<Point3D> Points { get; set; }
+    private IList<Point3D> Points { get; }
 
     /// <summary>
     /// Gets or sets the stream reader.
@@ -146,7 +146,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// Gets or sets the texture coordinates.
     /// </summary>
-    private IList<Point> TextureCoordinates { get; set; }
+    private IList<Point> TextureCoordinates { get; }
 
     /// <summary>
     /// Reads the model and any associated materials from streams
@@ -217,8 +217,7 @@ namespace Crystal.Graphics
             continue;
           }
 
-          string keyword, values;
-          SplitLine(line, out keyword, out values);
+          SplitLine(line, out var keyword, out var values);
 
           switch(keyword.ToLower())
           {
@@ -368,9 +367,9 @@ namespace Crystal.Graphics
     private static IList<double> Split(string input)
     {
       input = input.Trim();
-      var fields = input.Split(Delimiters, System.StringSplitOptions.RemoveEmptyEntries);
+      var fields = input.Split(Delimiters, StringSplitOptions.RemoveEmptyEntries);
       var result = new double[fields.Length];
-      for(int i = 0; i < fields.Length; i++)
+      for(var i = 0; i < fields.Length; i++)
       {
         result[i] = DoubleParse(fields[i]);
       }
@@ -392,7 +391,7 @@ namespace Crystal.Graphics
     /// </param>
     private static void SplitLine(string line, out string keyword, out string arguments)
     {
-      int idx = line.IndexOf(' ');
+      var idx = line.IndexOf(' ');
       if(idx < 0)
       {
         keyword = line;
@@ -410,7 +409,7 @@ namespace Crystal.Graphics
     /// <param name="name">The name.</param>
     private void AddGroup(string name)
     {
-      Groups.Add(new Group(name, CurrentMaterial ?? DefaultMaterial));
+      Groups.Add(new Group(name, CurrentMaterial));
       smoothingGroupMaps.Clear();
     }
 
@@ -421,7 +420,7 @@ namespace Crystal.Graphics
     {
       if(CurrentGroup.MeshBuilder.TriangleIndices.Count != 0)
       {
-        CurrentGroup.AddMesh(CurrentMaterial ?? DefaultMaterial);
+        CurrentGroup.AddMesh(CurrentMaterial);
         smoothingGroupMaps.Clear();
       }
     }
@@ -438,8 +437,7 @@ namespace Crystal.Graphics
       }
       else
       {
-        long smoothingGroup;
-        if(long.TryParse(values, out smoothingGroup))
+        if(long.TryParse(values, out var smoothingGroup))
         {
           currentSmoothingGroup = smoothingGroup;
         }
@@ -451,7 +449,7 @@ namespace Crystal.Graphics
             return;
           }
 
-          throw new FileFormatException(string.Format("Invalid smoothing group ({0}) at line {1}.", values, currentLineNo));
+          throw new FileFormatException($"Invalid smoothing group ({values}) at line {currentLineNo}.");
         }
       }
     }
@@ -489,7 +487,7 @@ namespace Crystal.Graphics
         }
       }
 
-      var fields = values.Split(Delimiters, System.StringSplitOptions.RemoveEmptyEntries);
+      var fields = values.Split(Delimiters, StringSplitOptions.RemoveEmptyEntries);
       var faceIndices = new List<int>();
       foreach(var field in fields)
       {
@@ -499,9 +497,9 @@ namespace Crystal.Graphics
         }
 
         var ff = field.Split('/');
-        int vi = int.Parse(ff[0]);
-        int vti = ff.Length > 1 && ff[1].Length > 0 ? int.Parse(ff[1]) : int.MaxValue;
-        int vni = ff.Length > 2 && ff[2].Length > 0 ? int.Parse(ff[2]) : int.MaxValue;
+        var vi = int.Parse(ff[0]);
+        var vti = ff.Length > 1 && ff[1].Length > 0 ? int.Parse(ff[1]) : int.MaxValue;
+        var vni = ff.Length > 2 && ff[2].Length > 0 ? int.Parse(ff[2]) : int.MaxValue;
 
         // Handle relative indices (negative numbers)
         if(vi < 0)
@@ -527,7 +525,7 @@ namespace Crystal.Graphics
             return;
           }
 
-          throw new FileFormatException(string.Format("Invalid vertex index ({0}) on line {1}.", vi, currentLineNo));
+          throw new FileFormatException($"Invalid vertex index ({vi}) on line {currentLineNo}.");
         }
 
         if(vti == int.MaxValue)
@@ -551,8 +549,7 @@ namespace Crystal.Graphics
           }
 
           throw new FileFormatException(
-                  string.Format(
-                      "Invalid texture coordinate index ({0}) on line {1}.", vti, currentLineNo));
+            $"Invalid texture coordinate index ({vti}) on line {currentLineNo}.");
         }
 
         // check if the normal index is valid
@@ -564,17 +561,16 @@ namespace Crystal.Graphics
           }
 
           throw new FileFormatException(
-                  string.Format("Invalid normal index ({0}) on line {1}.", vni, currentLineNo));
+            $"Invalid normal index ({vni}) on line {currentLineNo}.");
         }
 
-        bool addVertex = true;
+        var addVertex = true;
 
         if(smoothingGroupMap != null)
         {
           var key = Tuple.Create(vi, vti, vni);
 
-          int vix;
-          if(smoothingGroupMap.TryGetValue(key, out vix))
+          if(smoothingGroupMap.TryGetValue(key, out var vix))
           {
             // use the index of a previously defined vertex
             addVertex = false;
@@ -720,8 +716,7 @@ namespace Crystal.Graphics
     /// </returns>
     private Material GetMaterial(string materialName)
     {
-      MaterialDefinition mat;
-      if(!string.IsNullOrEmpty(materialName) && Materials.TryGetValue(materialName, out mat))
+      if(!string.IsNullOrEmpty(materialName) && Materials.TryGetValue(materialName, out var mat))
       {
         Material m = null;
         Dispatch(() =>
@@ -742,7 +737,7 @@ namespace Crystal.Graphics
     /// </param>
     private void LoadMaterialLib(string mtlFile)
     {
-      string path = PathHelpers.GetFullPath(TexturePath, mtlFile);
+      var path = PathHelpers.GetFullPath(TexturePath, mtlFile);
 
       if(!File.Exists(path))
       {
@@ -778,8 +773,7 @@ namespace Crystal.Graphics
           continue;
         }
 
-        string keyword, value;
-        SplitLine(line, out keyword, out value);
+        SplitLine(line, out var keyword, out var value);
 
         switch(keyword.ToLower())
         {
@@ -955,7 +949,7 @@ namespace Crystal.Graphics
       /// <param name="material">The material of the group.</param>
       public void AddMesh(Material material)
       {
-        var meshBuilder = new MeshBuilder(true, true);
+        var meshBuilder = new MeshBuilder(true);
         meshBuilders.Add(meshBuilder);
         materials.Add(material);
       }
@@ -966,7 +960,7 @@ namespace Crystal.Graphics
       /// <returns>The models.</returns>
       public IEnumerable<Model3D> CreateModels()
       {
-        for(int i = 0; i < meshBuilders.Count; i++)
+        for(var i = 0; i < meshBuilders.Count; i++)
         {
           var material = materials[i];
           var mesh = meshBuilders[i].ToMesh();
@@ -1114,7 +1108,7 @@ namespace Crystal.Graphics
         }
         else
         {
-          string path = PathHelpers.GetFullPath(texturePath, DiffuseMap);
+          var path = PathHelpers.GetFullPath(texturePath, DiffuseMap);
           if(File.Exists(path))
           {
             mg.Children.Add(new DiffuseMaterial(CreateTextureBrush(path)));
@@ -1128,7 +1122,7 @@ namespace Crystal.Graphics
         }
         else
         {
-          string path = PathHelpers.GetFullPath(texturePath, AmbientMap);
+          var path = PathHelpers.GetFullPath(texturePath, AmbientMap);
           if(File.Exists(path))
           {
             mg.Children.Add(new EmissiveMaterial(CreateTextureBrush(path)));

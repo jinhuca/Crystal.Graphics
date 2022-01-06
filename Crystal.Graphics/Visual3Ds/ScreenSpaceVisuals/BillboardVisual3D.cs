@@ -83,10 +83,10 @@
         TextureCoordinates =
                               new PointCollection
                                   {
-                                            new Point(0, 1),
-                                            new Point(1, 1),
-                                            new Point(1, 0),
-                                            new Point(0, 0)
+                                            new(0, 1),
+                                            new(1, 1),
+                                            new(1, 0),
+                                            new(0, 0)
                                   }
       };
 
@@ -158,7 +158,7 @@
     /// Gets or sets the material.
     /// </summary>
     /// <value>The material.</value>
-    public Material Material
+    public Material? Material
     {
       get => (Material)GetValue(MaterialProperty);
 
@@ -243,7 +243,7 @@
     {
       if(isRendering)
       {
-        if(!Visual3DHelper.IsAttachedToViewport3D(this))
+        if(!this.IsAttachedToViewport3D())
         {
           return;
         }

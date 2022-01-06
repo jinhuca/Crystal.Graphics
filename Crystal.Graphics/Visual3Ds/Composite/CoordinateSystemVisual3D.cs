@@ -113,8 +113,8 @@
     protected virtual void OnGeometryChanged()
     {
       Children.Clear();
-      double l = ArrowLengths;
-      double d = l * 0.1;
+      var l = ArrowLengths;
+      var d = l * 0.1;
 
       var xaxis = new ArrowVisual3D();
       xaxis.BeginEdit();

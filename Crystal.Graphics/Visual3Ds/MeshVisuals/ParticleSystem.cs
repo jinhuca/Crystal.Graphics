@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows.Shapes;
 
 namespace Crystal.Graphics
@@ -12,7 +11,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// Identifies the <see cref="Texture"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty TextureProperty = DependencyPropertyEx.Register<Brush, ParticleSystem>("Texture", null, (s, e) => s.TextureChanged());
+    public static readonly DependencyProperty TextureProperty = DependencyPropertyEx.Register<Brush, ParticleSystem>("Texture", null!, (s, _) => s.TextureChanged());
 
 
     /// <summary>
@@ -114,7 +113,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// The random number generator.
     /// </summary>
-    private static readonly Random r = new Random();
+    private static readonly Random r = new();
 
     /// <summary>
     /// The number of opacity levels
@@ -139,7 +138,7 @@ namespace Crystal.Graphics
     /// <summary>
     /// The particles
     /// </summary>
-    private readonly List<Particle> particles = new List<Particle>(1000);
+    private readonly List<Particle> particles = new(1000);
 
     /// <summary>
     /// The accumulated number of particles to emit. A particle is emitted when this number is greater than 1.
@@ -159,8 +158,9 @@ namespace Crystal.Graphics
     /// <summary>
     /// Initializes a new instance of the <see cref="ParticleSystem"/> class.
     /// </summary>
-    public ParticleSystem()
+    public ParticleSystem(ProjectionCamera camera)
     {
+      this.camera = camera;
       mesh = new MeshGeometry3D();
       model = new GeometryModel3D { Geometry = mesh };
       Content = model;
@@ -391,7 +391,7 @@ namespace Crystal.Graphics
       var w = 256;
       var h = 256;
       var bitmap = new RenderTargetBitmap(opacityLevels * w, h, 96, 96, PixelFormats.Pbgra32);
-      for(int i = 0; i < opacityLevels; i++)
+      for(var i = 0; i < opacityLevels; i++)
       {
         var rect = new Rectangle { Opacity = 1 - ((double)i / opacityLevels), Fill = Texture, Width = w, Height = h };
         rect.Arrange(new Rect(w * i, 0, w, h));
@@ -454,7 +454,7 @@ namespace Crystal.Graphics
       };
 
       // Replace or add to particle list
-      int index = particles.FindIndex(p => p == null);
+      var index = particles.FindIndex(p => p == null);
       if(index >= 0)
       {
         particles[index] = particle;
@@ -496,7 +496,7 @@ namespace Crystal.Graphics
       var sizeRate = SizeRate;
       var fadeOutTime = FadeOutTime;
       var lifeTime = LifeTime;
-      for(int i = 0; i < particles.Count; i++)
+      for(var i = 0; i < particles.Count; i++)
       {
         var p = particles[i];
 
@@ -535,14 +535,14 @@ namespace Crystal.Graphics
 
       if(positions.Count != alive * 4)
       {
-        int previousAliveParticles = positions.Count / 4;
+        var previousAliveParticles = positions.Count / 4;
 
         // allocate positions, texture coordinates and triangle indices (to make the updating code simpler)
         AdjustListLength(positions, alive * 4);
         AdjustListLength(textureCoordinates, alive * 4);
         AdjustListLength(triangleIndices, alive * 6);
 
-        for(int i = previousAliveParticles; i < alive; i++)
+        for(var i = previousAliveParticles; i < alive; i++)
         {
           var i4 = i * 4;
           var i6 = i * 6;
@@ -576,7 +576,7 @@ namespace Crystal.Graphics
       // find alive particles and sort by distance from camera (projected to look direction, nearest particles last)
       var sortedParticles = particles.OrderBy(p => -Vector3D.DotProduct(p.Position - cameraPosition, camera.LookDirection));
 
-      int j = 0;
+      var j = 0;
       foreach(var p in sortedParticles)
       {
         var halfSize = p.Size * 0.5;
@@ -603,7 +603,7 @@ namespace Crystal.Graphics
         }
 
         // update the texture coordinates with the current opacity of the particle
-        int transparency = (int)((1 - opacity) * opacityLevels);
+        var transparency = (int)((1 - opacity) * opacityLevels);
         var u0 = (double)transparency / opacityLevels;
         var u1 = (transparency + 1d) / opacityLevels;
         textureCoordinates[j4] = new Point(u1, 1);
@@ -625,15 +625,15 @@ namespace Crystal.Graphics
     /// <param name="targetLength">Target length of the list.</param>
     protected static void AdjustListLength<T>(IList<T> list, int targetLength)
     {
-      int n = list.Count;
-      for(int i = n - 1; i >= targetLength; i--)
+      var n = list.Count;
+      for(var i = n - 1; i >= targetLength; i--)
       {
         list.RemoveAt(i);
       }
 
-      for(int i = 0; i < targetLength - n; i++)
+      for(var i = 0; i < targetLength - n; i++)
       {
-        list.Add(default(T));
+        list.Add(default(T)!);
       }
     }
 

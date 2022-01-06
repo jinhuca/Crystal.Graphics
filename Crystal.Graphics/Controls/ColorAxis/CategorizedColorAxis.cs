@@ -36,15 +36,15 @@
 
       base.AddVisuals();
 
-      for(int i = 0; i < Categories.Count; i++)
+      for(var i = 0; i < Categories.Count; i++)
       {
         var text = Categories[i];
         var tb = new TextBlock(new Run(text)) { Foreground = Foreground };
         tb.Measure(new Size(ActualWidth, ActualHeight));
 
-        double y = ColorArea.Top + (((double)i / Categories.Count) * ColorArea.Height);
-        double y1 = ColorArea.Top + (((i + 0.5) / Categories.Count) * ColorArea.Height);
-        double y2 = ColorArea.Top + (((i + 1.0) / Categories.Count) * ColorArea.Height);
+        var y = ColorArea.Top + (((double)i / Categories.Count) * ColorArea.Height);
+        var y1 = ColorArea.Top + (((i + 0.5) / Categories.Count) * ColorArea.Height);
+        var y2 = ColorArea.Top + (((i + 1.0) / Categories.Count) * ColorArea.Height);
 
         Point p0, p1, p2, p3, p4;
         switch(Position)

@@ -56,22 +56,22 @@ namespace Crystal.Graphics
     {
       using(var reader = new BinaryReader(s))
       {
-        long length = reader.BaseStream.Length;
+        var length = reader.BaseStream.Length;
 
-        string headerId = ReadChunkId(reader);
+        var headerId = ReadChunkId(reader);
         if(headerId != "FORM")
         {
           throw new FileFormatException("Unknown file");
         }
 
-        int headerSize = ReadChunkSize(reader);
+        var headerSize = ReadChunkSize(reader);
 
         if(headerSize + 8 != length)
         {
           throw new FileFormatException("Incomplete file (file length does not match header)");
         }
 
-        string header2 = ReadChunkId(reader);
+        var header2 = ReadChunkId(reader);
         switch(header2)
         {
           case "LWOB":
@@ -84,8 +84,8 @@ namespace Crystal.Graphics
 
         while(reader.BaseStream.Position < reader.BaseStream.Length)
         {
-          string id = ReadChunkId(reader);
-          int size = ReadChunkSize(reader);
+          var id = ReadChunkId(reader);
+          var size = ReadChunkSize(reader);
 
           switch(id)
           {
@@ -125,7 +125,7 @@ namespace Crystal.Graphics
           () =>
           {
             modelGroup = new Model3DGroup();
-            int index = 0;
+            var index = 0;
             foreach(var mesh in Meshes)
             {
               var gm = new GeometryModel3D
@@ -222,13 +222,13 @@ namespace Crystal.Graphics
     /// <param name="size">The size of the points array.</param>
     private void ReadPoints(BinaryReader reader, int size)
     {
-      int n = size / 4 / 3;
+      var n = size / 4 / 3;
       Points = new List<Point3D>(n);
-      for(int i = 0; i < n; i++)
+      for(var i = 0; i < n; i++)
       {
-        float x = ReadFloat(reader);
-        float y = ReadFloat(reader);
-        float z = ReadFloat(reader);
+        var x = ReadFloat(reader);
+        var y = ReadFloat(reader);
+        var z = ReadFloat(reader);
         Points.Add(new Point3D(x, y, z));
       }
     }
@@ -242,20 +242,20 @@ namespace Crystal.Graphics
     {
       while(size > 0)
       {
-        short nverts = ReadShortInt(reader);
+        var nverts = ReadShortInt(reader);
         if(nverts <= 0)
         {
           throw new NotSupportedException("details are not supported");
         }
 
         var pts = new List<Point3D>(nverts);
-        for(int i = 0; i < nverts; i++)
+        for(var i = 0; i < nverts; i++)
         {
           int vidx = ReadShortInt(reader);
           pts.Add(Points[vidx]);
         }
 
-        short surfaceIndex = ReadShortInt(reader);
+        var surfaceIndex = ReadShortInt(reader);
         size -= (2 + nverts) * 2;
 
         Meshes[surfaceIndex - 1].AddTriangleFan(pts);
@@ -302,11 +302,11 @@ namespace Crystal.Graphics
       Meshes = new List<MeshBuilder>();
       Materials = new List<Material>();
 
-      string name = ReadString(reader, size);
+      var name = ReadString(reader, size);
       var names = name.Split('\0');
-      for(int i = 0; i < names.Length; i++)
+      for(var i = 0; i < names.Length; i++)
       {
-        string n = names[i];
+        var n = names[i];
         Surfaces.Add(n);
         Meshes.Add(new MeshBuilder(false, false));
         Materials.Add(DefaultMaterial);
