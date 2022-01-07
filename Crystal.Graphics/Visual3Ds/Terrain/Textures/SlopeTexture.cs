@@ -13,14 +13,9 @@
     /// </param>
     public SlopeTexture(int gradientSteps)
     {
-      if(gradientSteps > 0)
-      {
-        Brush = BrushHelper.CreateSteppedGradientBrush(GradientBrushes.BlueWhiteRed, gradientSteps);
-      }
-      else
-      {
-        Brush = GradientBrushes.BlueWhiteRed;
-      }
+      Brush = gradientSteps > 0 
+        ? BrushHelper.CreateSteppedGradientBrush(GradientBrushes.BlueWhiteRed, gradientSteps) 
+        : GradientBrushes.BlueWhiteRed;
     }
 
     /// <summary>
@@ -63,6 +58,5 @@
       TextureCoordinates = texcoords;
       Material = MaterialHelper.CreateMaterial(Brush);
     }
-
   }
 }

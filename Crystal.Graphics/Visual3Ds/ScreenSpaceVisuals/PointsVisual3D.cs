@@ -6,10 +6,22 @@
   public class PointsVisual3D : ScreenSpaceVisual3D
   {
     /// <summary>
+    /// Gets or sets the size of the points.
+    /// </summary>
+    /// <value>
+    /// The size.
+    /// </value>
+    public double Size
+    {
+      get => (double)GetValue(SizeProperty);
+      set => SetValue(SizeProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="Size"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty SizeProperty = DependencyProperty.Register(
-        "Size", typeof(double), typeof(PointsVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
+      nameof(Size), typeof(double), typeof(PointsVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
     /// <summary>
     /// The builder.
@@ -19,23 +31,7 @@
     /// <summary>
     /// Initializes a new instance of the <see cref = "PointsVisual3D" /> class.
     /// </summary>
-    public PointsVisual3D()
-    {
-      builder = new PointGeometryBuilder(this);
-    }
-
-    /// <summary>
-    /// Gets or sets the size of the points.
-    /// </summary>
-    /// <value>
-    /// The size.
-    /// </value>
-    public double Size
-    {
-      get => (double)GetValue(SizeProperty);
-
-      set => SetValue(SizeProperty, value);
-    }
+    public PointsVisual3D() => builder = new PointGeometryBuilder(this);
 
     /// <summary>
     /// Updates the geometry.
@@ -66,10 +62,6 @@
     /// <returns>
     /// True if the transform is updated.
     /// </returns>
-    protected override bool UpdateTransforms()
-    {
-      return builder.UpdateTransforms();
-    }
-
+    protected override bool UpdateTransforms() => builder.UpdateTransforms();
   }
 }

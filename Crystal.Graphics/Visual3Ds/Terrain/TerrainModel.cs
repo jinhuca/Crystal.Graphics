@@ -264,6 +264,5 @@ namespace Crystal.Graphics
         ReadTerrainFile(deflateStream);
       }
     }
-
   }
 }

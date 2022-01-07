@@ -6,22 +6,60 @@
   public abstract class ScreenSpaceVisual3D : RenderingModelVisual3D
   {
     /// <summary>
+    /// Gets or sets the color.
+    /// </summary>
+    /// <value>
+    /// The color.
+    /// </value>
+    public Color Color
+    {
+      get => (Color)GetValue(ColorProperty);
+      set => SetValue(ColorProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="Color"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-        "Color", typeof(Color), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(Colors.Black, ColorChanged));
+      nameof(Color), typeof(Color), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(Colors.Black, ColorChanged));
+
+    /// <summary>
+    /// Gets or sets the depth offset.
+    /// A small positive number (0.0001) will move the visual slightly in front of other objects.
+    /// </summary>
+    /// <value>
+    /// The depth offset.
+    /// </value>
+    public double DepthOffset
+    {
+      get => (double)GetValue(DepthOffsetProperty);
+      set => SetValue(DepthOffsetProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="DepthOffset"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty DepthOffsetProperty = DependencyProperty.Register(
-        "DepthOffset", typeof(double), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
+      nameof(DepthOffset), typeof(double), typeof(ScreenSpaceVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
+
+    /// <summary>
+    /// Gets or sets the points collection.
+    /// </summary>
+    /// <value>
+    /// The points collection.
+    /// </value>
+    public Point3DCollection? Points
+    {
+      get => (Point3DCollection)GetValue(PointsProperty);
+      set => SetValue(PointsProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="Points"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-        "Points", typeof(Point3DCollection), typeof(ScreenSpaceVisual3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure, PointsChanged));
+      nameof(Points), typeof(Point3DCollection), typeof(ScreenSpaceVisual3D), 
+      new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure, PointsChanged));
 
     /// <summary>
     /// The is rendering flag.
@@ -46,40 +84,12 @@
     }
 
     /// <summary>
-    /// Gets or sets the color.
-    /// </summary>
-    /// <value>
-    /// The color.
-    /// </value>
-    public Color Color
-    {
-      get => (Color)GetValue(ColorProperty);
-
-      set => SetValue(ColorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the depth offset.
-    /// A small positive number (0.0001) will move the visual slightly in front of other objects.
-    /// </summary>
-    /// <value>
-    /// The depth offset.
-    /// </value>
-    public double DepthOffset
-    {
-      get => (double)GetValue(DepthOffsetProperty);
-
-      set => SetValue(DepthOffsetProperty, value);
-    }
-
-    /// <summary>
     /// Gets or sets a value indicating whether this instance is being rendered.
     /// When the visual is removed from the visual tree, this property should be set to false.
     /// </summary>
     public bool IsRendering
     {
       get => isRendering;
-
       set
       {
         if(value != isRendering)
@@ -95,19 +105,6 @@
           }
         }
       }
-    }
-
-    /// <summary>
-    /// Gets or sets the points collection.
-    /// </summary>
-    /// <value>
-    /// The points collection.
-    /// </value>
-    public Point3DCollection? Points
-    {
-      get => (Point3DCollection)GetValue(PointsProperty);
-
-      set => SetValue(PointsProperty, value);
     }
 
     /// <summary>
@@ -134,10 +131,7 @@
     /// <param name="e">
     /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
     /// </param>
-    protected static void GeometryChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-      ((ScreenSpaceVisual3D)sender).UpdateGeometry();
-    }
+    protected static void GeometryChanged(object sender, DependencyPropertyChangedEventArgs e) => ((ScreenSpaceVisual3D)sender).UpdateGeometry();
 
     /// <summary>
     /// Called when points have changed.

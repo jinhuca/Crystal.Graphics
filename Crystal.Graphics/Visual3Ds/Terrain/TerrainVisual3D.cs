@@ -16,10 +16,20 @@
   public class TerrainVisual3D : ModelVisual3D
   {
     /// <summary>
+    /// Gets or sets the source terrain file.
+    /// </summary>
+    /// <value>The source.</value>
+    public string Source
+    {
+      get => (string)GetValue(SourceProperty);
+      set => SetValue(SourceProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="Source"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
-        "Source", typeof(string), typeof(TerrainVisual3D), new UIPropertyMetadata(null, SourceChanged));
+      nameof(Source), typeof(string), typeof(TerrainVisual3D), new UIPropertyMetadata(null, SourceChanged));
 
     /// <summary>
     /// The visual child.
@@ -33,17 +43,6 @@
     {
       visualChild = new ModelVisual3D();
       Children.Add(visualChild);
-    }
-
-    /// <summary>
-    /// Gets or sets the source terrain file.
-    /// </summary>
-    /// <value>The source.</value>
-    public string Source
-    {
-      get => (string)GetValue(SourceProperty);
-
-      set => SetValue(SourceProperty, value);
     }
 
     /// <summary>
@@ -74,6 +73,5 @@
       // r.Texture = new MapTexture(@"D:\tmp\CraterLake.png") { Left = r.Left, Right = r.Right, Top = r.Top, Bottom = r.Bottom };
       visualChild.Content = r.CreateModel(2);
     }
-
   }
 }

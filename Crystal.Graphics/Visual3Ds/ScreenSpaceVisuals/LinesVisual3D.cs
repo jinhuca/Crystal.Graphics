@@ -31,10 +31,7 @@
     /// <summary>
     /// Initializes a new instance of the <see cref = "LinesVisual3D" /> class.
     /// </summary>
-    public LinesVisual3D()
-    {
-      builder = new LineGeometryBuilder(this);
-    }
+    public LinesVisual3D() => builder = new LineGeometryBuilder(this);
 
     /// <summary>
     /// Updates the geometry.
@@ -69,9 +66,6 @@
     /// <returns>
     /// True if the transform is updated.
     /// </returns>
-    protected override bool UpdateTransforms()
-    {
-      return builder.UpdateTransforms();
-    }
+    protected override bool UpdateTransforms() => builder.UpdateTransforms();
   }
 }

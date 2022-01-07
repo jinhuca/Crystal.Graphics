@@ -6,21 +6,20 @@
   public class BoundingBoxWireFrameVisual3D : LinesVisual3D
   {
     /// <summary>
-    /// Identifies the <see cref="BoundingBox"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty BoundingBoxProperty = DependencyProperty.Register(
-        "BoundingBox", typeof(Rect3D), typeof(BoundingBoxWireFrameVisual3D), new UIPropertyMetadata(new Rect3D(), BoxChanged));
-
-    /// <summary>
     /// Gets or sets the bounding box.
     /// </summary>
     /// <value> The bounding box. </value>
     public Rect3D BoundingBox
     {
       get => (Rect3D)GetValue(BoundingBoxProperty);
-
       set => SetValue(BoundingBoxProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="BoundingBox"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty BoundingBoxProperty = DependencyProperty.Register(
+      nameof(BoundingBox), typeof(Rect3D), typeof(BoundingBoxWireFrameVisual3D), new UIPropertyMetadata(new Rect3D(), BoxChanged));
 
     /// <summary>
     /// Updates the box.
@@ -79,9 +78,6 @@
     /// <param name="e">
     /// The event arguments.
     /// </param>
-    private static void BoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-      ((BoundingBoxWireFrameVisual3D)d).OnBoxChanged();
-    }
+    private static void BoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((BoundingBoxWireFrameVisual3D)d).OnBoxChanged();
   }
 }

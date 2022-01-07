@@ -60,9 +60,7 @@
         var v = (y - Top) / (Bottom - Top);
         texcoords.Add(new Point(u, v));
       }
-
       TextureCoordinates = texcoords;
     }
-
   }
 }

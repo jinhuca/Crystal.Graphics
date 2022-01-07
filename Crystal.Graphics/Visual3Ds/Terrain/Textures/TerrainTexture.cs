@@ -8,7 +8,7 @@
     /// <summary>
     /// Initializes a new instance of the <see cref = "TerrainTexture" /> class.
     /// </summary>
-    public TerrainTexture()
+    protected TerrainTexture()
     {
       Material = Materials.Green;
     }
@@ -37,6 +37,5 @@
     public virtual void Calculate(TerrainModel model, MeshGeometry3D? mesh)
     {
     }
-
   }
 }
