@@ -20,7 +20,6 @@
       mMaximumVerticesPerMesh = maximumVerticesPerMesh;
     }
 
-
     /// <summary>
     /// Returns the 3D point that the user most likely clicked on.
     /// Returns the closest intersection with a mesh, if possible.
@@ -56,12 +55,9 @@
       double minY = 0;
       var maxX = mViewPort3D.ActualWidth;
       var maxY = mViewPort3D.ActualHeight;
-      var hitsInView = FindClosestHits(position).Where(result =>
-          result.ClosestPointIn2D.X >= minX && result.ClosestPointIn2D.X <= maxX &&
-          result.ClosestPointIn2D.Y >= minY && result.ClosestPointIn2D.Y <= maxY);
-
-      var closestHits =
-          hitsInView.OrderBy(x => x.DistanceToPoint2D);
+      var hitsInView = FindClosestHits(position).Where(result => result.ClosestPointIn2D.X >= minX && result.ClosestPointIn2D.X <= maxX &&
+                                                                 result.ClosestPointIn2D.Y >= minY && result.ClosestPointIn2D.Y <= maxY);
+      var closestHits = hitsInView.OrderBy(x => x.DistanceToPoint2D);
 
       //Return the closest valid result, or null in case no valid result was found.
       var closestHitInView = closestHits.FirstOrDefault();
@@ -81,53 +77,46 @@
       }
 
       var results = new List<ClosestVertexResult>();
-      mViewPort3D.Children.Traverse<GeometryModel3D>(
-          (model, transform) =>
+      mViewPort3D.Children.Traverse<GeometryModel3D>((model, transform) =>
+      {
+        if(!(model.Geometry is MeshGeometry3D geometry) || geometry.Positions == null || geometry.TriangleIndices == null || geometry.Positions.Count == 0 || geometry.TriangleIndices.Count == 0)
+        {
+          return;
+        }
+        Point3D[] point3Ds;
+        if(geometry.Positions.Count <= mMaximumVerticesPerMesh)
+        {
+          point3Ds = geometry.Positions.Select(transform.Transform).ToArray();
+        }
+        else
+        {
+          var bounds = geometry.Bounds;
+          point3Ds = GetBoundaryPointsBoundingBox(bounds).Select(transform.Transform).ToArray();
+        }
+
+        // transform the positions of the mesh to screen coordinates
+        var point2Ds = mViewPort3D.Point3DtoPoint2D(point3Ds).ToArray();
+        var minSquaredDistanceToPoint = double.PositiveInfinity;
+        var closestPoint = point3Ds[0];
+        var closestPointIn2D = point2Ds[0];
+
+        for(var i = 0; i < point2Ds.Length; i++)
+        {
+          var point = point2Ds[i];
+          var xDiff = point.X - pointToHitTest.X;
+          var yDiff = point.Y - pointToHitTest.Y;
+          var squaredDistance = xDiff * xDiff + yDiff * yDiff;
+          if(squaredDistance < minSquaredDistanceToPoint)
           {
-            if(!(model.Geometry is MeshGeometry3D geometry) || geometry.Positions == null || geometry.TriangleIndices == null
-                  || geometry.Positions.Count == 0 || geometry.TriangleIndices.Count == 0)
-            {
-              return;
-            }
+            minSquaredDistanceToPoint = squaredDistance;
+            closestPoint = point3Ds[i];
+            closestPointIn2D = point;
+          }
+        }
 
-            Point3D[] point3Ds;
-            if(geometry.Positions.Count <= mMaximumVerticesPerMesh)
-            {
-              point3Ds = geometry.Positions.Select(transform.Transform).ToArray();
-            }
-            else
-            {
-              var bounds = geometry.Bounds;
-              point3Ds = GetBoundaryPointsBoundingBox(bounds).Select(transform.Transform).ToArray();
-            }
-
-                  // transform the positions of the mesh to screen coordinates
-                  var point2Ds = mViewPort3D.Point3DtoPoint2D(point3Ds).ToArray();
-
-            var minSquaredDistanceToPoint = double.PositiveInfinity;
-
-            var closestPoint = point3Ds[0];
-            var closestPointIn2D = point2Ds[0];
-
-            for(var i = 0; i < point2Ds.Length; i++)
-            {
-              var point = point2Ds[i];
-              var xDiff = point.X - pointToHitTest.X;
-              var yDiff = point.Y - pointToHitTest.Y;
-              var squaredDistance = xDiff * xDiff + yDiff * yDiff;
-              if(squaredDistance < minSquaredDistanceToPoint)
-              {
-                minSquaredDistanceToPoint = squaredDistance;
-                closestPoint = point3Ds[i];
-                closestPointIn2D = point;
-              }
-            }
-
-            var hitTestResult = new ClosestVertexResult(model, geometry, closestPoint,
-                      closestPointIn2D, Math.Sqrt(minSquaredDistanceToPoint));
-            results.Add(hitTestResult);
-
-          });
+        var hitTestResult = new ClosestVertexResult(model, geometry, closestPoint, closestPointIn2D, Math.Sqrt(minSquaredDistanceToPoint));
+        results.Add(hitTestResult);
+      });
 
       return results;
     }

@@ -18,8 +18,7 @@ namespace Crystal.Graphics
     /// <param name="controller">
     /// The controller.
     /// </param>
-    public PanHandler(CameraController controller)
-        : base(controller)
+    public PanHandler(CameraController controller) : base(controller)
     {
     }
 
@@ -39,7 +38,6 @@ namespace Crystal.Graphics
 
       var delta3D = LastPoint3D.Value - thisPoint3D.Value;
       Pan(delta3D);
-
       LastPoint = e.CurrentPosition;
       LastPoint3D = UnProject(e.CurrentPosition, panPoint3D, Controller.CameraLookDirection);
     }
@@ -74,9 +72,7 @@ namespace Crystal.Graphics
     public void Pan(Vector delta)
     {
       var mousePoint = LastPoint + delta;
-
       var thisPoint3D = UnProject(mousePoint, panPoint3D, Controller.CameraLookDirection);
-
       if(LastPoint3D == null || thisPoint3D == null)
       {
         return;
@@ -84,9 +80,7 @@ namespace Crystal.Graphics
 
       var delta3D = LastPoint3D.Value - thisPoint3D.Value;
       Pan(delta3D);
-
       LastPoint3D = UnProject(mousePoint, panPoint3D, Controller.CameraLookDirection);
-
       LastPoint = mousePoint;
     }
 
@@ -102,7 +96,6 @@ namespace Crystal.Graphics
       {
         panPoint3D = MouseDownNearestPoint3D.Value;
       }
-
       LastPoint3D = UnProject(MouseDownPoint, panPoint3D, Controller.CameraLookDirection);
     }
 
@@ -112,10 +105,7 @@ namespace Crystal.Graphics
     /// <returns>
     /// True if the execution can continue.
     /// </returns>
-    protected override bool CanExecute()
-    {
-      return Controller.IsPanEnabled && Controller.CameraMode != CameraMode.FixedPosition;
-    }
+    protected override bool CanExecute() => Controller.IsPanEnabled && Controller.CameraMode != CameraMode.FixedPosition;
 
     /// <summary>
     /// Gets the cursor for the gesture.
@@ -123,10 +113,7 @@ namespace Crystal.Graphics
     /// <returns>
     /// A cursor.
     /// </returns>
-    protected override Cursor GetCursor()
-    {
-      return Controller.PanCursor;
-    }
+    protected override Cursor GetCursor() => Controller.PanCursor;
 
     /// <summary>
     /// Called when inertia is starting.

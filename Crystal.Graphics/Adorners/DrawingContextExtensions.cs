@@ -16,15 +16,7 @@
     /// <param name="direction">The direction.</param>
     /// <param name="radiusX">The radius X.</param>
     /// <param name="radiusY">The radius Y.</param>
-    public static void DrawArc(
-        this DrawingContext dc,
-        Brush? brush,
-        Pen pen,
-        Point start,
-        Point end,
-        SweepDirection direction,
-        double radiusX,
-        double radiusY)
+    public static void DrawArc(this DrawingContext dc, Brush? brush, Pen pen, Point start, Point end, SweepDirection direction, double radiusX, double radiusY)
     {
       // http://blogs.vertigo.com/personal/ralph/Blog/archive/2007/02/09/wpf-drawing-arcs.aspx
       // setup the geometry object
@@ -70,16 +62,7 @@
     /// <param name="radiusY">
     /// The radius Y.
     /// </param>
-    public static void DrawArc(
-        this DrawingContext dc,
-        Brush? brush,
-        Pen pen,
-        Point position,
-        double startAngle,
-        double endAngle,
-        SweepDirection direction,
-        double radiusX,
-        double radiusY)
+    public static void DrawArc(this DrawingContext dc, Brush? brush, Pen pen, Point position, double startAngle, double endAngle, SweepDirection direction, double radiusX, double radiusY)
     {
       var startRadians = startAngle / 180 * Math.PI;
       var endRadians = endAngle / 180 * Math.PI;
@@ -115,17 +98,7 @@
     /// <param name="radiusY">
     /// The radius Y.
     /// </param>
-    public static void DrawArc(
-        this DrawingContext dc,
-        Brush? brush,
-        Pen pen,
-        Point position,
-        double startAngle,
-        double endAngle,
-        double radiusX,
-        double radiusY)
-    {
-      DrawArc(dc, brush, pen, position, startAngle, endAngle, SweepDirection.Counterclockwise, radiusX, radiusY);
-    }
+    public static void DrawArc(this DrawingContext dc, Brush? brush, Pen pen, Point position, double startAngle, double endAngle, double radiusX, double radiusY) 
+      => DrawArc(dc, brush, pen, position, startAngle, endAngle, SweepDirection.Counterclockwise, radiusX, radiusY);
   }
 }

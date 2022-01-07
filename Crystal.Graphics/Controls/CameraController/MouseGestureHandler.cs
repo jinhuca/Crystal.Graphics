@@ -54,7 +54,6 @@ namespace Crystal.Graphics
     protected Vector3D CameraLookDirection
     {
       get => Controller.CameraLookDirection;
-
       set => Controller.CameraLookDirection = value;
     }
 
@@ -71,7 +70,6 @@ namespace Crystal.Graphics
     protected Point3D CameraPosition
     {
       get => Controller.CameraPosition;
-
       set => Controller.CameraPosition = value;
     }
 
@@ -88,7 +86,6 @@ namespace Crystal.Graphics
     protected Vector3D CameraUpDirection
     {
       get => Controller.CameraUpDirection;
-
       set => Controller.CameraUpDirection = value;
     }
 
@@ -396,8 +393,6 @@ namespace Crystal.Graphics
           .CalculateMouseDownNearestPoint(position, Controller.SnapMouseDownPoint);
       MouseDownNearestPoint2D = nearestPoint.MouseDownNearestPoint2D;
       MouseDownNearestPoint3D = nearestPoint.MouseDownNearestPoint3D;
-
-
     }
   }
 }

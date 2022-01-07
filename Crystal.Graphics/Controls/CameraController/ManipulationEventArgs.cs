@@ -21,6 +21,5 @@
     /// </summary>
     /// <value>The current position.</value>
     public Point CurrentPosition { get; }
-
   }
 }

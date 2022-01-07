@@ -11,11 +11,32 @@ namespace Crystal.Graphics
   public class StereoControl : ContentControl
   {
     // todo: keyboard shortcut 'x' to change cross/parallel viewing
+
+    /// <summary>
+    /// Gets or sets the camera.
+    /// </summary>
+    /// <value>The camera.</value>
+    public PerspectiveCamera? Camera
+    {
+      get => (PerspectiveCamera)GetValue(CameraProperty);
+      set => SetValue(CameraProperty, value);
+    }
+
     /// <summary>
     /// Identifies the <see cref="Camera"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CameraProperty = DependencyProperty.Register(
       nameof(Camera), typeof(PerspectiveCamera), typeof(StereoControl), new UIPropertyMetadata(null));
+
+    /// <summary>
+    /// Gets or sets the camera rotation mode.
+    /// </summary>
+    /// <value>The camera rotation mode.</value>
+    public CameraRotationMode CameraRotationMode
+    {
+      get => (CameraRotationMode)GetValue(CameraRotationModeProperty);
+      set => SetValue(CameraRotationModeProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="CameraRotationMode"/> dependency property.
@@ -24,10 +45,30 @@ namespace Crystal.Graphics
       nameof(CameraRotationMode), typeof(CameraRotationMode), typeof(StereoControl), new UIPropertyMetadata(CameraRotationMode.Turntable));
 
     /// <summary>
+    /// Gets or sets a value indicating whether [copy direction vector].
+    /// </summary>
+    /// <value><c>true</c> if [copy direction vector]; otherwise, <c>false</c>.</value>
+    public bool CopyDirectionVector
+    {
+      get => (bool)GetValue(CopyDirectionVectorProperty);
+      set => SetValue(CopyDirectionVectorProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="CopyDirectionVector"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CopyDirectionVectorProperty = DependencyProperty.Register(
       nameof(CopyDirectionVector), typeof(bool), typeof(StereoControl), new UIPropertyMetadata(true, StereoViewChanged));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether [copy up vector].
+    /// </summary>
+    /// <value><c>true</c> if [copy up vector]; otherwise, <c>false</c>.</value>
+    public bool CopyUpVector
+    {
+      get => (bool)GetValue(CopyUpVectorProperty);
+      set => SetValue(CopyUpVectorProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="CopyUpVector"/> dependency property.
@@ -36,10 +77,30 @@ namespace Crystal.Graphics
       nameof(CopyUpVector), typeof(bool), typeof(StereoControl), new UIPropertyMetadata(false, StereoViewChanged));
 
     /// <summary>
+    /// Gets or sets a value indicating whether the cameras are set up for cross viewing.
+    /// </summary>
+    /// <value><c>true</c> if [cross viewing]; otherwise, <c>false</c>.</value>
+    public bool CrossViewing
+    {
+      get => (bool)GetValue(CrossViewingProperty);
+      set => SetValue(CrossViewingProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="CrossViewing"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CrossViewingProperty = DependencyProperty.Register(
       nameof(CrossViewing), typeof(bool), typeof(StereoControl), new UIPropertyMetadata(false));
+
+    /// <summary>
+    /// Gets or sets the stereo base.
+    /// </summary>
+    /// <value>The stereo base.</value>
+    public double StereoBase
+    {
+      get => (double)GetValue(StereoBaseProperty);
+      set => SetValue(StereoBaseProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="StereoBase"/> dependency property.
@@ -65,69 +126,11 @@ namespace Crystal.Graphics
       Children = new ObservableCollection<Visual3D>();
     }
 
-    /*        void StereoControl_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-    {
-        if (e.Key == Key.X)
-        {
-            CrossViewing = !CrossViewing;
-        }
-    }
-    */
-    /// <summary>
-    /// Gets or sets the camera.
-    /// </summary>
-    /// <value>The camera.</value>
-    public PerspectiveCamera? Camera
-    {
-      get => (PerspectiveCamera)GetValue(CameraProperty);
-      set => SetValue(CameraProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the camera rotation mode.
-    /// </summary>
-    /// <value>The camera rotation mode.</value>
-    public CameraRotationMode CameraRotationMode
-    {
-      get => (CameraRotationMode)GetValue(CameraRotationModeProperty);
-      set => SetValue(CameraRotationModeProperty, value);
-    }
-
     /// <summary>
     /// Gets the children.
     /// </summary>
     /// <value>The children.</value>
     public ObservableCollection<Visual3D> Children { get; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether [copy direction vector].
-    /// </summary>
-    /// <value><c>true</c> if [copy direction vector]; otherwise, <c>false</c>.</value>
-    public bool CopyDirectionVector
-    {
-      get => (bool)GetValue(CopyDirectionVectorProperty);
-      set => SetValue(CopyDirectionVectorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether [copy up vector].
-    /// </summary>
-    /// <value><c>true</c> if [copy up vector]; otherwise, <c>false</c>.</value>
-    public bool CopyUpVector
-    {
-      get => (bool)GetValue(CopyUpVectorProperty);
-      set => SetValue(CopyUpVectorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the cameras are set up for cross viewing.
-    /// </summary>
-    /// <value><c>true</c> if [cross viewing]; otherwise, <c>false</c>.</value>
-    public bool CrossViewing
-    {
-      get => (bool)GetValue(CrossViewingProperty);
-      set => SetValue(CrossViewingProperty, value);
-    }
 
     /// <summary>
     /// Gets or sets the left camera.
@@ -152,16 +155,6 @@ namespace Crystal.Graphics
     /// </summary>
     /// <value>The right viewport.</value>
     public Viewport3D RightViewport { get; set; }
-
-    /// <summary>
-    /// Gets or sets the stereo base.
-    /// </summary>
-    /// <value>The stereo base.</value>
-    public double StereoBase
-    {
-      get => (double)GetValue(StereoBaseProperty);
-      set => SetValue(StereoBaseProperty, value);
-    }
 
     /// <summary>
     /// Binds the viewports.
@@ -357,6 +350,5 @@ namespace Crystal.Graphics
     {
       // todo: update left and right collections here
     }
-
   }
 }

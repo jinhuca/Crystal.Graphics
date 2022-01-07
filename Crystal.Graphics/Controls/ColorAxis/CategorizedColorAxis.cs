@@ -6,15 +6,6 @@
   public class CategorizedColorAxis : ColorAxis
   {
     /// <summary>
-    /// Identifies the <see cref="Categories"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty CategoriesProperty = DependencyProperty.Register(
-      nameof(Categories),
-      typeof(IList<string>),
-      typeof(CategorizedColorAxis),
-      new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, PropertyChanged));
-
-    /// <summary>
     /// Gets or sets the categories.
     /// </summary>
     /// <value>The categories.</value>
@@ -23,6 +14,12 @@
       get => (IList<string>)GetValue(CategoriesProperty);
       set => SetValue(CategoriesProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Categories"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty CategoriesProperty = DependencyProperty.Register(
+      nameof(Categories), typeof(IList<string>), typeof(CategorizedColorAxis), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, PropertyChanged));
 
     /// <summary>
     /// Updates the visuals.

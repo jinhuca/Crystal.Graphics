@@ -4,49 +4,7 @@
   /// Provides a color axis for a numeric value range.
   /// </summary>
   public class RangeColorAxis : ColorAxis
-  {
-    /// <summary>
-    /// Identifies the <see cref="FormatProvider"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty FormatProviderProperty = DependencyProperty.Register(
-      nameof(FormatProvider), typeof(IFormatProvider), typeof(RangeColorAxis), new UIPropertyMetadata(null));
-
-    /// <summary>
-    /// Identifies the <see cref="FormatString"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty FormatStringProperty = DependencyProperty.Register(
-      nameof(FormatString), typeof(string), typeof(RangeColorAxis), new UIPropertyMetadata(null));
-
-    /// <summary>
-    /// Identifies the <see cref="Maximum"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
-      nameof(Maximum), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(100.0));
-
-    /// <summary>
-    /// Identifies the <see cref="MaximumTextureCoordinate"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MaximumTextureCoordinateProperty = DependencyProperty.Register(
-      nameof(MaximumTextureCoordinate), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(1.0));
-
-    /// <summary>
-    /// Identifies the <see cref="Minimum"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
-      nameof(Minimum), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(0.0));
-
-    /// <summary>
-    /// Identifies the <see cref="MinimumTextureCoordinate"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MinimumTextureCoordinateProperty = DependencyProperty.Register(
-      nameof(MinimumTextureCoordinate), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(0.0));
-
-    /// <summary>
-    /// Identifies the <see cref="Step"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-      nameof(Step), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(10.0));
-
+  {    
     /// <summary>
     /// Gets or sets the format provider.
     /// </summary>
@@ -56,6 +14,12 @@
       get => (IFormatProvider)GetValue(FormatProviderProperty);
       set => SetValue(FormatProviderProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="FormatProvider"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty FormatProviderProperty = DependencyProperty.Register(
+      nameof(FormatProvider), typeof(IFormatProvider), typeof(RangeColorAxis), new UIPropertyMetadata(null));
 
     /// <summary>
     /// Gets or sets the format string.
@@ -68,6 +32,12 @@
     }
 
     /// <summary>
+    /// Identifies the <see cref="FormatString"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty FormatStringProperty = DependencyProperty.Register(
+      nameof(FormatString), typeof(string), typeof(RangeColorAxis), new UIPropertyMetadata(null));
+
+    /// <summary>
     /// Gets or sets the maximum.
     /// </summary>
     /// <value>The maximum.</value>
@@ -76,6 +46,12 @@
       get => (double)GetValue(MaximumProperty);
       set => SetValue(MaximumProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Maximum"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
+      nameof(Maximum), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(100.0));
 
     /// <summary>
     /// Gets or sets the maximum texture coordinate.
@@ -88,6 +64,12 @@
     }
 
     /// <summary>
+    /// Identifies the <see cref="MaximumTextureCoordinate"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty MaximumTextureCoordinateProperty = DependencyProperty.Register(
+      nameof(MaximumTextureCoordinate), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(1.0));
+
+    /// <summary>
     /// Gets or sets the minimum.
     /// </summary>
     /// <value>The minimum.</value>
@@ -96,6 +78,12 @@
       get => (double)GetValue(MinimumProperty);
       set => SetValue(MinimumProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Minimum"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
+      nameof(Minimum), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(0.0));
 
     /// <summary>
     /// Gets or sets the minimum texture coordinate.
@@ -108,6 +96,12 @@
     }
 
     /// <summary>
+    /// Identifies the <see cref="MinimumTextureCoordinate"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty MinimumTextureCoordinateProperty = DependencyProperty.Register(
+      nameof(MinimumTextureCoordinate), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(0.0));
+
+    /// <summary>
     /// Gets or sets the step.
     /// </summary>
     /// <value>The step.</value>
@@ -116,6 +110,12 @@
       get => (double)GetValue(StepProperty);
       set => SetValue(StepProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Step"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
+      nameof(Step), typeof(double), typeof(RangeColorAxis), new UIPropertyMetadata(10.0));
 
     /// <summary>
     /// Updates the visuals.

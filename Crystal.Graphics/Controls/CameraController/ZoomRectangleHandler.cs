@@ -18,8 +18,7 @@ namespace Crystal.Graphics
     /// <param name="controller">
     /// The controller.
     /// </param>
-    public ZoomRectangleHandler(CameraController controller)
-        : base(controller)
+    public ZoomRectangleHandler(CameraController controller) : base(controller)
     {
     }
 
@@ -41,7 +40,6 @@ namespace Crystal.Graphics
     public override void Delta(ManipulationEventArgs e)
     {
       base.Delta(e);
-
       var ar = Controller.ActualHeight / Controller.ActualWidth;
       var delta = MouseDownPoint - e.CurrentPosition;
 
@@ -53,9 +51,7 @@ namespace Crystal.Graphics
       {
         delta.X = Math.Sign(delta.X) * Math.Abs(delta.Y / ar);
       }
-
       zoomRectangle = new Rect(MouseDownPoint, MouseDownPoint - delta);
-
       Controller.UpdateRectangle(zoomRectangle);
     }
 
@@ -109,6 +105,5 @@ namespace Crystal.Graphics
     {
       return Controller.ZoomRectangleCursor;
     }
-
   }
 }

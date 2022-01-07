@@ -8,10 +8,28 @@ namespace Crystal.Graphics
   public class CameraController : Grid
   {
     /// <summary>
+    /// Gets or sets CameraMode.
+    /// </summary>
+    public CameraMode CameraMode
+    {
+      get => (CameraMode)GetValue(CameraModeProperty);
+      set => SetValue(CameraModeProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="CameraMode"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CameraModeProperty = DependencyProperty.Register(
       nameof(CameraMode), typeof(CameraMode), typeof(CameraController), new UIPropertyMetadata(CameraMode.Inspect));
+
+    /// <summary>
+    /// Gets or sets Camera.
+    /// </summary>
+    public ProjectionCamera? Camera
+    {
+      get => (ProjectionCamera)GetValue(CameraProperty);
+      set => SetValue(CameraProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="Camera"/> dependency property.
@@ -20,10 +38,29 @@ namespace Crystal.Graphics
       nameof(Camera), typeof(ProjectionCamera), typeof(CameraController), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, CameraChanged));
 
     /// <summary>
+    /// Gets or sets CameraRotationMode.
+    /// </summary>
+    public CameraRotationMode CameraRotationMode
+    {
+      get => (CameraRotationMode)GetValue(CameraRotationModeProperty);
+      set => SetValue(CameraRotationModeProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="CameraRotationMode"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CameraRotationModeProperty = DependencyProperty.Register(
       nameof(CameraRotationMode), typeof(CameraRotationMode), typeof(CameraController), new UIPropertyMetadata(CameraRotationMode.Turntable));
+
+    /// <summary>
+    /// Gets or sets the change field of view cursor.
+    /// </summary>
+    /// <value> The change field of view cursor. </value>
+    public Cursor ChangeFieldOfViewCursor
+    {
+      get => (Cursor)GetValue(ChangeFieldOfViewCursorProperty);
+      set => SetValue(ChangeFieldOfViewCursorProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="ChangeFieldOfViewCursor"/> dependency property.
@@ -32,10 +69,29 @@ namespace Crystal.Graphics
       nameof(ChangeFieldOfViewCursor), typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.ScrollNS));
 
     /// <summary>
+    /// Gets or sets the default camera (used when resetting the view).
+    /// </summary>
+    /// <value> The default camera. </value>
+    public ProjectionCamera DefaultCamera
+    {
+      get => (ProjectionCamera)GetValue(DefaultCameraProperty);
+      set => SetValue(DefaultCameraProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="DefaultCamera"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
       nameof(DefaultCamera), typeof(ProjectionCamera), typeof(CameraController), new UIPropertyMetadata(null));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether Enabled.
+    /// </summary>
+    public bool Enabled
+    {
+      get => (bool)GetValue(EnabledProperty);
+      set => SetValue(EnabledProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="Enabled"/> dependency property.
@@ -44,10 +100,28 @@ namespace Crystal.Graphics
       nameof(Enabled), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
     /// <summary>
+    /// Gets or sets InertiaFactor.
+    /// </summary>
+    public double InertiaFactor
+    {
+      get => (double)GetValue(InertiaFactorProperty);
+      set => SetValue(InertiaFactorProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="InertiaFactor"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty InertiaFactorProperty = DependencyProperty.Register(
       nameof(InertiaFactor), typeof(double), typeof(CameraController), new UIPropertyMetadata(0.9));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether InfiniteSpin.
+    /// </summary>
+    public bool InfiniteSpin
+    {
+      get => (bool)GetValue(InfiniteSpinProperty);
+      set => SetValue(InfiniteSpinProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="InfiniteSpin"/> dependency property.
@@ -56,10 +130,29 @@ namespace Crystal.Graphics
       nameof(InfiniteSpin), typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
     /// <summary>
+    /// Gets or sets a value indicating whether field of view can be changed.
+    /// </summary>
+    public bool IsChangeFieldOfViewEnabled
+    {
+      get => (bool)GetValue(IsChangeFieldOfViewEnabledProperty);
+      set => SetValue(IsChangeFieldOfViewEnabledProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="IsChangeFieldOfViewEnabled"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty IsChangeFieldOfViewEnabledProperty = DependencyProperty.Register(
       nameof(IsChangeFieldOfViewEnabled), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether inertia is enabled for the camera manipulations.
+    /// </summary>
+    /// <value><c>true</c> if inertia is enabled; otherwise, <c>false</c>.</value>
+    public bool IsInertiaEnabled
+    {
+      get => (bool)GetValue(IsInertiaEnabledProperty);
+      set => SetValue(IsInertiaEnabledProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
@@ -68,10 +161,29 @@ namespace Crystal.Graphics
       nameof(IsInertiaEnabled), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
     /// <summary>
+    /// Gets or sets a value indicating whether move is enabled.
+    /// </summary>
+    /// <value> <c>true</c> if move is enabled; otherwise, <c>false</c> . </value>
+    public bool IsMoveEnabled
+    {
+      get => (bool)GetValue(IsMoveEnabledProperty);
+      set => SetValue(IsMoveEnabledProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="IsMoveEnabled"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
       nameof(IsMoveEnabled), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether pan is enabled.
+    /// </summary>
+    public bool IsPanEnabled
+    {
+      get => (bool)GetValue(IsPanEnabledProperty);
+      set => SetValue(IsPanEnabledProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="IsPanEnabled"/> dependency property.
@@ -80,10 +192,29 @@ namespace Crystal.Graphics
       nameof(IsPanEnabled), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
     /// <summary>
+    /// Gets or sets a value indicating whether IsRotationEnabled.
+    /// </summary>
+    public bool IsRotationEnabled
+    {
+      get => (bool)GetValue(IsRotationEnabledProperty);
+      set => SetValue(IsRotationEnabledProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="IsRotationEnabled"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty IsRotationEnabledProperty = DependencyProperty.Register(
       nameof(IsRotationEnabled), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
+    /// </summary>
+    /// <value> <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> . </value>
+    public bool IsTouchZoomEnabled
+    {
+      get => (bool)GetValue(IsTouchZoomEnabledProperty);
+      set => SetValue(IsTouchZoomEnabledProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="IsTouchZoomEnabled"/> dependency property.
@@ -92,10 +223,32 @@ namespace Crystal.Graphics
       nameof(IsTouchZoomEnabled), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
     /// <summary>
+    /// Gets or sets a value indicating whether IsZoomEnabled.
+    /// </summary>
+    public bool IsZoomEnabled
+    {
+      get => (bool)GetValue(IsZoomEnabledProperty);
+      set => SetValue(IsZoomEnabledProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="IsZoomEnabled"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty IsZoomEnabledProperty = DependencyProperty.Register(
       nameof(IsZoomEnabled), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+
+    /// <summary>
+    /// Gets or sets the sensitivity for pan by the left and right keys.
+    /// </summary>
+    /// <value> The pan sensitivity. </value>
+    /// <remarks>
+    /// Use -1 to invert the pan direction.
+    /// </remarks>
+    public double LeftRightPanSensitivity
+    {
+      get => (double)GetValue(LeftRightPanSensitivityProperty);
+      set => SetValue(LeftRightPanSensitivityProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="LeftRightPanSensitivity"/> dependency property.
@@ -104,10 +257,32 @@ namespace Crystal.Graphics
       nameof(LeftRightPanSensitivity), typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
     /// <summary>
+    /// Gets or sets the sensitivity for rotation by the left and right keys.
+    /// </summary>
+    /// <value> The rotation sensitivity. </value>
+    /// <remarks>
+    /// Use -1 to invert the rotation direction.
+    /// </remarks>
+    public double LeftRightRotationSensitivity
+    {
+      get => (double)GetValue(LeftRightRotationSensitivityProperty);
+      set => SetValue(LeftRightRotationSensitivityProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="LeftRightRotationSensitivity"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty LeftRightRotationSensitivityProperty = DependencyProperty.Register(
       nameof(LeftRightRotationSensitivity), typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+    /// <summary>
+    /// Occurs when the look at/target point changed.
+    /// </summary>
+    public event RoutedEventHandler LookAtChanged
+    {
+      add => AddHandler(LookAtChangedEvent, value);
+      remove => RemoveHandler(LookAtChangedEvent, value);
+    }
 
     /// <summary>
     /// The look at (target) point changed event
@@ -116,10 +291,30 @@ namespace Crystal.Graphics
       nameof(LookAtChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CameraController));
 
     /// <summary>
+    /// Gets or sets the maximum field of view.
+    /// </summary>
+    /// <value> The maximum field of view. </value>
+    public double MaximumFieldOfView
+    {
+      get => (double)GetValue(MaximumFieldOfViewProperty);
+      set => SetValue(MaximumFieldOfViewProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="MaximumFieldOfView"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty MaximumFieldOfViewProperty = DependencyProperty.Register(
       nameof(MaximumFieldOfView), typeof(double), typeof(CameraController), new UIPropertyMetadata(160.0));
+
+    /// <summary>
+    /// Gets or sets the minimum field of view.
+    /// </summary>
+    /// <value> The minimum field of view. </value>
+    public double MinimumFieldOfView
+    {
+      get => (double)GetValue(MinimumFieldOfViewProperty);
+      set => SetValue(MinimumFieldOfViewProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="MinimumFieldOfView"/> dependency property.
@@ -128,10 +323,29 @@ namespace Crystal.Graphics
       nameof(MinimumFieldOfView), typeof(double), typeof(CameraController), new UIPropertyMetadata(5.0));
 
     /// <summary>
+    /// Gets or sets the model up direction.
+    /// </summary>
+    public Vector3D ModelUpDirection
+    {
+      get => (Vector3D)GetValue(ModelUpDirectionProperty);
+      set => SetValue(ModelUpDirectionProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="ModelUpDirection"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ModelUpDirectionProperty = DependencyProperty.Register(
       nameof(ModelUpDirection), typeof(Vector3D), typeof(CameraController), new UIPropertyMetadata(new Vector3D(0, 0, 1)));
+
+    /// <summary>
+    /// Gets or sets the move sensitivity.
+    /// </summary>
+    /// <value> The move sensitivity. </value>
+    public double MoveSensitivity
+    {
+      get => (double)GetValue(MoveSensitivityProperty);
+      set => SetValue(MoveSensitivityProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="MoveSensitivity"/> dependency property.
@@ -140,10 +354,33 @@ namespace Crystal.Graphics
       nameof(MoveSensitivity), typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
     /// <summary>
+    /// Gets or sets the sensitivity for zoom by the page up and page down keys.
+    /// </summary>
+    /// <value> The zoom sensitivity. </value>
+    /// <remarks>
+    /// Use -1 to invert the zoom direction.
+    /// </remarks>
+    public double PageUpDownZoomSensitivity
+    {
+      get => (double)GetValue(PageUpDownZoomSensitivityProperty);
+      set => SetValue(PageUpDownZoomSensitivityProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="PageUpDownZoomSensitivity"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty PageUpDownZoomSensitivityProperty = DependencyProperty.Register(
       nameof(PageUpDownZoomSensitivity), typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+    /// <summary>
+    /// Gets or sets the pan cursor.
+    /// </summary>
+    /// <value> The pan cursor. </value>
+    public Cursor PanCursor
+    {
+      get => (Cursor)GetValue(PanCursorProperty);
+      set => SetValue(PanCursorProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="PanCursor"/> dependency property.
@@ -152,10 +389,30 @@ namespace Crystal.Graphics
       nameof(PanCursor), typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.Hand));
 
     /// <summary>
+    /// Gets or sets a value indicating whether to rotate around the mouse down point.
+    /// </summary>
+    /// <value> <c>true</c> if rotation around the mouse down point is enabled; otherwise, <c>false</c> . </value>
+    public bool RotateAroundMouseDownPoint
+    {
+      get => (bool)GetValue(RotateAroundMouseDownPointProperty);
+      set => SetValue(RotateAroundMouseDownPointProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="RotateAroundMouseDownPoint"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty RotateAroundMouseDownPointProperty = DependencyProperty.Register(
       nameof(RotateAroundMouseDownPoint), typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to rotate around a fixed point.
+    /// </summary>
+    /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
+    public bool FixedRotationPointEnabled
+    {
+      get => (bool)GetValue(FixedRotationPointEnabledProperty);
+      set => SetValue(FixedRotationPointEnabledProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="FixedRotationPointEnabled"/> dependency property.
@@ -164,10 +421,30 @@ namespace Crystal.Graphics
       nameof(FixedRotationPointEnabled), typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
     /// <summary>
+    /// Gets or sets a value indicating the center of rotation.
+    /// </summary>
+    /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
+    public Point3D FixedRotationPoint
+    {
+      get => (Point3D)GetValue(FixedRotationPointProperty);
+      set => SetValue(FixedRotationPointProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="FixedRotationPoint"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty FixedRotationPointProperty = DependencyProperty.Register(
       nameof(FixedRotationPoint), typeof(Point3D), typeof(CameraController), new UIPropertyMetadata(default(Point3D)));
+
+    /// <summary>
+    /// Gets or sets the rotate cursor.
+    /// </summary>
+    /// <value> The rotate cursor. </value>
+    public Cursor RotateCursor
+    {
+      get => (Cursor)GetValue(RotateCursorProperty);
+      set => SetValue(RotateCursorProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="RotateCursor"/> dependency property.
@@ -176,10 +453,29 @@ namespace Crystal.Graphics
       nameof(RotateCursor), typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.SizeAll));
 
     /// <summary>
+    /// Gets or sets the rotation sensitivity (degrees/pixel).
+    /// </summary>
+    /// <value> The rotation sensitivity. </value>
+    public double RotationSensitivity
+    {
+      get => (double)GetValue(RotationSensitivityProperty);
+      set => SetValue(RotationSensitivityProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="RotationSensitivity"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty RotationSensitivityProperty = DependencyProperty.Register(
       nameof(RotationSensitivity), typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to show a target adorner when manipulating the camera.
+    /// </summary>
+    public bool ShowCameraTarget
+    {
+      get => (bool)GetValue(ShowCameraTargetProperty);
+      set => SetValue(ShowCameraTargetProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="ShowCameraTarget"/> dependency property.
@@ -188,10 +484,35 @@ namespace Crystal.Graphics
       nameof(ShowCameraTarget), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
     /// <summary>
+    /// Gets or sets the max duration of mouse drag to activate spin.
+    /// </summary>
+    /// <remarks>
+    /// If the time between mouse down and mouse up is less than this value, spin is activated.
+    /// </remarks>
+    public int SpinReleaseTime
+    {
+      get => (int)GetValue(SpinReleaseTimeProperty);
+      set => SetValue(SpinReleaseTimeProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="SpinReleaseTime"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty SpinReleaseTimeProperty = DependencyProperty.Register(
       nameof(SpinReleaseTime), typeof(int), typeof(CameraController), new UIPropertyMetadata(200));
+
+    /// <summary>
+    /// Gets or sets the sensitivity for pan by the up and down keys.
+    /// </summary>
+    /// <value> The pan sensitivity. </value>
+    /// <remarks>
+    /// Use -1 to invert the pan direction.
+    /// </remarks>
+    public double UpDownPanSensitivity
+    {
+      get => (double)GetValue(UpDownPanSensitivityProperty);
+      set => SetValue(UpDownPanSensitivityProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="UpDownPanSensitivity"/> dependency property.
@@ -200,10 +521,32 @@ namespace Crystal.Graphics
       nameof(UpDownPanSensitivity), typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
 
     /// <summary>
+    /// Gets or sets the sensitivity for rotation by the up and down keys.
+    /// </summary>
+    /// <value> The rotation sensitivity. </value>
+    /// <remarks>
+    /// Use -1 to invert the rotation direction.
+    /// </remarks>
+    public double UpDownRotationSensitivity
+    {
+      get => (double)GetValue(UpDownRotationSensitivityProperty);
+      set => SetValue(UpDownRotationSensitivityProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="UpDownRotationSensitivity"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty UpDownRotationSensitivityProperty = DependencyProperty.Register(
       nameof(UpDownRotationSensitivity), typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+    /// <summary>
+    /// Gets or sets Viewport.
+    /// </summary>
+    public Viewport3D Viewport
+    {
+      get => (Viewport3D)GetValue(ViewportProperty);
+      set => SetValue(ViewportProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="Viewport"/> dependency property.
@@ -212,10 +555,30 @@ namespace Crystal.Graphics
       nameof(Viewport), typeof(Viewport3D), typeof(CameraController), new PropertyMetadata(null, ViewportChanged));
 
     /// <summary>
+    /// Gets or sets a value indicating whether to zoom around mouse down point.
+    /// </summary>
+    /// <value> <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> . </value>
+    public bool ZoomAroundMouseDownPoint
+    {
+      get => (bool)GetValue(ZoomAroundMouseDownPointProperty);
+      set => SetValue(ZoomAroundMouseDownPointProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="ZoomAroundMouseDownPoint"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ZoomAroundMouseDownPointProperty = DependencyProperty.Register(
       nameof(ZoomAroundMouseDownPoint), typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to snap the mouse down point to a model.
+    /// </summary>
+    /// <value> <c>true</c> if snapping the mouse down point is enabled; otherwise, <c>false</c> . </value>
+    public bool SnapMouseDownPoint
+    {
+      get => (bool)GetValue(SnapMouseDownPointProperty);
+      set => SetValue(SnapMouseDownPointProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="SnapMouseDownPoint"/> dependency property.
@@ -224,10 +587,30 @@ namespace Crystal.Graphics
       nameof(SnapMouseDownPoint), typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
     /// <summary>
+    /// Gets or sets the zoom cursor.
+    /// </summary>
+    /// <value> The zoom cursor. </value>
+    public Cursor ZoomCursor
+    {
+      get => (Cursor)GetValue(ZoomCursorProperty);
+      set => SetValue(ZoomCursorProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="ZoomCursor"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
       nameof(ZoomCursor), typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.SizeNS));
+
+    /// <summary>
+    /// Gets or sets the zoom rectangle cursor.
+    /// </summary>
+    /// <value> The zoom rectangle cursor. </value>
+    public Cursor ZoomRectangleCursor
+    {
+      get => (Cursor)GetValue(ZoomRectangleCursorProperty);
+      set => SetValue(ZoomRectangleCursorProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="ZoomRectangleCursor"/> dependency property.
@@ -236,10 +619,28 @@ namespace Crystal.Graphics
       nameof(ZoomRectangleCursor), typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.ScrollSE));
 
     /// <summary>
+    /// Gets or sets ZoomSensitivity.
+    /// </summary>
+    public double ZoomSensitivity
+    {
+      get => (double)GetValue(ZoomSensitivityProperty);
+      set => SetValue(ZoomSensitivityProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="ZoomSensitivity"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ZoomSensitivityProperty = DependencyProperty.Register(
       nameof(ZoomSensitivity), typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+
+    /// <summary>
+    /// Occurs when the view is zoomed by rectangle.
+    /// </summary>
+    public event RoutedEventHandler ZoomedByRectangle
+    {
+      add => AddHandler(ZoomedByRectangleEvent, value);
+      remove => RemoveHandler(ZoomedByRectangleEvent, value);
+    }
 
     /// <summary>
     /// The zoomed by rectangle event
@@ -418,26 +819,6 @@ namespace Crystal.Graphics
     }
 
     /// <summary>
-    /// Occurs when the look at/target point changed.
-    /// </summary>
-    public event RoutedEventHandler LookAtChanged
-    {
-      add => AddHandler(LookAtChangedEvent, value);
-
-      remove => RemoveHandler(LookAtChangedEvent, value);
-    }
-
-    /// <summary>
-    /// Occurs when the view is zoomed by rectangle.
-    /// </summary>
-    public event RoutedEventHandler ZoomedByRectangle
-    {
-      add => AddHandler(ZoomedByRectangleEvent, value);
-
-      remove => RemoveHandler(ZoomedByRectangleEvent, value);
-    }
-
-    /// <summary>
     /// Gets the back view command.
     /// </summary>
     public static RoutedCommand BackViewCommand { get; }
@@ -513,15 +894,6 @@ namespace Crystal.Graphics
     public ProjectionCamera? ActualCamera => Camera ?? Viewport.Camera as ProjectionCamera;
 
     /// <summary>
-    /// Gets or sets Camera.
-    /// </summary>
-    public ProjectionCamera? Camera
-    {
-      get => (ProjectionCamera)GetValue(CameraProperty);
-      set => SetValue(CameraProperty, value);
-    }
-
-    /// <summary>
     /// Gets or sets CameraLookDirection.
     /// </summary>
     public Vector3D CameraLookDirection
@@ -531,30 +903,12 @@ namespace Crystal.Graphics
     }
 
     /// <summary>
-    /// Gets or sets CameraMode.
-    /// </summary>
-    public CameraMode CameraMode
-    {
-      get => (CameraMode)GetValue(CameraModeProperty);
-      set => SetValue(CameraModeProperty, value);
-    }
-
-    /// <summary>
     /// Gets or sets CameraPosition.
     /// </summary>
     public Point3D CameraPosition
     {
       get => ActualCamera!.Position;
       set => ActualCamera!.Position = value;
-    }
-
-    /// <summary>
-    /// Gets or sets CameraRotationMode.
-    /// </summary>
-    public CameraRotationMode CameraRotationMode
-    {
-      get => (CameraRotationMode)GetValue(CameraRotationModeProperty);
-      set => SetValue(CameraRotationModeProperty, value);
     }
 
     /// <summary>
@@ -576,366 +930,9 @@ namespace Crystal.Graphics
     }
 
     /// <summary>
-    /// Gets or sets the change field of view cursor.
-    /// </summary>
-    /// <value> The change field of view cursor. </value>
-    public Cursor ChangeFieldOfViewCursor
-    {
-      get => (Cursor)GetValue(ChangeFieldOfViewCursorProperty);
-      set => SetValue(ChangeFieldOfViewCursorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the default camera (used when resetting the view).
-    /// </summary>
-    /// <value> The default camera. </value>
-    public ProjectionCamera DefaultCamera
-    {
-      get => (ProjectionCamera)GetValue(DefaultCameraProperty);
-      set => SetValue(DefaultCameraProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether Enabled.
-    /// </summary>
-    public bool Enabled
-    {
-      get => (bool)GetValue(EnabledProperty);
-      set => SetValue(EnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets InertiaFactor.
-    /// </summary>
-    public double InertiaFactor
-    {
-      get => (double)GetValue(InertiaFactorProperty);
-      set => SetValue(InertiaFactorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether InfiniteSpin.
-    /// </summary>
-    public bool InfiniteSpin
-    {
-      get => (bool)GetValue(InfiniteSpinProperty);
-      set => SetValue(InfiniteSpinProperty, value);
-    }
-
-    /// <summary>
     /// Gets a value indicating whether IsActive.
     /// </summary>
     public bool IsActive => Enabled && Viewport != null && ActualCamera != null;
-
-    /// <summary>
-    /// Gets or sets a value indicating whether field of view can be changed.
-    /// </summary>
-    public bool IsChangeFieldOfViewEnabled
-    {
-      get => (bool)GetValue(IsChangeFieldOfViewEnabledProperty);
-      set => SetValue(IsChangeFieldOfViewEnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether inertia is enabled for the camera manipulations.
-    /// </summary>
-    /// <value><c>true</c> if inertia is enabled; otherwise, <c>false</c>.</value>
-    public bool IsInertiaEnabled
-    {
-      get => (bool)GetValue(IsInertiaEnabledProperty);
-      set => SetValue(IsInertiaEnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether move is enabled.
-    /// </summary>
-    /// <value> <c>true</c> if move is enabled; otherwise, <c>false</c> . </value>
-    public bool IsMoveEnabled
-    {
-      get => (bool)GetValue(IsMoveEnabledProperty);
-      set => SetValue(IsMoveEnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether pan is enabled.
-    /// </summary>
-    public bool IsPanEnabled
-    {
-      get => (bool)GetValue(IsPanEnabledProperty);
-      set => SetValue(IsPanEnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether IsRotationEnabled.
-    /// </summary>
-    public bool IsRotationEnabled
-    {
-      get => (bool)GetValue(IsRotationEnabledProperty);
-      set => SetValue(IsRotationEnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
-    /// </summary>
-    /// <value> <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> . </value>
-    public bool IsTouchZoomEnabled
-    {
-      get => (bool)GetValue(IsTouchZoomEnabledProperty);
-      set => SetValue(IsTouchZoomEnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether IsZoomEnabled.
-    /// </summary>
-    public bool IsZoomEnabled
-    {
-      get => (bool)GetValue(IsZoomEnabledProperty);
-      set => SetValue(IsZoomEnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the sensitivity for pan by the left and right keys.
-    /// </summary>
-    /// <value> The pan sensitivity. </value>
-    /// <remarks>
-    /// Use -1 to invert the pan direction.
-    /// </remarks>
-    public double LeftRightPanSensitivity
-    {
-      get => (double)GetValue(LeftRightPanSensitivityProperty);
-      set => SetValue(LeftRightPanSensitivityProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the sensitivity for rotation by the left and right keys.
-    /// </summary>
-    /// <value> The rotation sensitivity. </value>
-    /// <remarks>
-    /// Use -1 to invert the rotation direction.
-    /// </remarks>
-    public double LeftRightRotationSensitivity
-    {
-      get => (double)GetValue(LeftRightRotationSensitivityProperty);
-      set => SetValue(LeftRightRotationSensitivityProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the maximum field of view.
-    /// </summary>
-    /// <value> The maximum field of view. </value>
-    public double MaximumFieldOfView
-    {
-      get => (double)GetValue(MaximumFieldOfViewProperty);
-      set => SetValue(MaximumFieldOfViewProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the minimum field of view.
-    /// </summary>
-    /// <value> The minimum field of view. </value>
-    public double MinimumFieldOfView
-    {
-      get => (double)GetValue(MinimumFieldOfViewProperty);
-      set => SetValue(MinimumFieldOfViewProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the model up direction.
-    /// </summary>
-    public Vector3D ModelUpDirection
-    {
-      get => (Vector3D)GetValue(ModelUpDirectionProperty);
-      set => SetValue(ModelUpDirectionProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the move sensitivity.
-    /// </summary>
-    /// <value> The move sensitivity. </value>
-    public double MoveSensitivity
-    {
-      get => (double)GetValue(MoveSensitivityProperty);
-      set => SetValue(MoveSensitivityProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the sensitivity for zoom by the page up and page down keys.
-    /// </summary>
-    /// <value> The zoom sensitivity. </value>
-    /// <remarks>
-    /// Use -1 to invert the zoom direction.
-    /// </remarks>
-    public double PageUpDownZoomSensitivity
-    {
-      get => (double)GetValue(PageUpDownZoomSensitivityProperty);
-      set => SetValue(PageUpDownZoomSensitivityProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the pan cursor.
-    /// </summary>
-    /// <value> The pan cursor. </value>
-    public Cursor PanCursor
-    {
-      get => (Cursor)GetValue(PanCursorProperty);
-      set => SetValue(PanCursorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether to rotate around the mouse down point.
-    /// </summary>
-    /// <value> <c>true</c> if rotation around the mouse down point is enabled; otherwise, <c>false</c> . </value>
-    public bool RotateAroundMouseDownPoint
-    {
-      get => (bool)GetValue(RotateAroundMouseDownPointProperty);
-      set => SetValue(RotateAroundMouseDownPointProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether to rotate around a fixed point.
-    /// </summary>
-    /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
-    public bool FixedRotationPointEnabled
-    {
-      get => (bool)GetValue(FixedRotationPointEnabledProperty);
-      set => SetValue(FixedRotationPointEnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating the center of rotation.
-    /// </summary>
-    /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
-    public Point3D FixedRotationPoint
-    {
-      get => (Point3D)GetValue(FixedRotationPointProperty);
-      set => SetValue(FixedRotationPointProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the rotate cursor.
-    /// </summary>
-    /// <value> The rotate cursor. </value>
-    public Cursor RotateCursor
-    {
-      get => (Cursor)GetValue(RotateCursorProperty);
-      set => SetValue(RotateCursorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the rotation sensitivity (degrees/pixel).
-    /// </summary>
-    /// <value> The rotation sensitivity. </value>
-    public double RotationSensitivity
-    {
-      get => (double)GetValue(RotationSensitivityProperty);
-      set => SetValue(RotationSensitivityProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether to show a target adorner when manipulating the camera.
-    /// </summary>
-    public bool ShowCameraTarget
-    {
-      get => (bool)GetValue(ShowCameraTargetProperty);
-      set => SetValue(ShowCameraTargetProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the max duration of mouse drag to activate spin.
-    /// </summary>
-    /// <remarks>
-    /// If the time between mouse down and mouse up is less than this value, spin is activated.
-    /// </remarks>
-    public int SpinReleaseTime
-    {
-      get => (int)GetValue(SpinReleaseTimeProperty);
-      set => SetValue(SpinReleaseTimeProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the sensitivity for pan by the up and down keys.
-    /// </summary>
-    /// <value> The pan sensitivity. </value>
-    /// <remarks>
-    /// Use -1 to invert the pan direction.
-    /// </remarks>
-    public double UpDownPanSensitivity
-    {
-      get => (double)GetValue(UpDownPanSensitivityProperty);
-      set => SetValue(UpDownPanSensitivityProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the sensitivity for rotation by the up and down keys.
-    /// </summary>
-    /// <value> The rotation sensitivity. </value>
-    /// <remarks>
-    /// Use -1 to invert the rotation direction.
-    /// </remarks>
-    public double UpDownRotationSensitivity
-    {
-      get => (double)GetValue(UpDownRotationSensitivityProperty);
-      set => SetValue(UpDownRotationSensitivityProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets Viewport.
-    /// </summary>
-    public Viewport3D Viewport
-    {
-      get => (Viewport3D)GetValue(ViewportProperty);
-      set => SetValue(ViewportProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether to zoom around mouse down point.
-    /// </summary>
-    /// <value> <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> . </value>
-    public bool ZoomAroundMouseDownPoint
-    {
-      get => (bool)GetValue(ZoomAroundMouseDownPointProperty);
-      set => SetValue(ZoomAroundMouseDownPointProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether to snap the mouse down point to a model.
-    /// </summary>
-    /// <value> <c>true</c> if snapping the mouse down point is enabled; otherwise, <c>false</c> . </value>
-    public bool SnapMouseDownPoint
-    {
-      get => (bool)GetValue(SnapMouseDownPointProperty);
-      set => SetValue(SnapMouseDownPointProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the zoom cursor.
-    /// </summary>
-    /// <value> The zoom cursor. </value>
-    public Cursor ZoomCursor
-    {
-      get => (Cursor)GetValue(ZoomCursorProperty);
-      set => SetValue(ZoomCursorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the zoom rectangle cursor.
-    /// </summary>
-    /// <value> The zoom rectangle cursor. </value>
-    public Cursor ZoomRectangleCursor
-    {
-      get => (Cursor)GetValue(ZoomRectangleCursorProperty);
-      set => SetValue(ZoomRectangleCursorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets ZoomSensitivity.
-    /// </summary>
-    public double ZoomSensitivity
-    {
-      get => (double)GetValue(ZoomSensitivityProperty);
-      set => SetValue(ZoomSensitivityProperty, value);
-    }
-
 
     /// <summary>
     /// Efficiency option, lower values decrease computation time for camera interaction when

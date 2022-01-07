@@ -17,8 +17,7 @@
     /// <param name="position">
     /// The position.
     /// </param>
-    public TargetSymbolAdorner(UIElement adornedElement, Point position)
-        : base(adornedElement)
+    public TargetSymbolAdorner(UIElement adornedElement, Point position) : base(adornedElement)
     {
       Position = position;
     }
@@ -63,22 +62,10 @@
       dc.DrawArc(null, lightPen, Position, 190, 260, r4, r4);
       dc.DrawArc(null, lightPen, Position, 280, 350, r4, r4);
 
-      dc.DrawLine(
-          lightPen,
-          new Point(Position.X, Position.Y - r2),
-          new Point(Position.X, Position.Y - r3));
-      dc.DrawLine(
-          lightPen,
-          new Point(Position.X, Position.Y + r2),
-          new Point(Position.X, Position.Y + r3));
-      dc.DrawLine(
-          lightPen,
-          new Point(Position.X - r2, Position.Y),
-          new Point(Position.X - r3, Position.Y));
-      dc.DrawLine(
-          lightPen,
-          new Point(Position.X + r2, Position.Y),
-          new Point(Position.X + r3, Position.Y));
+      dc.DrawLine(lightPen, new Point(Position.X, Position.Y - r2), new Point(Position.X, Position.Y - r3)); 
+      dc.DrawLine(lightPen, new Point(Position.X, Position.Y + r2), new Point(Position.X, Position.Y + r3));
+      dc.DrawLine(lightPen, new Point(Position.X - r2, Position.Y), new Point(Position.X - r3, Position.Y));
+      dc.DrawLine(lightPen, new Point(Position.X + r2, Position.Y), new Point(Position.X + r3, Position.Y));
     }
   }
 }

@@ -3,17 +3,21 @@
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                      xmlns:local="clr-namespace:Crystal.Graphics" x:Name="thisControl">
 	<Grid>
-		<Grid Name="LeftPanel" Background="{Binding Background, ElementName=thisControl}">
+		<Grid Name="LeftPanel" 
+          Background="{Binding Background, ElementName=thisControl}">
 			<Viewport3D Name="LeftView">
 				<Viewport3D.Camera>
-					<PerspectiveCamera />
+					<PerspectiveCamera/>
 				</Viewport3D.Camera>
 			</Viewport3D>
 		</Grid>
 
-		<Grid Name="RightPanel" Background="{Binding Background, ElementName=thisControl}">
+		<Grid Name="RightPanel" 
+          Background="{Binding Background, ElementName=thisControl}">
 			<Grid.Effect>
-        <local:InterlacedEffect x:Name="InterlacedEffect1" EvenLeft="{Binding EvenLeft, ElementName=thisControl}" Offset="{Binding HorizontalOffset, ElementName=thisControl}">
+        <local:InterlacedEffect x:Name="InterlacedEffect1" 
+                                EvenLeft="{Binding EvenLeft, ElementName=thisControl}" 
+                                Offset="{Binding HorizontalOffset, ElementName=thisControl}">
           <local:InterlacedEffect.LeftInput>
             <VisualBrush Visual="{Binding ElementName=LeftPanel}"/>
 					</local:InterlacedEffect.LeftInput>

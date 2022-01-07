@@ -1,19 +1,17 @@
-﻿<local:StereoControl 
-  x:Class="Crystal.Graphics.WiggleView3D" 
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-  xmlns:local="clr-namespace:Crystal.Graphics" x:Name="thisControl">
+﻿<local:StereoControl x:Class="Crystal.Graphics.WiggleView3D" 
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                     xmlns:local="clr-namespace:Crystal.Graphics" x:Name="thisControl">
   <Grid>
     <Viewport3D x:Name="View1">
       <Viewport3D.Camera>
         <PerspectiveCamera/>
       </Viewport3D.Camera>
     </Viewport3D>
-    <local:CameraController 
-      x:Name="CameraControl1" 
-      Camera="{Binding Camera, ElementName=thisControl}" 
-      CameraRotationMode="{Binding CameraRotationMode, ElementName=thisControl}" 
-      Viewport="{Binding ElementName=View1}">
+    <local:CameraController x:Name="CameraControl1" 
+                            Camera="{Binding Camera, ElementName=thisControl}" 
+                            CameraRotationMode="{Binding CameraRotationMode, ElementName=thisControl}" 
+                            Viewport="{Binding ElementName=View1}">
       <local:CameraController.InputBindings>
         <MouseBinding Gesture="RightClick" Command="{x:Static local:CameraController.RotateCommand}"/>
         <MouseBinding Gesture="Shift+RightClick" Command="{x:Static local:CameraController.PanCommand}"/>

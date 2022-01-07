@@ -42,7 +42,7 @@ namespace Crystal.Graphics
     /// The change look at.
     /// </param>
     public RotateHandler(CameraController controller, bool changeLookAt = false)
-        : base(controller)
+      : base(controller)
     {
       this.changeLookAt = changeLookAt;
     }
@@ -352,12 +352,8 @@ namespace Crystal.Graphics
     protected override void OnInertiaStarting(int elapsedTime)
     {
       var delta = LastPoint - MouseDownPoint;
-
       // Debug.WriteLine("SpinInertiaStarting: " + elapsedTime + "ms " + delta.Length + "px");
-      Controller.StartSpin(
-          4 * delta * ((double)Controller.SpinReleaseTime / elapsedTime),
-          MouseDownPoint,
-          rotationPoint3D);
+      Controller.StartSpin(4 * delta * ((double)Controller.SpinReleaseTime / elapsedTime), MouseDownPoint, rotationPoint3D);
     }
 
     /// <summary>
@@ -383,7 +379,6 @@ namespace Crystal.Graphics
       var y = (h / 2 - point.Y) / r;
       var z2 = 1 - x * x - y * y;
       var z = z2 > 0 ? Math.Sqrt(z2) : 0;
-
       return new Vector3D(x, y, z);
     }
 
@@ -397,7 +392,6 @@ namespace Crystal.Graphics
     {
       var fx = p1.X / ViewportWidth;
       var fy = p1.Y / ViewportHeight;
-
       var up = CameraUpDirection;
       var dir = CameraLookDirection;
       dir.Normalize();
@@ -452,11 +446,9 @@ namespace Crystal.Graphics
       var rotate = new RotateTransform3D(new QuaternionRotation3D(delta));
       var relativeTarget = rotateAround - CameraTarget;
       var relativePosition = rotateAround - CameraPosition;
-
       var newRelativeTarget = rotate.Transform(relativeTarget);
       var newRelativePosition = rotate.Transform(relativePosition);
       var newUpDirection = rotate.Transform(CameraUpDirection);
-
       var newTarget = rotateAround - newRelativeTarget;
       var newPosition = rotateAround - newRelativePosition;
 
@@ -537,6 +529,5 @@ namespace Crystal.Graphics
       }
       CameraUpDirection = newUpDirection;
     }
-
   }
 }

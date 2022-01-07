@@ -6,16 +6,18 @@
     <Grid Name="LeftPanel" Background="{Binding Background, ElementName=thisControl}">
       <Viewport3D Name="LeftView">
         <Viewport3D.Camera>
-          <PerspectiveCamera />
+          <PerspectiveCamera/>
         </Viewport3D.Camera>
       </Viewport3D>
     </Grid>
 
     <Grid Name="RightPanel" Background="{Binding Background, ElementName=thisControl}">
       <Grid.Effect>
-        <local:AnaglyphEffect x:Name="AnaglyphEffect1" Method="{Binding Method, ElementName=thisControl}" Offset="{Binding HorizontalOffset, ElementName=thisControl}">
+        <local:AnaglyphEffect x:Name="AnaglyphEffect1" 
+                              Method="{Binding Method, ElementName=thisControl}" 
+                              Offset="{Binding HorizontalOffset, ElementName=thisControl}">
           <local:AnaglyphEffect.LeftInput>
-            <VisualBrush Visual="{Binding ElementName=LeftPanel}" />
+            <VisualBrush Visual="{Binding ElementName=LeftPanel}"/>
           </local:AnaglyphEffect.LeftInput>
         </local:AnaglyphEffect>
       </Grid.Effect>
@@ -27,7 +29,10 @@
 
     </Grid>
 
-    <local:CameraController x:Name="CameraControl" Camera="{Binding Camera, ElementName=thisControl}" CameraRotationMode="{Binding CameraRotationMode, ElementName=thisControl}" Viewport="{Binding ElementName=LeftView}">
+    <local:CameraController x:Name="CameraControl" 
+                            Camera="{Binding Camera, ElementName=thisControl}" 
+                            CameraRotationMode="{Binding CameraRotationMode, ElementName=thisControl}" 
+                            Viewport="{Binding ElementName=LeftView}">
       <local:CameraController.InputBindings>
         <MouseBinding Gesture="RightClick" Command="{x:Static local:CameraController.RotateCommand}"/>
         <MouseBinding Gesture="Shift+RightClick" Command="{x:Static local:CameraController.PanCommand}"/>

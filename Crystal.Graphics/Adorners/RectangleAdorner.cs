@@ -44,15 +44,8 @@
     /// <param name="crossHairSize">
     /// Size of the cross hair.
     /// </param>
-    public RectangleAdorner(
-        UIElement adornedElement,
-        Rect rectangle,
-        Color color1,
-        Color color2,
-        double thickness1 = 1.0,
-        double thickness2 = 1.0,
-        double crossHairSize = 10)
-        : this(adornedElement, rectangle, color1, color2, thickness1, thickness2, crossHairSize, DashStyles.Dash)
+    public RectangleAdorner(UIElement adornedElement, Rect rectangle, Color color1, Color color2, double thickness1 = 1.0, double thickness2 = 1.0, double crossHairSize = 10)
+      : this(adornedElement, rectangle, color1, color2, thickness1, thickness2, crossHairSize, DashStyles.Dash)
     {
     }
 
@@ -83,16 +76,8 @@
     /// <param name="dashStyle2">
     /// The dash style2.
     /// </param>
-    public RectangleAdorner(
-        UIElement adornedElement,
-        Rect rectangle,
-        Color color1,
-        Color color2,
-        double thickness1,
-        double thickness2,
-        double crossHairSize,
-        DashStyle dashStyle2)
-        : base(adornedElement)
+    public RectangleAdorner(UIElement adornedElement, Rect rectangle, Color color1, Color color2, double thickness1, double thickness2, double crossHairSize, DashStyle dashStyle2)
+      : base(adornedElement)
     {
       if(adornedElement == null)
       {
@@ -139,17 +124,11 @@
     protected override void OnRender(DrawingContext dc)
     {
       var halfPenWidth = pen.Thickness / 2;
-
       var mx = (Rectangle.Left + Rectangle.Right) / 2;
       var my = (Rectangle.Top + Rectangle.Bottom) / 2;
       mx = (int)mx + halfPenWidth;
       my = (int)my + halfPenWidth;
-
-      var rect = new Rect(
-          (int)Rectangle.Left + halfPenWidth,
-          (int)Rectangle.Top + halfPenWidth,
-          (int)Rectangle.Width,
-          (int)Rectangle.Height);
+      var rect = new Rect((int)Rectangle.Left + halfPenWidth, (int)Rectangle.Top + halfPenWidth, (int)Rectangle.Width, (int)Rectangle.Height);
 
       // Create a guidelines set
       /*GuidelineSet guidelines = new GuidelineSet();
