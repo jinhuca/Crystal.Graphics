@@ -66,10 +66,7 @@
     /// <returns>
     /// The to string.
     /// </returns>
-    public static string ToString(this Matrix3D matrix, int columnWidth)
-    {
-      return matrix.ConvertToString("N" + columnWidth, 20);
-    }
+    public static string ToString(this Matrix3D matrix, int columnWidth) => matrix.ConvertToString("N" + columnWidth, 20);
 
     /// <summary>
     /// Convert the matrix to a string
@@ -92,7 +89,6 @@
       {
         throw new ArgumentNullException(nameof(format));
       }
-
       return matrix.ConvertToString(format, "\t", "\n", columnWidth, CultureInfo.InvariantCulture);
     }
 
@@ -120,16 +116,8 @@
     /// <returns>
     /// A string.
     /// </returns>
-    public static string ToString(
-        this Matrix3D matrix,
-        string format,
-        string columnSeparator,
-        string lineSeparator,
-        int columnWidth,
-        CultureInfo provider)
-    {
-      return matrix.ConvertToString(format, columnSeparator, lineSeparator, columnWidth, provider);
-    }
+    public static string ToString(this Matrix3D matrix, string format, string columnSeparator, string lineSeparator, int columnWidth, CultureInfo provider) 
+      => matrix.ConvertToString(format, columnSeparator, lineSeparator, columnWidth, provider);
 
     /// <summary>
     /// Converts to string using the specified format and the invariant culture
@@ -176,13 +164,7 @@
     /// <returns>
     /// A string.
     /// </returns>
-    internal static string ConvertToString(
-        this Matrix3D matrix,
-        string format,
-        string columnSeparator,
-        string lineSeparator,
-        int columnWidth,
-        CultureInfo provider)
+    internal static string ConvertToString(this Matrix3D matrix, string format, string columnSeparator, string lineSeparator, int columnWidth, CultureInfo provider)
     {
       var formatString = "{0:" + format + "}";
       var m = matrix.ToArray();

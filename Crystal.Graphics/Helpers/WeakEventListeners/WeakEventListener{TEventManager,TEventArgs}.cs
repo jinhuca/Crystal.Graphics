@@ -28,7 +28,9 @@
     /// <param name="sender">Object that originated the event.</param>
     /// <param name="e">Event data.</param>
     /// <returns>
-    /// true if the listener handled the event. It is considered an error by the <see cref="T:System.Windows.WeakEventManager"/> handling in WPF�to register a listener for an event that the listener does not handle. Regardless, the method should return false if it receives an event that it does not recognize or handle.
+    /// true if the listener handled the event. It is considered an error by the <see cref="T:System.Windows.WeakEventManager"/>
+    /// handling in WPF to register a listener for an event that the listener does not handle.
+    /// Regardless, the method should return false if it receives an event that it does not recognize or handle.
     /// </returns>
     bool IWeakEventListener.ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
     {

@@ -9,8 +9,7 @@
     /// Initializes a new instance of the <see cref="RenderingEventListener"/> class.
     /// </summary>
     /// <param name="handler">The handler.</param>
-    public RenderingEventListener(EventHandler<RenderingEventArgs> handler)
-        : base(handler)
+    public RenderingEventListener(EventHandler<RenderingEventArgs> handler) : base(handler)
     {
     }
   }

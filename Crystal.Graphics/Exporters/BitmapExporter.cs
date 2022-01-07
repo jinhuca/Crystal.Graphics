@@ -91,10 +91,7 @@ namespace Crystal.Graphics
     /// <param name="visual">The visual.</param>
     /// <param name="stream">The output stream.</param>
     /// <exception cref="System.NotImplementedException">Cannot export a visual to a bitmap.</exception>
-    public void Export(Visual3D visual, Stream stream)
-    {
-      throw new NotImplementedException();
-    }
+    public void Export(Visual3D visual, Stream stream) => throw new NotImplementedException();
 
     /// <summary>
     /// Exports the specified model.
@@ -102,9 +99,6 @@ namespace Crystal.Graphics
     /// <param name="model">The model.</param>
     /// <param name="stream">The output stream.</param>
     /// <exception cref="System.NotImplementedException">Cannot export a model to a bitmap.</exception>
-    public void Export(Model3D model, Stream stream)
-    {
-      throw new NotImplementedException();
-    }
+    public void Export(Model3D model, Stream stream) => throw new NotImplementedException();
   }
 }

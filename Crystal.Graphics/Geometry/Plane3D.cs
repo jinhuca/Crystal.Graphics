@@ -46,7 +46,6 @@
     public Vector3D Normal
     {
       get => normal;
-
       set => normal = value;
     }
 
@@ -57,7 +56,6 @@
     public Point3D Position
     {
       get => position;
-
       set => position = value;
     }
 

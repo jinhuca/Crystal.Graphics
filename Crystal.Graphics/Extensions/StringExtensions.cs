@@ -15,10 +15,7 @@
     /// </summary>
     /// <param name="input">The input string.</param>
     /// <returns>Array of strings.</returns>
-    public static string[] SplitOnWhitespace(this string input)
-    {
-      return oneOrMoreWhitespaces.Split(input.Trim());
-    }
+    public static string[] SplitOnWhitespace(this string input) => oneOrMoreWhitespaces.Split(input.Trim());
 
     /// <summary>
     /// Creates a string from the items in an enumerable.

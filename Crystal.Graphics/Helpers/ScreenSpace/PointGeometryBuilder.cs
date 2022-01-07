@@ -11,8 +11,7 @@
     /// <param name="visual">
     /// The visual.
     /// </param>
-    public PointGeometryBuilder(Visual3D visual)
-        : base(visual)
+    public PointGeometryBuilder(Visual3D visual) : base(visual)
     {
     }
 
@@ -64,18 +63,15 @@
       var halfSize = size / 2.0;
       var numPoints = points.Count;
 
-      var outline = new[]
-          {
-                    new Vector(-halfSize, halfSize), new Vector(-halfSize, -halfSize), new Vector(halfSize, halfSize),
-                    new Vector(halfSize, -halfSize)
-                };
+      var outline = new[] {
+        new Vector(-halfSize, halfSize), new Vector(-halfSize, -halfSize), new Vector(halfSize, halfSize),
+        new Vector(halfSize, -halfSize)
+      };
 
       var positions = new Point3DCollection(numPoints * 4);
-
       for(var i = 0; i < numPoints; i++)
       {
         var screenPoint = (Point4D)points[i] * visualToScreen;
-
         var spx = screenPoint.X;
         var spy = screenPoint.Y;
         var spz = screenPoint.Z;

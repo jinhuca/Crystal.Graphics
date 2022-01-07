@@ -35,8 +35,7 @@
 
       if(animationTime > 0)
       {
-        var a1 = new Point3DAnimation(
-            fromPosition, newPosition, new Duration(TimeSpan.FromMilliseconds(animationTime)))
+        var a1 = new Point3DAnimation(fromPosition, newPosition, new Duration(TimeSpan.FromMilliseconds(animationTime)))
         {
           AccelerationRatio = 0.3,
           DecelerationRatio = 0.5,
@@ -45,8 +44,7 @@
         a1.Completed += (_, _) => camera.BeginAnimation(ProjectionCamera.PositionProperty, null);
         camera.BeginAnimation(ProjectionCamera.PositionProperty, a1);
 
-        var a2 = new Vector3DAnimation(
-            fromDirection, newDirection, new Duration(TimeSpan.FromMilliseconds(animationTime)))
+        var a2 = new Vector3DAnimation(fromDirection, newDirection, new Duration(TimeSpan.FromMilliseconds(animationTime)))
         {
           AccelerationRatio = 0.3,
           DecelerationRatio = 0.5,
@@ -55,8 +53,7 @@
         a2.Completed += (_, _) => camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, null);
         camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, a2);
 
-        var a3 = new Vector3DAnimation(
-            fromUpDirection, newUpDirection, new Duration(TimeSpan.FromMilliseconds(animationTime)))
+        var a3 = new Vector3DAnimation(fromUpDirection, newUpDirection, new Duration(TimeSpan.FromMilliseconds(animationTime)))
         {
           AccelerationRatio = 0.3,
           DecelerationRatio = 0.5,
@@ -82,13 +79,10 @@
     public static void AnimateWidth(this OrthographicCamera camera, double newWidth, double animationTime)
     {
       var fromWidth = camera.Width;
-
       camera.Width = newWidth;
-
       if(animationTime > 0)
       {
-        var a1 = new DoubleAnimation(
-            fromWidth, newWidth, new Duration(TimeSpan.FromMilliseconds(animationTime)))
+        var a1 = new DoubleAnimation(fromWidth, newWidth, new Duration(TimeSpan.FromMilliseconds(animationTime)))
         {
           AccelerationRatio = 0.3,
           DecelerationRatio = 0.5,
@@ -843,8 +837,7 @@
     {
       var topLeftRay = viewport.Point2DtoRay3D(zoomRectangle.TopLeft);
       var topRightRay = viewport.Point2DtoRay3D(zoomRectangle.TopRight);
-      var centerRay = viewport.Point2DtoRay3D(new Point(
-              (zoomRectangle.Left + zoomRectangle.Right) * 0.5, (zoomRectangle.Top + zoomRectangle.Bottom) * 0.5));
+      var centerRay = viewport.Point2DtoRay3D(new Point((zoomRectangle.Left + zoomRectangle.Right) * 0.5, (zoomRectangle.Top + zoomRectangle.Bottom) * 0.5));
 
       if(topLeftRay == null || topRightRay == null || centerRay == null)
       {

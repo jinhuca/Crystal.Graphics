@@ -17,10 +17,7 @@
     /// <returns>
     /// The distance.
     /// </returns>
-    public static double DistanceTo(this Point3D p1, Point3D p2)
-    {
-      return (p2 - p1).Length;
-    }
+    public static double DistanceTo(this Point3D p1, Point3D p2) => (p2 - p1).Length;
 
     /// <summary>
     /// Calculates the squared distance from p1 to p2.
@@ -34,10 +31,7 @@
     /// <returns>
     /// The squared distance.
     /// </returns>
-    public static double DistanceToSquared(this Point3D p1, Point3D p2)
-    {
-      return (p2 - p1).LengthSquared;
-    }
+    public static double DistanceToSquared(this Point3D p1, Point3D p2) => (p2 - p1).LengthSquared;
 
     /// <summary>
     /// Convert a <see cref="Point3D"/> to a <see cref="Vector3D"/>.
@@ -48,10 +42,7 @@
     /// <returns>
     /// A vector.
     /// </returns>
-    public static Vector3D ToVector3D(this Point3D n)
-    {
-      return new Vector3D(n.X, n.Y, n.Z);
-    }
+    public static Vector3D ToVector3D(this Point3D n) => new Vector3D(n.X, n.Y, n.Z);
 
     /// <summary>
     /// Multiplies the specified point with a scalar.
@@ -65,10 +56,7 @@
     /// <returns>
     /// A point.
     /// </returns>
-    public static Point3D Multiply(this Point3D p, double d)
-    {
-      return new Point3D(p.X * d, p.Y * d, p.Z * d);
-    }
+    public static Point3D Multiply(this Point3D p, double d) => new Point3D(p.X * d, p.Y * d, p.Z * d);
 
     /// <summary>
     /// Sums the specified points.

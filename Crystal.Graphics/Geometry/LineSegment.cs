@@ -55,14 +55,12 @@
         return false;
       }
 
-      if((((a2.X - a1.X) * (b1.Y - a1.Y)) - ((b1.X - a1.X) * (a2.Y - a1.Y)))
-          * (((a2.X - a1.X) * (b2.Y - a1.Y)) - ((b2.X - a1.X) * (a2.Y - a1.Y))) > 0)
+      if(((a2.X - a1.X) * (b1.Y - a1.Y) - (b1.X - a1.X) * (a2.Y - a1.Y)) * ((a2.X - a1.X) * (b2.Y - a1.Y) - (b2.X - a1.X) * (a2.Y - a1.Y)) > 0)
       {
         return false;
       }
 
-      if((((b2.X - b1.X) * (a1.Y - b1.Y)) - ((a1.X - b1.X) * (b2.Y - b1.Y)))
-          * (((b2.X - b1.X) * (a2.Y - b1.Y)) - ((a2.X - b1.X) * (b2.Y - b1.Y))) > 0)
+      if(((b2.X - b1.X) * (a1.Y - b1.Y) - (a1.X - b1.X) * (b2.Y - b1.Y)) * ((b2.X - b1.X) * (a2.Y - b1.Y) - (a2.X - b1.X) * (b2.Y - b1.Y)) > 0)
       {
         return false;
       }
@@ -77,9 +75,6 @@
     /// <returns>
     /// <c>true</c> if the specified line segment intersects with the current line segment; otherwise <c>false</c>.
     /// </returns>
-    public bool IntersectsWith(LineSegment other)
-    {
-      return AreLineSegmentsIntersecting(p1, p2, other.p1, other.p2);
-    }
+    public bool IntersectsWith(LineSegment other) => AreLineSegmentsIntersecting(p1, p2, other.p1, other.p2);
   }
 }

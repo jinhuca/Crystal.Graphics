@@ -54,6 +54,5 @@
     /// The animation time.
     /// </param>
     void ZoomExtents(double animationTime);
-
   }
 }

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading;
-using DoubleOrSingle = System.Double;
+﻿using DoubleOrSingle = System.Double;
 
 namespace Crystal.Graphics
 {

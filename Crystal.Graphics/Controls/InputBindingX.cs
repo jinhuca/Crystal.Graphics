@@ -1,6 +1,4 @@
-﻿using System.Windows.Input;
-
-namespace Crystal.Graphics
+﻿namespace Crystal.Graphics
 {
   /// <summary>
   /// Input binding supporting binding the Gesture.

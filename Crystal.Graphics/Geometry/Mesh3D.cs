@@ -527,12 +527,7 @@
     /// <returns>
     /// The midpoint.
     /// </returns>
-    private Point3D FindMidpoint(int v0, int v1)
-    {
-      return new Point3D(
-          (Vertices[v0].X + Vertices[v1].X) * 0.5,
-          (Vertices[v0].Y + Vertices[v1].Y) * 0.5,
-          (Vertices[v0].Z + Vertices[v1].Z) * 0.5);
-    }
+    private Point3D FindMidpoint(int v0, int v1) 
+      => new((Vertices[v0].X + Vertices[v1].X) * 0.5, (Vertices[v0].Y + Vertices[v1].Y) * 0.5, (Vertices[v0].Z + Vertices[v1].Z) * 0.5);
   }
 }

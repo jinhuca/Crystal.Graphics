@@ -63,11 +63,7 @@
     /// <returns>
     /// The positions collection.
     /// </returns>
-    public Point3DCollection CreatePositions(
-        IList<Point3D>? points,
-        double thickness = 1.0,
-        double depthOffset = 0.0,
-        CohenSutherlandClipping clipping = null)
+    public Point3DCollection CreatePositions(IList<Point3D>? points, double thickness = 1.0, double depthOffset = 0.0, CohenSutherlandClipping clipping = null)
     {
       var halfThickness = thickness * 0.5;
       var segmentCount = points.Count / 2;

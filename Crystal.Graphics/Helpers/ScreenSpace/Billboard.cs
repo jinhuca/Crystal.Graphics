@@ -69,7 +69,8 @@
     /// <param name="verticalAlignment">The vertical alignment.</param>
     /// <param name="depthOffset">The depth offset.</param>
     /// <param name="worldDepthOffset">The depth offset in world coordinates.</param>
-    public Billboard(Point3D position, double width = 1.0, double height = 1.0, HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center, VerticalAlignment verticalAlignment = VerticalAlignment.Center, double depthOffset = 0.0, double worldDepthOffset = 0)
+    public Billboard(Point3D position, double width = 1.0, double height = 1.0, HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center, 
+      VerticalAlignment verticalAlignment = VerticalAlignment.Center, double depthOffset = 0.0, double worldDepthOffset = 0)
     {
       // Set horizontal alignment factor
       var xa = -0.5;

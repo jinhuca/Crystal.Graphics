@@ -72,8 +72,7 @@
     /// </returns>
     public bool IsRectCompletelyInside(Rect rect)
     {
-      return IsPointInside(rect.TopLeft) && IsPointInside(rect.TopRight)
-             && IsPointInside(rect.BottomLeft) && IsPointInside(rect.BottomRight);
+      return IsPointInside(rect.TopLeft) && IsPointInside(rect.TopRight) && IsPointInside(rect.BottomLeft) && IsPointInside(rect.BottomRight);
     }
 
     /// <summary>

@@ -19,3 +19,6 @@ global using System.Runtime.CompilerServices;
 global using System.Threading.Tasks;
 global using System.Windows.Documents;
 global using System.Windows.Threading;
+global using System.Windows.Input;
+global using System.Diagnostics;
+global using System.Threading;

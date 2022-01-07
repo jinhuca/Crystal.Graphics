@@ -59,7 +59,6 @@
     public Vector3D Direction
     {
       get => direction;
-
       set => direction = value;
     }
 
@@ -70,7 +69,6 @@
     public Point3D Origin
     {
       get => origin;
-
       set => origin = value;
     }
 
@@ -85,9 +83,7 @@
     /// </returns>
     public Point3D GetNearest(Point3D p3)
     {
-      return origin
-             + (Vector3D.DotProduct(p3 - origin, direction) / direction.LengthSquared
-                * direction);
+      return origin + (Vector3D.DotProduct(p3 - origin, direction) / direction.LengthSquared * direction);
     }
 
     /// <summary>
@@ -108,7 +104,6 @@
       {
         return intersection;
       }
-
       return null;
     }
 

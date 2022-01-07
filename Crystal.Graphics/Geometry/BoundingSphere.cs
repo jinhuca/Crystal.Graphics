@@ -53,7 +53,6 @@
     public Point3D Center
     {
       get => center;
-
       set => center = value;
     }
 
@@ -64,7 +63,6 @@
     public double Radius
     {
       get => radius;
-
       set => radius = value;
     }
 
@@ -77,10 +75,7 @@
     /// <returns>
     /// The bounding sphere.
     /// </returns>
-    public static BoundingSphere CreateFromPoints(IEnumerable<Point3D> points)
-    {
-      throw new NotImplementedException();
-    }
+    public static BoundingSphere CreateFromPoints(IEnumerable<Point3D> points) => throw new NotImplementedException();
 
     /// <summary>
     /// Creates a <see cref="BoundingSphere"/> from a <see cref="Rect3D"/>.
@@ -144,10 +139,7 @@
     /// <returns>
     /// True if the point is inside.
     /// </returns>
-    public bool Contains(Point3D point)
-    {
-      return point.DistanceToSquared(center) < radius * radius;
-    }
+    public bool Contains(Point3D point) => point.DistanceToSquared(center) < radius * radius;
 
     /// <summary>
     /// Calculates the distance from a point to the nearest point on the sphere surface.
@@ -158,10 +150,7 @@
     /// <returns>
     /// The distance.
     /// </returns>
-    public double DistanceFrom(Point3D point)
-    {
-      return point.DistanceTo(center) - radius;
-    }
+    public double DistanceFrom(Point3D point) => point.DistanceTo(center) - radius;
 
     /// <summary>
     /// Determines if the sphere intersects with the specified sphere.
