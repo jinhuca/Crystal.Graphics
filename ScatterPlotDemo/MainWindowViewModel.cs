@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -9,7 +10,7 @@ namespace ScatterPlotDemo
 {
   public class MainWindowViewModel : INotifyPropertyChanged
   {
-    private readonly int totalPoints = 300;
+    private readonly int totalPoints = 200;
     private readonly Random random = new();
 
     public Point3D[] Data { get; set; }
@@ -25,7 +26,7 @@ namespace ScatterPlotDemo
     public MainWindowViewModel()
     {
       GenerateModel();
-      //timer = new Timer(UpdateData, null, 1000, 750);
+      timer = new Timer(UpdateData, null, 1000, 750);
     }
 
     private void UpdateData(object? state)

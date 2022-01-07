@@ -6,51 +6,20 @@
   public class PipeVisual3D : MeshModelVisual3D
   {
     /// <summary>
-    /// Identifies the <see cref="Diameter"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-        "Diameter", typeof(double), typeof(PipeVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="InnerDiameter"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty InnerDiameterProperty = DependencyProperty.Register(
-        "InnerDiameter", typeof(double), typeof(PipeVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Point1"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty Point1Property = DependencyProperty.Register(
-        "Point1",
-        typeof(Point3D),
-        typeof(PipeVisual3D),
-        new UIPropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Point2"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty Point2Property = DependencyProperty.Register(
-        "Point2",
-        typeof(Point3D),
-        typeof(PipeVisual3D),
-        new UIPropertyMetadata(new Point3D(0, 0, 10), GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="ThetaDiv"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
-        "ThetaDiv", typeof(int), typeof(PipeVisual3D), new UIPropertyMetadata(36, GeometryChanged));
-
-    /// <summary>
     /// Gets or sets the (outer) diameter.
     /// </summary>
     /// <value>The diameter. The default value is <c>1</c>.</value>
     public double Diameter
     {
       get => (double)GetValue(DiameterProperty);
-
       set => SetValue(DiameterProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Diameter"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
+      nameof(Diameter), typeof(double), typeof(PipeVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
     /// <summary>
     /// Gets or sets the inner diameter.
@@ -59,9 +28,14 @@
     public double InnerDiameter
     {
       get => (double)GetValue(InnerDiameterProperty);
-
       set => SetValue(InnerDiameterProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="InnerDiameter"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty InnerDiameterProperty = DependencyProperty.Register(
+      nameof(InnerDiameter), typeof(double), typeof(PipeVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
 
     /// <summary>
     /// Gets or sets the start point.
@@ -70,9 +44,14 @@
     public Point3D Point1
     {
       get => (Point3D)GetValue(Point1Property);
-
       set => SetValue(Point1Property, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Point1"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty Point1Property = DependencyProperty.Register(
+      nameof(Point1), typeof(Point3D), typeof(PipeVisual3D), new UIPropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
     /// <summary>
     /// Gets or sets the end point.
@@ -81,9 +60,14 @@
     public Point3D Point2
     {
       get => (Point3D)GetValue(Point2Property);
-
       set => SetValue(Point2Property, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Point2"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty Point2Property = DependencyProperty.Register(
+      nameof(Point2), typeof(Point3D), typeof(PipeVisual3D), new UIPropertyMetadata(new Point3D(0, 0, 10), GeometryChanged));
 
     /// <summary>
     /// Gets or sets the theta div.
@@ -92,9 +76,14 @@
     public int ThetaDiv
     {
       get => (int)GetValue(ThetaDivProperty);
-
       set => SetValue(ThetaDivProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="ThetaDiv"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty ThetaDivProperty = DependencyProperty.Register(
+      nameof(ThetaDiv), typeof(int), typeof(PipeVisual3D), new UIPropertyMetadata(36, GeometryChanged));
 
     /// <summary>
     /// Do the tessellation and return the <see cref="MeshGeometry3D" />.

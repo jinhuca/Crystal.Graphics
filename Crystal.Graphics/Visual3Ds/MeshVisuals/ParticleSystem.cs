@@ -9,96 +9,311 @@ namespace Crystal.Graphics
   public class ParticleSystem : RenderingModelVisual3D
   {
     /// <summary>
+    /// Gets or sets the texture.
+    /// </summary>
+    /// <value>
+    /// The texture.
+    /// </value>
+    public Brush Texture
+    {
+      get => (Brush)GetValue(TextureProperty);
+      set => SetValue(TextureProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="Texture"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty TextureProperty = DependencyPropertyEx.Register<Brush, ParticleSystem>("Texture", null!, (s, _) => s.TextureChanged());
+    public static readonly DependencyProperty TextureProperty = DependencyPropertyEx.Register<Brush, ParticleSystem>(
+      nameof(Texture), null!, (s, _) => s.TextureChanged());
 
+    /// <summary>
+    /// Gets or sets the life time.
+    /// </summary>
+    /// <value>
+    /// The life time.
+    /// </value>
+    public double LifeTime
+    {
+      get => (double)GetValue(LifeTimeProperty);
+      set => SetValue(LifeTimeProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="LifeTime"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty LifeTimeProperty = DependencyPropertyEx.Register<double, ParticleSystem>("LifeTime", 20d);
+    public static readonly DependencyProperty LifeTimeProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(LifeTime), 20d);
+
+    /// <summary>
+    /// Gets or sets the fade out time.
+    /// </summary>
+    /// <value>
+    /// The fade out time.
+    /// </value>
+    public double FadeOutTime
+    {
+      get => (double)GetValue(FadeOutTimeProperty);
+      set => SetValue(FadeOutTimeProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="FadeOutTime"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty FadeOutTimeProperty = DependencyPropertyEx.Register<double, ParticleSystem>("FadeOutTime", 0.5d);
+    public static readonly DependencyProperty FadeOutTimeProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(FadeOutTime), 0.5d);
+
+    /// <summary>
+    /// Gets or sets the angular velocity.
+    /// </summary>
+    /// <value>
+    /// The angular velocity.
+    /// </value>
+    public double AngularVelocity
+    {
+      get => (double)GetValue(AngularVelocityProperty);
+      set => SetValue(AngularVelocityProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="AngularVelocity"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty AngularVelocityProperty = DependencyPropertyEx.Register<double, ParticleSystem>("AngularVelocity", 20d);
+    public static readonly DependencyProperty AngularVelocityProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(AngularVelocity), 20d);
+
+    /// <summary>
+    /// Gets or sets the size rate.
+    /// </summary>
+    /// <value>
+    /// The size rate.
+    /// </value>
+    public double SizeRate
+    {
+      get => (double)GetValue(SizeRateProperty);
+      set => SetValue(SizeRateProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="SizeRate"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty SizeRateProperty = DependencyPropertyEx.Register<double, ParticleSystem>("SizeRate", 2d);
+    public static readonly DependencyProperty SizeRateProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(SizeRate), 2d);
+
+    /// <summary>
+    /// Gets or sets the velocity damping factor.
+    /// </summary>
+    /// <value>
+    /// The velocity damping.
+    /// </value>
+    public double VelocityDamping
+    {
+      get => (double)GetValue(VelocityDampingProperty);
+      set => SetValue(VelocityDampingProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="VelocityDamping"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty VelocityDampingProperty = DependencyPropertyEx.Register<double, ParticleSystem>("VelocityDamping", 1d);
+    public static readonly DependencyProperty VelocityDampingProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(VelocityDamping), 1d);
+
+    /// <summary>
+    /// Gets or sets the acceleration.
+    /// </summary>
+    /// <value>
+    /// The acceleration.
+    /// </value>
+    public double Acceleration
+    {
+      get => (double)GetValue(AccelerationProperty);
+      set => SetValue(AccelerationProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="Acceleration"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty AccelerationProperty = DependencyPropertyEx.Register<double, ParticleSystem>("Acceleration", 4d);
+    public static readonly DependencyProperty AccelerationProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(Acceleration), 4d);
+
+    /// <summary>
+    /// Gets or sets the acceleration direction.
+    /// </summary>
+    /// <value>
+    /// The acceleration direction.
+    /// </value>
+    public Vector3D AccelerationDirection
+    {
+      get => (Vector3D)GetValue(AccelerationDirectionProperty);
+      set => SetValue(AccelerationDirectionProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="AccelerationDirection"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty AccelerationDirectionProperty = DependencyPropertyEx.Register<Vector3D, ParticleSystem>("AccelerationDirection", new Vector3D(3, 0, 1));
+    public static readonly DependencyProperty AccelerationDirectionProperty = DependencyPropertyEx.Register<Vector3D, ParticleSystem>(nameof(AccelerationDirection), new Vector3D(3, 0, 1));
+
+    /// <summary>
+    /// Gets or sets the acceleration spreading angle.
+    /// </summary>
+    /// <value>
+    /// The acceleration spreading.
+    /// </value>
+    public double AccelerationSpreading
+    {
+      get => (double)GetValue(AccelerationSpreadingProperty);
+      set => SetValue(AccelerationSpreadingProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="AccelerationSpreading"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty AccelerationSpreadingProperty = DependencyPropertyEx.Register<double, ParticleSystem>("AccelerationSpreading", 10d);
+    public static readonly DependencyProperty AccelerationSpreadingProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(AccelerationSpreading), 10d);
 
+    /// <summary>
+    /// Gets or sets the emit rate.
+    /// </summary>
+    /// <value>
+    /// The emit rate.
+    /// </value>
+    public double EmitRate
+    {
+      get => (double)GetValue(EmitRateProperty);
+      set => SetValue(EmitRateProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="EmitRate"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty EmitRateProperty = DependencyPropertyEx.Register<double, ParticleSystem>("EmitRate", 40d);
+    public static readonly DependencyProperty EmitRateProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(EmitRate), 40d);
+
+    /// <summary>
+    /// Gets or sets the position.
+    /// </summary>
+    /// <value>
+    /// The position.
+    /// </value>
+    public Point3D Position
+    {
+      get => (Point3D)GetValue(PositionProperty);
+      set => SetValue(PositionProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="Position"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty PositionProperty = DependencyPropertyEx.Register<Point3D, ParticleSystem>("Position", new Point3D(0, 0, 0));
+    public static readonly DependencyProperty PositionProperty = DependencyPropertyEx.Register<Point3D, ParticleSystem>(nameof(Position), new Point3D(0, 0, 0));
+
+    /// <summary>
+    /// Gets or sets the start radius.
+    /// </summary>
+    /// <value>
+    /// The start radius.
+    /// </value>
+    public double StartRadius
+    {
+      get => (double)GetValue(StartRadiusProperty);
+      set => SetValue(StartRadiusProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="StartRadius"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty StartRadiusProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartRadius", 1d);
+    public static readonly DependencyProperty StartRadiusProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(StartRadius), 1d);
+
+    /// <summary>
+    /// Gets or sets the start size.
+    /// </summary>
+    /// <value>
+    /// The start size.
+    /// </value>
+    public double StartSize
+    {
+      get => (double)GetValue(StartSizeProperty);
+      set => SetValue(StartSizeProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="StartSize"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty StartSizeProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartSize", 0.5d);
+    public static readonly DependencyProperty StartSizeProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(StartSize), 0.5d);
+
+    /// <summary>
+    /// Gets or sets the start direction.
+    /// </summary>
+    /// <value>
+    /// The start direction.
+    /// </value>
+    public Vector3D StartDirection
+    {
+      get => (Vector3D)GetValue(StartDirectionProperty);
+      set => SetValue(StartDirectionProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="StartDirection"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty StartDirectionProperty = DependencyPropertyEx.Register<Vector3D, ParticleSystem>("StartDirection", new Vector3D(0, 0, 1));
+    public static readonly DependencyProperty StartDirectionProperty = DependencyPropertyEx.Register<Vector3D, ParticleSystem>(nameof(StartDirection), new Vector3D(0, 0, 1));
+
+    /// <summary>
+    /// Gets or sets the start velocity.
+    /// </summary>
+    /// <value>
+    /// The start velocity.
+    /// </value>
+    public double StartVelocity
+    {
+      get => (double)GetValue(StartVelocityProperty);
+      set => SetValue(StartVelocityProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="StartVelocity"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty StartVelocityProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartVelocity", 2d);
+    public static readonly DependencyProperty StartVelocityProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(StartVelocity), 2d);
+
+    /// <summary>
+    /// Gets or sets the start velocity randomness.
+    /// </summary>
+    /// <value>
+    /// The start velocity randomness.
+    /// </value>
+    public double StartVelocityRandomness
+    {
+      get => (double)GetValue(StartVelocityRandomnessProperty);
+      set => SetValue(StartVelocityRandomnessProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="StartVelocityRandomness"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty StartVelocityRandomnessProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartVelocityRandomness", 1d);
+    public static readonly DependencyProperty StartVelocityRandomnessProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(StartVelocityRandomness), 1d);
+
+    /// <summary>
+    /// Gets or sets the start spreading.
+    /// </summary>
+    /// <value>
+    /// The start spreading.
+    /// </value>
+    public double StartSpreading
+    {
+      get => (double)GetValue(StartSpreadingProperty);
+      set => SetValue(StartSpreadingProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="StartSpreading"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty StartSpreadingProperty = DependencyPropertyEx.Register<double, ParticleSystem>("StartSpreading", 40d);
+    public static readonly DependencyProperty StartSpreadingProperty = DependencyPropertyEx.Register<double, ParticleSystem>(nameof(StartSpreading), 40d);
+
+    /// <summary>
+    /// Gets or sets the number of alive particles.
+    /// </summary>
+    /// <value>
+    /// The alive particles.
+    /// </value>
+    public int AliveParticles
+    {
+      get => (int)GetValue(AliveParticlesProperty);
+      set => SetValue(AliveParticlesProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="AliveParticles"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty AliveParticlesProperty = DependencyPropertyEx.Register<int, ParticleSystem>("AliveParticles", 0);
+    public static readonly DependencyProperty AliveParticlesProperty = DependencyPropertyEx.Register<int, ParticleSystem>(nameof(AliveParticles), 0);
 
     /// <summary>
     /// The degrees to radians conversion factor.
@@ -166,223 +381,7 @@ namespace Crystal.Graphics
       Content = model;
       EmitOne();
     }
-
-    /// <summary>
-    /// Gets or sets the number of alive particles.
-    /// </summary>
-    /// <value>
-    /// The alive particles.
-    /// </value>
-    public int AliveParticles
-    {
-      get => (int)GetValue(AliveParticlesProperty);
-      set => SetValue(AliveParticlesProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the position.
-    /// </summary>
-    /// <value>
-    /// The position.
-    /// </value>
-    public Point3D Position
-    {
-      get => (Point3D)GetValue(PositionProperty);
-      set => SetValue(PositionProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the start direction.
-    /// </summary>
-    /// <value>
-    /// The start direction.
-    /// </value>
-    public Vector3D StartDirection
-    {
-      get => (Vector3D)GetValue(StartDirectionProperty);
-      set => SetValue(StartDirectionProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the acceleration.
-    /// </summary>
-    /// <value>
-    /// The acceleration.
-    /// </value>
-    public double Acceleration
-    {
-      get => (double)GetValue(AccelerationProperty);
-      set => SetValue(AccelerationProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the acceleration direction.
-    /// </summary>
-    /// <value>
-    /// The acceleration direction.
-    /// </value>
-    public Vector3D AccelerationDirection
-    {
-      get => (Vector3D)GetValue(AccelerationDirectionProperty);
-      set => SetValue(AccelerationDirectionProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the acceleration spreading angle.
-    /// </summary>
-    /// <value>
-    /// The acceleration spreading.
-    /// </value>
-    public double AccelerationSpreading
-    {
-      get => (double)GetValue(AccelerationSpreadingProperty);
-      set => SetValue(AccelerationSpreadingProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the start radius.
-    /// </summary>
-    /// <value>
-    /// The start radius.
-    /// </value>
-    public double StartRadius
-    {
-      get => (double)GetValue(StartRadiusProperty);
-      set => SetValue(StartRadiusProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the start size.
-    /// </summary>
-    /// <value>
-    /// The start size.
-    /// </value>
-    public double StartSize
-    {
-      get => (double)GetValue(StartSizeProperty);
-      set => SetValue(StartSizeProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the start velocity.
-    /// </summary>
-    /// <value>
-    /// The start velocity.
-    /// </value>
-    public double StartVelocity
-    {
-      get => (double)GetValue(StartVelocityProperty);
-      set => SetValue(StartVelocityProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the velocity damping factor.
-    /// </summary>
-    /// <value>
-    /// The velocity damping.
-    /// </value>
-    public double VelocityDamping
-    {
-      get => (double)GetValue(VelocityDampingProperty);
-      set => SetValue(VelocityDampingProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the start velocity randomness.
-    /// </summary>
-    /// <value>
-    /// The start velocity randomness.
-    /// </value>
-    public double StartVelocityRandomness
-    {
-      get => (double)GetValue(StartVelocityRandomnessProperty);
-      set => SetValue(StartVelocityRandomnessProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the start spreading.
-    /// </summary>
-    /// <value>
-    /// The start spreading.
-    /// </value>
-    public double StartSpreading
-    {
-      get => (double)GetValue(StartSpreadingProperty);
-      set => SetValue(StartSpreadingProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the life time.
-    /// </summary>
-    /// <value>
-    /// The life time.
-    /// </value>
-    public double LifeTime
-    {
-      get => (double)GetValue(LifeTimeProperty);
-      set => SetValue(LifeTimeProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the angular velocity.
-    /// </summary>
-    /// <value>
-    /// The angular velocity.
-    /// </value>
-    public double AngularVelocity
-    {
-      get => (double)GetValue(AngularVelocityProperty);
-      set => SetValue(AngularVelocityProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the size rate.
-    /// </summary>
-    /// <value>
-    /// The size rate.
-    /// </value>
-    public double SizeRate
-    {
-      get => (double)GetValue(SizeRateProperty);
-      set => SetValue(SizeRateProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the fade out time.
-    /// </summary>
-    /// <value>
-    /// The fade out time.
-    /// </value>
-    public double FadeOutTime
-    {
-      get => (double)GetValue(FadeOutTimeProperty);
-      set => SetValue(FadeOutTimeProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the emit rate.
-    /// </summary>
-    /// <value>
-    /// The emit rate.
-    /// </value>
-    public double EmitRate
-    {
-      get => (double)GetValue(EmitRateProperty);
-      set => SetValue(EmitRateProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the texture.
-    /// </summary>
-    /// <value>
-    /// The texture.
-    /// </value>
-    public Brush Texture
-    {
-      get => (Brush)GetValue(TextureProperty);
-      set => SetValue(TextureProperty, value);
-    }
-
+   
     /// <summary>
     /// Updates the material when the texture changes.
     /// </summary>

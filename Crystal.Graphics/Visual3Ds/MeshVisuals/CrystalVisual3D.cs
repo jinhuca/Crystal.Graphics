@@ -19,55 +19,7 @@
     /// Identifies the <see cref="Origin"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty OriginProperty = DependencyProperty.Register(
-      nameof(Origin),
-      typeof(Point3D),
-      typeof(CrystalVisual3D),
-      new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Diameter"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-      nameof(Diameter), 
-      typeof(double), 
-      typeof(CrystalVisual3D), 
-      new UIPropertyMetadata(0.5, GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Length"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
-      nameof(Length), 
-      typeof(double), 
-      typeof(CrystalVisual3D), 
-      new UIPropertyMetadata(1.0, GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Phase"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty PhaseProperty = DependencyProperty.Register(
-      nameof(Phase), 
-      typeof(double), 
-      typeof(CrystalVisual3D), 
-      new UIPropertyMetadata(0.0, GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Radius"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
-      nameof(Radius),
-      typeof(double), 
-      typeof(CrystalVisual3D), 
-      new UIPropertyMetadata(1.0, GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Turns"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty TurnsProperty = DependencyProperty.Register(
-      nameof(Turns),
-      typeof(double), 
-      typeof(CrystalVisual3D), 
-      new UIPropertyMetadata(1.0, GeometryChanged));
+      nameof(Origin), typeof(Point3D), typeof(CrystalVisual3D), new PropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
     /// <summary>
     /// Gets or sets the diameter.
@@ -80,6 +32,12 @@
     }
 
     /// <summary>
+    /// Identifies the <see cref="Diameter"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
+      nameof(Diameter), typeof(double), typeof(CrystalVisual3D), new UIPropertyMetadata(0.5, GeometryChanged));
+
+    /// <summary>
     /// Gets or sets the length.
     /// </summary>
     /// <value>The length.</value>
@@ -88,6 +46,12 @@
       get => (double)GetValue(LengthProperty);
       set => SetValue(LengthProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Length"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
+      nameof(Length), typeof(double), typeof(CrystalVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
     /// <summary>
     /// Gets or sets the phase.
@@ -100,6 +64,12 @@
     }
 
     /// <summary>
+    /// Identifies the <see cref="Phase"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty PhaseProperty = DependencyProperty.Register(
+      nameof(Phase), typeof(double), typeof(CrystalVisual3D), new UIPropertyMetadata(0.0, GeometryChanged));
+
+    /// <summary>
     /// Gets or sets the radius.
     /// </summary>
     /// <value>The radius.</value>
@@ -110,6 +80,12 @@
     }
 
     /// <summary>
+    /// Identifies the <see cref="Radius"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
+      nameof(Radius), typeof(double), typeof(CrystalVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
+
+    /// <summary>
     /// Gets or sets the number of turns.
     /// </summary>
     /// <value>The turns.</value>
@@ -118,6 +94,12 @@
       get => (double)GetValue(TurnsProperty);
       set => SetValue(TurnsProperty, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Turns"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty TurnsProperty = DependencyProperty.Register(
+      nameof(Turns), typeof(double), typeof(CrystalVisual3D), new UIPropertyMetadata(1.0, GeometryChanged));
 
     /// <summary>
     /// Evaluates the surface.

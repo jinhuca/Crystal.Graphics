@@ -25,30 +25,6 @@
     // (0,1)          (1,1)
 
     /// <summary>
-    /// Identifies the <see cref="Point1"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty Point1Property = DependencyProperty.Register(
-      nameof(Point1), typeof(Point3D), typeof(QuadVisual3D), new UIPropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Point2"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty Point2Property = DependencyProperty.Register(
-      nameof(Point2), typeof(Point3D), typeof(QuadVisual3D), new UIPropertyMetadata(new Point3D(1, 0, 0), GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Point3"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty Point3Property = DependencyProperty.Register(
-      nameof(Point3), typeof(Point3D), typeof(QuadVisual3D), new UIPropertyMetadata(new Point3D(1, 1, 0), GeometryChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="Point4"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty Point4Property = DependencyProperty.Register(
-      nameof(Point4), typeof(Point3D), typeof(QuadVisual3D), new UIPropertyMetadata(new Point3D(0, 1, 0), GeometryChanged));
-
-    /// <summary>
     /// Gets or sets the first point.
     /// </summary>
     /// <value>The point1.</value>
@@ -57,6 +33,12 @@
       get => (Point3D)GetValue(Point1Property);
       set => SetValue(Point1Property, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Point1"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty Point1Property = DependencyProperty.Register(
+      nameof(Point1), typeof(Point3D), typeof(QuadVisual3D), new UIPropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
 
     /// <summary>
     /// Gets or sets the second point.
@@ -69,6 +51,12 @@
     }
 
     /// <summary>
+    /// Identifies the <see cref="Point2"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty Point2Property = DependencyProperty.Register(
+      nameof(Point2), typeof(Point3D), typeof(QuadVisual3D), new UIPropertyMetadata(new Point3D(1, 0, 0), GeometryChanged));
+
+    /// <summary>
     /// Gets or sets the third point.
     /// </summary>
     /// <value>The point3.</value>
@@ -79,6 +67,12 @@
     }
 
     /// <summary>
+    /// Identifies the <see cref="Point3"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty Point3Property = DependencyProperty.Register(
+      nameof(Point3), typeof(Point3D), typeof(QuadVisual3D), new UIPropertyMetadata(new Point3D(1, 1, 0), GeometryChanged));
+
+    /// <summary>
     /// Gets or sets the fourth point.
     /// </summary>
     /// <value>The point4.</value>
@@ -87,6 +81,12 @@
       get => (Point3D)GetValue(Point4Property);
       set => SetValue(Point4Property, value);
     }
+
+    /// <summary>
+    /// Identifies the <see cref="Point4"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty Point4Property = DependencyProperty.Register(
+      nameof(Point4), typeof(Point3D), typeof(QuadVisual3D), new UIPropertyMetadata(new Point3D(0, 1, 0), GeometryChanged));
 
     /// <summary>
     /// Do the tessellation and return the <see cref="MeshGeometry3D"/>.

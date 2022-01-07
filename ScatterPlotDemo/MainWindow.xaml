@@ -13,6 +13,7 @@
                                ShowCameraInfo="True"
                                ShowCameraTarget="True" 
                                ShowFieldOfView="True"
+                               ShowTriangleCountInfo="True"
                                ShowCoordinateSystem="True" CoordinateSystemHorizontalPosition="Right" CoordinateSystemVerticalPosition="Top"
                                PanGesture="LeftClick" 
                                XAxisTitleContent="X-Axis" XAxisTitleBrush="Red"
