@@ -8,6 +8,49 @@
 
     #endregion Private fields
 
+    #region Data Dependency Properties
+
+    /// <summary>
+    /// Gets or sets the points defining the surface.
+    /// </summary>
+    public Point3D[,] Points
+    {
+      get => (Point3D[,])GetValue(PointsProperty);
+      set => SetValue(PointsProperty, value);
+    }
+
+    public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
+      nameof(Points), typeof(Point3D[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
+
+    /// <summary>
+    /// Gets or sets the color values corresponding to the Points array.
+    /// The color values are used as Texture coordinates for the surface.
+    /// Remember to set the SurfaceBrush, e.g. by using the BrushHelper.CreateGradientBrush method.
+    /// If this property is not set, the z-value of the Points will be used as color value.
+    /// </summary>
+    public double[,] ColorValues
+    {
+      get => (double[,])GetValue(ColorValuesProperty);
+      set => SetValue(ColorValuesProperty, value);
+    }
+
+    public static readonly DependencyProperty ColorValuesProperty = DependencyProperty.Register(
+      nameof(ColorValues), typeof(double[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
+
+    /// <summary>
+    /// Gets or sets the brush used for the surface.
+    /// </summary>
+    public Brush SurfaceBrush
+    {
+      get => (Brush)GetValue(SurfaceBrushProperty);
+      set => SetValue(SurfaceBrushProperty, value);
+    }
+
+    public static readonly DependencyProperty SurfaceBrushProperty = DependencyProperty.Register(
+      nameof(SurfaceBrush), typeof(Brush), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
+
+    #endregion Data Dependency Properties
+
     #region Constructors
 
     static SurfacePlotViewport3D()
@@ -178,48 +221,5 @@
     }
 
     #endregion Private Methods
-
-    #region Data Dependency Properties
-
-    /// <summary>
-    /// Gets or sets the points defining the surface.
-    /// </summary>
-    public Point3D[,] Points
-    {
-      get => (Point3D[,])GetValue(PointsProperty);
-      set => SetValue(PointsProperty, value);
-    }
-
-    public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-      nameof(Points), typeof(Point3D[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
-
-    /// <summary>
-    /// Gets or sets the color values corresponding to the Points array.
-    /// The color values are used as Texture coordinates for the surface.
-    /// Remember to set the SurfaceBrush, e.g. by using the BrushHelper.CreateGradientBrush method.
-    /// If this property is not set, the z-value of the Points will be used as color value.
-    /// </summary>
-    public double[,] ColorValues
-    {
-      get => (double[,])GetValue(ColorValuesProperty);
-      set => SetValue(ColorValuesProperty, value);
-    }
-
-    public static readonly DependencyProperty ColorValuesProperty = DependencyProperty.Register(
-      nameof(ColorValues), typeof(double[,]), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
-
-    /// <summary>
-    /// Gets or sets the brush used for the surface.
-    /// </summary>
-    public Brush SurfaceBrush
-    {
-      get => (Brush)GetValue(SurfaceBrushProperty);
-      set => SetValue(SurfaceBrushProperty, value);
-    }
-
-    public static readonly DependencyProperty SurfaceBrushProperty = DependencyProperty.Register(
-      nameof(SurfaceBrush), typeof(Brush), typeof(SurfacePlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
-
-    #endregion Data Dependency Properties
   }
 }
