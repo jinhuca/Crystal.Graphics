@@ -40,7 +40,7 @@ namespace SurfacePlot3DDemo
       get
       {
         var group = new Model3DGroup();
-        switch(ColorCoding)
+        switch (ColorCoding)
         {
           case ColorCoding.ByGradientY:
             group.Children.Add(new AmbientLight(Colors.White));
@@ -63,7 +63,7 @@ namespace SurfacePlot3DDemo
         //Brush = BrushHelper.CreateGradientBrush(Colors.White, Colors.Blue);
         // Brush = GradientBrushes.RainbowStripes;
         // Brush = GradientBrushes.BlueWhiteRed;
-        switch(ColorCoding)
+        switch (ColorCoding)
         {
           case ColorCoding.ByGradientY:
             return BrushHelper.CreateGradientBrush(Colors.Red, Colors.White, Colors.Blue);
@@ -76,14 +76,14 @@ namespace SurfacePlot3DDemo
 
     public MainWindowViewModel()
     {
-      MinX = -4;
-      MaxX = 4;
-      MinY = -4;
-      MaxY = 4;
-      Rows = 91;
-      Columns = 91;
+      MinX = -2;
+      MaxX = 2;
+      MinY = -2;
+      MaxY = 2;
+      Rows = 546;
+      Columns = 546;
 
-      Function = (x, y) => Math.Sin(x * y)*Math.Cos(x*y)*.5;
+      Function = (x, y) => Math.Sin(x * y) * Math.Cos(x * y) * .8;
       ColorCoding = ColorCoding.ByGradientY;
       UpdateModel();
     }
@@ -91,7 +91,7 @@ namespace SurfacePlot3DDemo
     private void UpdateModel()
     {
       Data = CreateDataArray(Function);
-      switch(ColorCoding)
+      switch (ColorCoding)
       {
         case ColorCoding.ByGradientY:
           ColorValues = FindGradientY(Data);
@@ -115,8 +115,8 @@ namespace SurfacePlot3DDemo
     public Point3D[,] CreateDataArray(Func<double, double, double> f)
     {
       var data = new Point3D[Rows, Columns];
-      for(var i = 0; i < Rows; i++)
-        for(var j = 0; j < Columns; j++)
+      for (var i = 0; i < Rows; i++)
+        for (var j = 0; j < Columns; j++)
         {
           var pt = GetPointFromIndex(i, j);
           data[i, j] = new Point3D(pt.X, pt.Y, f(pt.X, pt.Y));
@@ -130,8 +130,8 @@ namespace SurfacePlot3DDemo
       var n = data.GetUpperBound(0) + 1;
       var m = data.GetUpperBound(1) + 1;
       var K = new double[n, m];
-      for(var i = 0; i < n; i++)
-        for(var j = 0; j < m; j++)
+      for (var i = 0; i < n; i++)
+        for (var j = 0; j < m; j++)
         {
           // Finite difference approximation
           var p10 = data[i + 1 < n ? i + 1 : i, j - 1 > 0 ? j - 1 : j];
@@ -156,7 +156,7 @@ namespace SurfacePlot3DDemo
     protected void RaisePropertyChanged(string property)
     {
       var handler = PropertyChanged;
-      if(handler != null)
+      if (handler != null)
       {
         handler(this, new PropertyChangedEventArgs(property));
       }

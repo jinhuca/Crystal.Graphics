@@ -7,9 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" WindowState="Maximized">
 
-  <crystal:PointPlotViewport3D Points="{Binding Data}" Values="{Binding Values}" SurfaceBrush="{Binding SurfaceBrush}"
-                               BoundingBoxThickness="0.004"
-                               ZoomExtentsWhenLoaded="True" SphereSize=".05"
+  <crystal:PointPlotViewport3D Points="{Binding Data}" Values="{Binding Values}" SurfaceBrush="{Binding SurfaceBrush}" Background="Transparent"
+                               ShowGridLine="True"
+                               ZoomExtentsWhenLoaded="True" 
+                               SphereSize=".05"
                                ShowCameraInfo="True"
                                ShowCameraTarget="True" 
                                ShowFieldOfView="True"
@@ -25,12 +26,12 @@
                                ZAxisTitleContent="Z-Axis" ZAxisTitleBrush="DarkGreen" 
                                ZAxisLabelBrush="Red">
     <crystal:PointPlotViewport3D.BoundingBoxMaterial>
-      <DiffuseMaterial Brush="DarkRed"/>
+      <DiffuseMaterial Brush="DarkBlue"/>
     </crystal:PointPlotViewport3D.BoundingBoxMaterial>
 
     <ModelVisual3D Content="{Binding Lights}"/>
     
-    <crystal:GridLinesVisual3D Width="18" Length="18" Thickness="0.005" MajorDistance="1" MinorDistance="0.25" Fill="DarkBlue">
+    <crystal:GridLinesVisual3D Width="12" Length="12" Thickness="0.005" MajorDistance="1" MinorDistance="0.25" Fill="DarkBlue">
       <crystal:GridLinesVisual3D.Center>
         <Point3D X="3" Y="3" Z="0"/>
       </crystal:GridLinesVisual3D.Center>

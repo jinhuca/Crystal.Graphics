@@ -190,8 +190,39 @@
         plotModel.Children.Add(label);
       }
 
-      var axisBoundingBox = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, 0 * (maxZ - minZ));
-      axesMeshBuilder.AddBoundingBox(axisBoundingBox, BoundingBoxThickness);
+      #region Bounding box
+      
+      var axisBoundingBox = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
+      axesMeshBuilder.AddBoundingBox(axisBoundingBox, BoundingBoxThickness/2);
+
+      #endregion Bounding box
+
+      #region GridLine
+
+      /*
+      if (ShowGridLine)
+      {
+        for (int ix = (int)minX; ix < maxX; ix++)
+        {
+          var axis1 = new Rect3D(minX + ix, minY, minZ, maxX - minX - ix, maxY - minY, maxZ - minZ);
+          axesMeshBuilder.AddBoundingBox(axis1, BoundingBoxThickness / 4);
+        }
+        
+        for (int iy = minY; iy < maxY; iy++)
+        {
+          var axis1 = new Rect3D(minX, minY + iy, minZ, maxX - minX, maxY - minY - iy, maxZ - minZ);
+          axesMeshBuilder.AddBoundingBox(axis1, BoundingBoxThickness / 4);
+        }
+
+        for (int iz = minZ; iz < maxZ; iz++)
+        {
+          var axis1 = new Rect3D(minX, minY, minZ + iz, maxX - minX, maxY - minY, maxZ - minZ - iz);
+          axesMeshBuilder.AddBoundingBox(axis1, BoundingBoxThickness / 4);
+        }
+      }
+      */
+
+      #endregion GridLine
 
       var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh(), BoundingBoxMaterial);
       plotModel.Children.Add(axesModel);

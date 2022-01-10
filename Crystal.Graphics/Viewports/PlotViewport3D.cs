@@ -11,7 +11,7 @@
     }
 
     public static readonly DependencyProperty BoundingBoxThicknessProperty = DependencyProperty.Register(
-      nameof(BoundingBoxThickness), typeof(double), typeof(PointPlotViewport3D), new UIPropertyMetadata(0.003d, ModelChanged));
+      nameof(BoundingBoxThickness), typeof(double), typeof(PointPlotViewport3D), new UIPropertyMetadata(0.005d, ModelChanged));
 
     public Material BoundingBoxMaterial
     {
@@ -235,6 +235,15 @@
       nameof(ZAxisLabelFontSize), typeof(double), typeof(PointPlotViewport3D), new UIPropertyMetadata(0.1d, ModelChanged));
 
     #endregion Z-Axis Label Dependency Properties
+    
+    public bool ShowGridLine
+    {
+      get => (bool)GetValue(ShowGridLineProperty);
+      set => SetValue(ShowGridLineProperty, value);
+    }
+
+    public static readonly DependencyProperty ShowGridLineProperty = DependencyProperty.Register(
+      nameof(ShowGridLine), typeof(bool), typeof(PlotViewport3D), new PropertyMetadata(false, ModelChanged));
 
     public static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

@@ -13,7 +13,8 @@
                                  ShowTriangleCountInfo="True"
                                  BoundingBoxThickness="0.01"
                                  ZoomExtentsWhenLoaded="True" 
-                                 PanGesture="LeftClick" 
+                                 PanGesture="LeftClick"
+                                 ShowGridLine="True"
                                  >
 
     <ModelVisual3D Content="{Binding Lights}"/>
