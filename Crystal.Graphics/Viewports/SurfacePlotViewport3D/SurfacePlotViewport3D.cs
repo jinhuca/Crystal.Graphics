@@ -133,6 +133,7 @@
 
       var surfaceModel = new GeometryModel3D(surfaceMeshBuilder.ToMesh(), MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0));
       surfaceModel.BackMaterial = surfaceModel.Material;
+      plotModel.Children.Add(surfaceModel);
 
       var axesMeshBuilder = new MeshBuilder();
       for(var x = minX; x <= maxX; x += IntervalX)
@@ -146,13 +147,13 @@
         path.Add(new Point3D(x, maxY, minZ));
 
         axesMeshBuilder.AddTube(path, BoundingBoxThickness, 9, false);
-        var label = TextCreator.CreateTextLabelModel3D(
-          $"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        
+        var label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
       {
         var label = TextCreator.CreateTextLabelModel3D(
-          XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 6, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+          XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 10, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
 
@@ -194,7 +195,7 @@
 
       var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh(), BoundingBoxMaterial);
       plotModel.Children.Add(axesModel);
-      plotModel.Children.Add(surfaceModel);
+      
       return plotModel;
     }
 

@@ -5,14 +5,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow">
-
+        Title="Surface Plot Demo">
   <crystal:SurfacePlotViewport3D Points="{Binding Data}" ColorValues="{Binding ColorValues}" SurfaceBrush="{Binding SurfaceBrush}"
-                            ZoomExtentsWhenLoaded="True" ShowCameraInfo="True"  PanGesture="LeftClick" 
-                            ShowCoordinateSystem="True" CoordinateSystemHorizontalPosition="Right" CoordinateSystemVerticalPosition="Top"
+                                 ShowCoordinateSystem="True" CoordinateSystemHorizontalPosition="Right" CoordinateSystemVerticalPosition="Top"
+                                 ShowCameraTarget="True"
+                                 ShowCameraInfo="True"
+                                 ShowTriangleCountInfo="True"
+                                 BoundingBoxThickness="0.01"
+                                 ZoomExtentsWhenLoaded="True" 
+                                 PanGesture="LeftClick" 
                                  >
 
     <ModelVisual3D Content="{Binding Lights}"/>
+
+    <!--<crystal:GridLinesVisual3D Width="18" Length="18" Thickness="0.005" MajorDistance="1" MinorDistance="0.25" Fill="DarkRed">
+      <crystal:GridLinesVisual3D.Center>
+        <Point3D X="0" Y="0" Z="0"/>
+      </crystal:GridLinesVisual3D.Center>
+    </crystal:GridLinesVisual3D>-->
 
     <crystal:SurfacePlotViewport3D.Camera>
       <PerspectiveCamera Position="13, 23, -23" LookDirection="-100, -100, -100" UpDirection="0,0,1"/>

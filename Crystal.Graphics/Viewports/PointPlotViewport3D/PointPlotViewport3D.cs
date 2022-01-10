@@ -102,8 +102,8 @@
       var material = MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0);
 
       var scatterModel = new GeometryModel3D(mesh, material);
-
       scatterModel.BackMaterial = scatterModel.Material;
+      plotModel.Children.Add(scatterModel);
 
       #region Create bounding box with axes indications
 
@@ -111,8 +111,7 @@
 
       for(double x = minX; x <= maxX; x += IntervalX)
       {
-        var label = TextCreator.CreateTextLabelModel3D(
-          $"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        var label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
       var xAxisTitle = TextCreator.CreateTextLabelModel3D(XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 10, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
@@ -140,8 +139,7 @@
       var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh(), BoundingBoxMaterial);
 
       #endregion Create bounding box with axes indications
-
-      plotModel.Children.Add(scatterModel);
+      
       plotModel.Children.Add(axesModel);
 
       return plotModel;
