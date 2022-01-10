@@ -2726,7 +2726,7 @@ namespace Crystal.Graphics
       if(ShowTriangleCountInfo && infoFrameCounter > 100)
       {
         var count = viewport.GetTotalNumberOfTriangles();
-        TriangleCountInfo = $"Triangles: {count}";
+        TriangleCountInfo = $"Triangles: \t{count.ToString("N0", CultureInfo.InstalledUICulture)}";
         infoFrameCounter = 0;
       }
     }

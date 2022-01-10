@@ -10,18 +10,18 @@ namespace ScatterPlotDemo
 {
   public class MainWindowViewModel : INotifyPropertyChanged
   {
-    private readonly int totalPoints = 1200;
+    private readonly int totalPoints = 2000;
     private readonly Random random = new();
 
-    public Point3D[]? Data { get; set; }
+    public Point3D[] Data { get; set; }
 
-    public double[]? Values { get; set; }
+    public double[] Values { get; set; }
 
-    public Model3DGroup? Lights { get; set; }
+    public Model3DGroup Lights { get; set; }
 
     public Brush SurfaceBrush => GradientBrushes.RainbowStripes;
 
-    private Timer? timer;
+    private System.Threading.Timer timer;
 
     public MainWindowViewModel()
     {
@@ -34,10 +34,10 @@ namespace ScatterPlotDemo
       for(var i = 0; i < 30; i++)
       {
         var temp = random.Next(0, totalPoints - 1);
-        Data![temp] = new Point3D(random.NextDouble() * 6, random.NextDouble() * 6, random.NextDouble() * 6);
+        Data[temp] = new Point3D(random.NextDouble() * 6, random.NextDouble() * 6, random.NextDouble() * 6);
       }
 
-      Values = Data!.Select(_ => random.NextDouble()).ToArray();
+      Values = Data.Select(_ => random.NextDouble()).ToArray();
 
       RaisePropertyChanged(nameof(Data));
       RaisePropertyChanged(nameof(Values));
@@ -65,7 +65,7 @@ namespace ScatterPlotDemo
       Lights.Children.Add(new AmbientLight(Colors.White));
 
       var rnd = new Random();
-      Values = Data!.Select(_ => rnd.NextDouble()).ToArray();
+      Values = Data.Select(_ => rnd.NextDouble()).ToArray();
 
       RaisePropertyChanged(nameof(Data));
       RaisePropertyChanged(nameof(Values));

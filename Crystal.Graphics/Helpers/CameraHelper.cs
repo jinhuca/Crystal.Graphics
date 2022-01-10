@@ -1,4 +1,6 @@
-﻿namespace Crystal.Graphics
+﻿using static System.String;
+
+namespace Crystal.Graphics
 {
   /// <summary>
   /// Provides extension methods for <see cref="Camera"/> derived classes.
@@ -232,54 +234,27 @@
       var orthographicCamera = camera as OrthographicCamera;
       var sb = new StringBuilder();
       sb.AppendLine(camera.GetType().Name);
+
       if(projectionCamera != null)
       {
-        sb.AppendLine(
-            string.Format(
-                CultureInfo.InvariantCulture,
-                "LookDirection:\t{0:0.000},{1:0.000},{2:0.000}",
-                projectionCamera.LookDirection.X,
-                projectionCamera.LookDirection.Y,
-                projectionCamera.LookDirection.Z));
-        sb.AppendLine(
-            string.Format(
-                CultureInfo.InvariantCulture,
-                "UpDirection:\t{0:0.000},{1:0.000},{2:0.000}",
-                projectionCamera.UpDirection.X,
-                projectionCamera.UpDirection.Y,
-                projectionCamera.UpDirection.Z));
-        sb.AppendLine(
-            string.Format(
-                CultureInfo.InvariantCulture,
-                "Position:\t\t{0:0.000},{1:0.000},{2:0.000}",
-                projectionCamera.Position.X,
-                projectionCamera.Position.Y,
-                projectionCamera.Position.Z));
+        sb.AppendLine($"LookDirection:\t {projectionCamera.LookDirection.X, 10:F3} {projectionCamera.LookDirection.Y, 10:F3} {projectionCamera.LookDirection.Z, 10:F3}");
+        sb.AppendLine($"UpDirection:\t {projectionCamera.UpDirection.X, 10:F3} {projectionCamera.UpDirection.Y, 10:F3} {projectionCamera.UpDirection.Z, 10:F3}");
+        sb.AppendLine($"Position:\t\t{projectionCamera.Position.X, 10:F3} {projectionCamera.Position.Y, 10:F3} {projectionCamera.Position.Z, 10:F3}");
         var target = projectionCamera.Position + projectionCamera.LookDirection;
-        sb.AppendLine(
-            string.Format(
-                CultureInfo.InvariantCulture,
-                "Target:\t\t{0:0.000},{1:0.000},{2:0.000}",
-                target.X,
-                target.Y,
-                target.Z));
-        sb.AppendLine(
-            string.Format(
-                CultureInfo.InvariantCulture, "NearPlaneDist:\t{0}", projectionCamera.NearPlaneDistance));
-        sb.AppendLine(
-            string.Format(CultureInfo.InvariantCulture, "FarPlaneDist:\t{0}", projectionCamera.FarPlaneDistance));
+        sb.AppendLine($"Target:\t\t{target.X,10:F3} {target.Y,10:F3} {target.Z,10:F3}");
+        sb.AppendLine($"NearPlaneDist:\t{projectionCamera.NearPlaneDistance,10:F3}");
+        sb.AppendLine($"FarPlaneDist:\t{projectionCamera.FarPlaneDistance,10:F3}");
       }
 
       if(perspectiveCamera != null)
       {
-        sb.AppendLine(
-            string.Format(CultureInfo.InvariantCulture, "FieldOfView:\t{0:0.#}°", perspectiveCamera.FieldOfView));
+        sb.AppendLine($"FieldOfView:\t{perspectiveCamera.FieldOfView,10:0.#}°");
       }
 
       if(orthographicCamera != null)
       {
         sb.AppendLine(
-            string.Format(CultureInfo.InvariantCulture, "Width:\t{0:0.###}", orthographicCamera.Width));
+            Format(CultureInfo.InvariantCulture, "Width:\t{0:0.###}", orthographicCamera.Width));
       }
 
       if(matrixCamera != null)
