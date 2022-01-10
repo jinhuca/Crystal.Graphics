@@ -83,25 +83,17 @@ namespace Crystal.Graphics
     private static void CalculatePermutation(out int[] p)
     {
       p = Enumerable.Range(0, 256).ToArray();
-
-      // shuffle the array
-      for(var i = 0; i < p.Length; i++)
+      for(var i = 0; i < p.Length; i++)         // shuffle the array
       {
         var source = _random.Next(p.Length);
-
-        var t = p[i];
-        p[i] = p[source];
-        p[source] = t;
+        (p[i], p[source]) = (p[source], p[i]);
       }
     }
 
     /// <summary>
     /// generate a new permutation.
     /// </summary>
-    public static void Reseed()
-    {
-      CalculatePermutation(out _permutation);
-    }
+    public static void Reseed() => CalculatePermutation(out _permutation);
 
     private static void CalculateGradients(out Vector2[] grad)
     {

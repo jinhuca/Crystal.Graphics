@@ -36,17 +36,11 @@
         return null;
       }
 
-      if(dispatcher == null)
-      {
-        dispatcher = Dispatcher.CurrentDispatcher;
-      }
+      dispatcher ??= Dispatcher.CurrentDispatcher;
 
       Model3DGroup model;
       var ext = System.IO.Path.GetExtension(path);
-      if(ext != null)
-      {
-        ext = ext.ToLower();
-      }
+      ext = ext?.ToLower();
 
       switch(ext)
       {

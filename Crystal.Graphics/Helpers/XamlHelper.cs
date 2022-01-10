@@ -19,19 +19,12 @@ namespace Crystal.Graphics
     public static string GetXaml(Viewport3D view)
     {
       var sb = new StringBuilder();
-      using(var tw = new StringWriter(sb))
-      {
-        var xw = new XmlTextWriter(tw) { Formatting = Formatting.Indented };
-        XamlWriter.Save(view, xw);
-
-        var xaml = sb.ToString();
-        xaml =
-            xaml.Replace(
-              $"<Viewport3D Height=\"{view.ActualHeight}\" Width=\"{view.ActualWidth}\" ",
-                "<Viewport3D ");
-
-        return xaml;
-      }
+      using var tw = new StringWriter(sb);
+      var xw = new XmlTextWriter(tw) { Formatting = Formatting.Indented };
+      XamlWriter.Save(view, xw);
+      var xaml = sb.ToString();
+      xaml = xaml.Replace($"<Viewport3D Height=\"{view.ActualHeight}\" Width=\"{view.ActualWidth}\" ", "<Viewport3D ");
+      return xaml;
     }
 
     /// <summary>
@@ -51,9 +44,7 @@ namespace Crystal.Graphics
         var xw = new XmlTextWriter(tw) { Formatting = Formatting.Indented };
         XamlWriter.Save(obj, xw);
       }
-
       return sb.ToString();
     }
-
   }
 }

@@ -115,20 +115,16 @@
           $"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
-      var xAxisTitle = TextCreator.CreateTextLabelModel3D(
-        XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 6, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+      var xAxisTitle = TextCreator.CreateTextLabelModel3D(XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 10, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
       plotModel.Children.Add(xAxisTitle);
 
       for(double y = minY; y <= maxY + 1; y += IntervalY)
       {
-        var label = TextCreator.CreateTextLabelModel3D(
-          $"{y:0}", YAxisLabelBrush, true, YAxisLabelFontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        var label = TextCreator.CreateTextLabelModel3D($"{y:0}", YAxisLabelBrush, true, YAxisLabelFontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
-      {
-        var label = TextCreator.CreateTextLabelModel3D(YAxisTitleContent, YAxisTitleBrush, true, YAxisTitleFontSize, new Point3D(minX - (FontSize * 10), (minY + maxY) * 0.5, minZ), new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
-        plotModel.Children.Add(label);
-      }
+      var yAxisTitle = TextCreator.CreateTextLabelModel3D(YAxisTitleContent, YAxisTitleBrush, true, YAxisTitleFontSize, new Point3D(minX - FontSize * 10, (minY + maxY) * 0.5, minZ), new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
+      plotModel.Children.Add(yAxisTitle);
 
       var z0 = (int)(minZ / IntervalZ) * IntervalZ;
       for(var z = z0; z <= maxZ; z += IntervalZ)
@@ -136,14 +132,11 @@
         var label = TextCreator.CreateTextLabelModel3D($"{z:0}", ZAxisLabelBrush, true, ZAxisLabelFontSize, new Point3D(minX - FontSize * 3, maxY, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
         plotModel.Children.Add(label);
       }
-      {
-        var label = TextCreator.CreateTextLabelModel3D(ZAxisTitleContent, ZAxisTitleBrush, true, ZAxisTitleFontSize, new Point3D(minX - FontSize * 10, maxY, (minZ + maxZ) * 0.5), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
-        plotModel.Children.Add(label);
-      }
+      var zAxisTitle = TextCreator.CreateTextLabelModel3D(ZAxisTitleContent, ZAxisTitleBrush, true, ZAxisTitleFontSize, new Point3D(minX - FontSize * 10, maxY, (minZ + maxZ) * 0.5), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
+      plotModel.Children.Add(zAxisTitle);
 
       var axisBoundingBox = new Rect3D(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ);
       axesMeshBuilder.AddBoundingBox(axisBoundingBox, BoundingBoxThickness);
-
       var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh(), BoundingBoxMaterial);
 
       #endregion Create bounding box with axes indications
