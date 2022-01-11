@@ -10,17 +10,14 @@
 
     #region Data Dependency Properties
 
-    public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-      nameof(Points), typeof(Point3D[]), typeof(PointPlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
-
     public Point3D[] Points
     {
       get => (Point3D[])GetValue(PointsProperty);
       set => SetValue(PointsProperty, value);
     }
 
-    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
-      nameof(Values), typeof(double[]), typeof(PointPlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
+    public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
+      nameof(Points), typeof(Point3D[]), typeof(PointPlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
 
     public double[] Values
     {
@@ -28,14 +25,17 @@
       set => SetValue(ValuesProperty, value);
     }
 
-    public static readonly DependencyProperty SurfaceBrushProperty = DependencyProperty.Register(
-      nameof(SurfaceBrush), typeof(Brush), typeof(PointPlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
+    public static readonly DependencyProperty ValuesProperty = DependencyProperty.Register(
+      nameof(Values), typeof(double[]), typeof(PointPlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
 
     public Brush SurfaceBrush
     {
       get => (Brush)GetValue(SurfaceBrushProperty);
       set => SetValue(SurfaceBrushProperty, value);
     }
+
+    public static readonly DependencyProperty SurfaceBrushProperty = DependencyProperty.Register(
+      nameof(SurfaceBrush), typeof(Brush), typeof(PointPlotViewport3D), new UIPropertyMetadata(null, ModelChanged));
 
     #endregion Data Dependency Properties
 

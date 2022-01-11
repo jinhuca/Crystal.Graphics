@@ -6,57 +6,132 @@
   public class CombinedManipulator : ModelVisual3D
   {
     /// <summary>
+    /// Gets or sets a value indicating whether this instance can rotate X.
+    /// </summary>
+    /// <value> <c>true</c> if this instance can rotate X; otherwise, <c>false</c> . </value>
+    public bool CanRotateX
+    {
+      get => (bool)GetValue(CanRotateXProperty);
+      set => SetValue(CanRotateXProperty, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="CanRotateX"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CanRotateXProperty = DependencyProperty.Register(
-        "CanRotateX", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+      nameof(CanRotateX), typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+    
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance can rotate Y.
+    /// </summary>
+    /// <value> <c>true</c> if this instance can rotate Y; otherwise, <c>false</c> . </value>
+    public bool CanRotateY
+    {
+      get => (bool)GetValue(CanRotateYProperty);
+      set => SetValue(CanRotateYProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="CanRotateY"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CanRotateYProperty = DependencyProperty.Register(
-        "CanRotateY", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+      nameof(CanRotateY), typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance can rotate Z.
+    /// </summary>
+    /// <value> <c>true</c> if this instance can rotate Z; otherwise, <c>false</c> . </value>
+    public bool CanRotateZ
+    {
+      get => (bool)GetValue(CanRotateZProperty);
+      set => SetValue(CanRotateZProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="CanRotateZ"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CanRotateZProperty = DependencyProperty.Register(
-        "CanRotateZ", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+      nameof(CanRotateZ), typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance can translate X.
+    /// </summary>
+    /// <value> <c>true</c> if this instance can translate X; otherwise, <c>false</c> . </value>
+    public bool CanTranslateX
+    {
+      get => (bool)GetValue(CanTranslateXProperty);
+      set => SetValue(CanTranslateXProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="CanTranslateX"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CanTranslateXProperty = DependencyProperty.Register(
-        "CanTranslateX", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+      nameof(CanTranslateX), typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance can translate Y.
+    /// </summary>
+    /// <value> <c>true</c> if this instance can translate Y; otherwise, <c>false</c> . </value>
+    public bool CanTranslateY
+    {
+      get => (bool)GetValue(CanTranslateYProperty);
+      set => SetValue(CanTranslateYProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="CanTranslateY"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CanTranslateYProperty = DependencyProperty.Register(
-        "CanTranslateY", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+      nameof(CanTranslateY), typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance can translate Z.
+    /// </summary>
+    /// <value> <c>true</c> if this instance can translate Z; otherwise, <c>false</c> . </value>
+    public bool CanTranslateZ
+    {
+      get => (bool)GetValue(CanTranslateZProperty);
+      set => SetValue(CanTranslateZProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="CanTranslateZ"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CanTranslateZProperty = DependencyProperty.Register(
-        "CanTranslateZ", typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+      nameof(CanTranslateZ), typeof(bool), typeof(CombinedManipulator), new UIPropertyMetadata(true, ChildrenChanged));
+
+    /// <summary>
+    /// Gets or sets the diameter.
+    /// </summary>
+    /// <value> The diameter. </value>
+    public double Diameter
+    {
+      get => (double)GetValue(DiameterProperty);
+      set => SetValue(DiameterProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="Diameter"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-        "Diameter", typeof(double), typeof(CombinedManipulator), new UIPropertyMetadata(2.0));
+      nameof(Diameter), typeof(double), typeof(CombinedManipulator), new UIPropertyMetadata(2.0));
+
+    /// <summary>
+    /// Gets or sets the target transform.
+    /// </summary>
+    /// <value> The target transform. </value>
+    public Transform3D TargetTransform
+    {
+      get => (Transform3D)GetValue(TargetTransformProperty);
+      set => SetValue(TargetTransformProperty, value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="TargetTransform"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty TargetTransformProperty =
-        DependencyProperty.Register(
-            "TargetTransform",
-            typeof(Transform3D),
-            typeof(CombinedManipulator),
-            new FrameworkPropertyMetadata(
-                Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+    public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
+      nameof(TargetTransform), typeof(Transform3D), typeof(CombinedManipulator), new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     /// <summary>
     /// The rotate x manipulator.
@@ -112,117 +187,17 @@
       rotateYManipulator = new RotateManipulator { Axis = new Vector3D(0, 1, 0), Color = Colors.Green };
       rotateZManipulator = new RotateManipulator { Axis = new Vector3D(0, 0, 1), Color = Colors.Blue };
 
-      BindingOperations.SetBinding(this, TransformProperty, new Binding("TargetTransform") { Source = this });
-
-      BindingOperations.SetBinding(
-          translateXManipulator,
-          Manipulator.TargetTransformProperty,
-          new Binding("TargetTransform") { Source = this });
-      BindingOperations.SetBinding(
-          translateYManipulator,
-          Manipulator.TargetTransformProperty,
-          new Binding("TargetTransform") { Source = this });
-      BindingOperations.SetBinding(
-          translateZManipulator,
-          Manipulator.TargetTransformProperty,
-          new Binding("TargetTransform") { Source = this });
-      BindingOperations.SetBinding(
-          rotateXManipulator, RotateManipulator.DiameterProperty, new Binding("Diameter") { Source = this });
-      BindingOperations.SetBinding(
-          rotateYManipulator, RotateManipulator.DiameterProperty, new Binding("Diameter") { Source = this });
-      BindingOperations.SetBinding(
-          rotateZManipulator, RotateManipulator.DiameterProperty, new Binding("Diameter") { Source = this });
-      BindingOperations.SetBinding(
-          rotateXManipulator,
-          Manipulator.TargetTransformProperty,
-          new Binding("TargetTransform") { Source = this });
-      BindingOperations.SetBinding(
-          rotateYManipulator,
-          Manipulator.TargetTransformProperty,
-          new Binding("TargetTransform") { Source = this });
-      BindingOperations.SetBinding(
-          rotateZManipulator,
-          Manipulator.TargetTransformProperty,
-          new Binding("TargetTransform") { Source = this });
-
+      BindingOperations.SetBinding(this, TransformProperty, new Binding(nameof(TargetTransform)) { Source = this });
+      BindingOperations.SetBinding(translateXManipulator, Manipulator.TargetTransformProperty, new Binding(nameof(TargetTransform)) { Source = this });
+      BindingOperations.SetBinding(translateYManipulator, Manipulator.TargetTransformProperty, new Binding(nameof(TargetTransform)) { Source = this });
+      BindingOperations.SetBinding(translateZManipulator, Manipulator.TargetTransformProperty, new Binding(nameof(TargetTransform)) { Source = this });
+      BindingOperations.SetBinding(rotateXManipulator, RotateManipulator.DiameterProperty, new Binding(nameof(Diameter)) { Source = this });
+      BindingOperations.SetBinding(rotateYManipulator, RotateManipulator.DiameterProperty, new Binding(nameof(Diameter)) { Source = this });
+      BindingOperations.SetBinding(rotateZManipulator, RotateManipulator.DiameterProperty, new Binding(nameof(Diameter)) { Source = this });
+      BindingOperations.SetBinding(rotateXManipulator, Manipulator.TargetTransformProperty, new Binding(nameof(TargetTransform)) { Source = this });
+      BindingOperations.SetBinding(rotateYManipulator, Manipulator.TargetTransformProperty, new Binding(nameof(TargetTransform)) { Source = this });
+      BindingOperations.SetBinding(rotateZManipulator, Manipulator.TargetTransformProperty, new Binding(nameof(TargetTransform)) { Source = this });
       UpdateChildren();
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this instance can rotate X.
-    /// </summary>
-    /// <value> <c>true</c> if this instance can rotate X; otherwise, <c>false</c> . </value>
-    public bool CanRotateX
-    {
-      get => (bool)GetValue(CanRotateXProperty);
-
-      set => SetValue(CanRotateXProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this instance can rotate Y.
-    /// </summary>
-    /// <value> <c>true</c> if this instance can rotate Y; otherwise, <c>false</c> . </value>
-    public bool CanRotateY
-    {
-      get => (bool)GetValue(CanRotateYProperty);
-
-      set => SetValue(CanRotateYProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this instance can rotate Z.
-    /// </summary>
-    /// <value> <c>true</c> if this instance can rotate Z; otherwise, <c>false</c> . </value>
-    public bool CanRotateZ
-    {
-      get => (bool)GetValue(CanRotateZProperty);
-
-      set => SetValue(CanRotateZProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this instance can translate X.
-    /// </summary>
-    /// <value> <c>true</c> if this instance can translate X; otherwise, <c>false</c> . </value>
-    public bool CanTranslateX
-    {
-      get => (bool)GetValue(CanTranslateXProperty);
-
-      set => SetValue(CanTranslateXProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this instance can translate Y.
-    /// </summary>
-    /// <value> <c>true</c> if this instance can translate Y; otherwise, <c>false</c> . </value>
-    public bool CanTranslateY
-    {
-      get => (bool)GetValue(CanTranslateYProperty);
-
-      set => SetValue(CanTranslateYProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this instance can translate Z.
-    /// </summary>
-    /// <value> <c>true</c> if this instance can translate Z; otherwise, <c>false</c> . </value>
-    public bool CanTranslateZ
-    {
-      get => (bool)GetValue(CanTranslateZProperty);
-
-      set => SetValue(CanTranslateZProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the diameter.
-    /// </summary>
-    /// <value> The diameter. </value>
-    public double Diameter
-    {
-      get => (double)GetValue(DiameterProperty);
-
-      set => SetValue(DiameterProperty, value);
     }
 
     /// <summary>
@@ -232,7 +207,6 @@
     public Vector3D Offset
     {
       get => translateXManipulator.Offset;
-
       set
       {
         translateXManipulator.Offset = value;
@@ -251,7 +225,6 @@
     public Point3D Pivot
     {
       get => rotateXManipulator.Pivot;
-
       set
       {
         rotateXManipulator.Pivot = value;
@@ -267,7 +240,6 @@
     public Point3D Position
     {
       get => translateXManipulator.Position;
-
       set
       {
         translateXManipulator.Position = value;
@@ -280,17 +252,6 @@
     }
 
     /// <summary>
-    /// Gets or sets the target transform.
-    /// </summary>
-    /// <value> The target transform. </value>
-    public Transform3D TargetTransform
-    {
-      get => (Transform3D)GetValue(TargetTransformProperty);
-
-      set => SetValue(TargetTransformProperty, value);
-    }
-
-    /// <summary>
     /// Binds this manipulator to a given Visual3D.
     /// </summary>
     /// <param name="source">
@@ -298,8 +259,8 @@
     /// </param>
     public virtual void Bind(ModelVisual3D source)
     {
-      BindingOperations.SetBinding(this, TargetTransformProperty, new Binding("Transform") { Source = source });
-      BindingOperations.SetBinding(this, TransformProperty, new Binding("Transform") { Source = source });
+      BindingOperations.SetBinding(this, TargetTransformProperty, new Binding(nameof(Transform)) { Source = source });
+      BindingOperations.SetBinding(this, TransformProperty, new Binding(nameof(Transform)) { Source = source });
     }
 
     /// <summary>
