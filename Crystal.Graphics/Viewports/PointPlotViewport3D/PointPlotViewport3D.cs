@@ -118,7 +118,7 @@
         var label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
 
-        //label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, maxY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, maxY + FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         
         //label.Transform = transforms;
         plotModel.Children.Add(label);
