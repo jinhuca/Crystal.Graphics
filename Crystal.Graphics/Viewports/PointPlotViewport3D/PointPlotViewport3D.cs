@@ -69,7 +69,7 @@
     private Model3D CreateModel()
     {
       Model3DGroup? plotModel = new();
-      if (Points == null || Values == null) return plotModel;
+      if(Points == null || Values == null) return plotModel;
 
       var minX = (int)Math.Floor(Points.Min(p => p.X));
       var maxX = (int)Math.Ceiling(Points.Max(p => p.X));
@@ -85,13 +85,13 @@
       var scatterMeshBuilder = new MeshBuilder(true);
       var oldTCCount = 0;
 
-      for (var i = 0; i < Points.Length; ++i)
+      for(var i = 0; i < Points.Length; ++i)
       {
         scatterMeshBuilder.AddSphere(Points[i], SphereSize, 16, 16);
         var u = (Values[i] - minValue) / valueRange;
         var newTCCount = scatterMeshBuilder.TextureCoordinates.Count;
 
-        for (var j = oldTCCount; j < newTCCount; ++j)
+        for(var j = oldTCCount; j < newTCCount; ++j)
         {
           scatterMeshBuilder.TextureCoordinates[j] = new Point(u, u);
         }
@@ -109,38 +109,39 @@
 
       var axesMeshBuilder = new MeshBuilder();
 
-      //Transform3DGroup transforms = new();
-      //transforms.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), 180)));
-      //transforms.Children.Add(new TranslateTransform3D(maxX, 0, 0));
-
-      for (double x = minX; x <= maxX; x += IntervalX)
+      for(double x = minX; x <= maxX; x += IntervalX)
       {
-        var label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+        var label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, minY - FontSize * 3, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
 
-        label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, maxY + FontSize * 2.5, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
-        
+        label = TextCreator.CreateTextLabelModel3D($"{x:0}", XAxisLabelBrush, true, XAxisLabelFontSize, new Point3D(x, maxY + FontSize * 3, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+
         //label.Transform = transforms;
         plotModel.Children.Add(label);
       }
       var xAxisTitle = TextCreator.CreateTextLabelModel3D(XAxisTitleContent, XAxisTitleBrush, true, XAxisTitleFontSize, new Point3D((minX + maxX) * 0.5, minY - FontSize * 10, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
       plotModel.Children.Add(xAxisTitle);
 
-      for (double y = minY; y <= maxY; y += IntervalY)
+      for(double y = minY; y <= maxY; y += IntervalY)
       {
         var label = TextCreator.CreateTextLabelModel3D($"{y:0}", YAxisLabelBrush, true, YAxisLabelFontSize, new Point3D(minX - FontSize * 3, y, minZ), new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
         plotModel.Children.Add(label);
       }
       var yAxisTitle = TextCreator.CreateTextLabelModel3D(YAxisTitleContent, YAxisTitleBrush, true, YAxisTitleFontSize, new Point3D(minX - FontSize * 10, (minY + maxY) * 0.5, minZ), new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
+
+      //Transform3DGroup transforms = new();
+      //transforms.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), 180)));
+      //transforms.Children.Add(new TranslateTransform3D(-2, maxY, 0));
+      //yAxisTitle.Transform = transforms;
       plotModel.Children.Add(yAxisTitle);
 
       var z0 = (int)(minZ / IntervalZ) * IntervalZ;
-      for (var z = z0; z <= maxZ; z += IntervalZ)
+      for(var z = z0; z <= maxZ; z += IntervalZ)
       {
-        var label = TextCreator.CreateTextLabelModel3D($"{z:0}", ZAxisLabelBrush, true, ZAxisLabelFontSize, new Point3D(minX - FontSize * 3, maxY, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
+        var label = TextCreator.CreateTextLabelModel3D($"{z:0}", ZAxisLabelBrush, true, ZAxisLabelFontSize, new Point3D(minX - FontSize * 3, maxY + FontSize * 3, z), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
         plotModel.Children.Add(label);
       }
-      var zAxisTitle = TextCreator.CreateTextLabelModel3D(ZAxisTitleContent, ZAxisTitleBrush, true, ZAxisTitleFontSize, new Point3D(minX - FontSize * 10, maxY, (minZ + maxZ) * 0.5), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
+      var zAxisTitle = TextCreator.CreateTextLabelModel3D(ZAxisTitleContent, ZAxisTitleBrush, true, ZAxisTitleFontSize, new Point3D(minX - FontSize * 10, maxY + FontSize * 3, (minZ + maxZ) * 0.5), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
       plotModel.Children.Add(zAxisTitle);
 
       #endregion Axes
@@ -154,21 +155,21 @@
 
       #region GridLine
 
-      if (ShowGridLine)
+      if(ShowGridLine)
       {
-        for (int ix = minX; ix < maxX; ix++)
+        for(int ix = minX; ix < maxX; ix++)
         {
           var axis1 = new Rect3D(minX + ix, minY, minZ, maxX - minX - ix, maxY - minY, maxZ - minZ);
           axesMeshBuilder.AddBoundingBox(axis1, BoundingBoxThickness / 4);
         }
 
-        for (int iy = minY; iy < maxY; iy++)
+        for(int iy = minY; iy < maxY; iy++)
         {
           var axis1 = new Rect3D(minX, minY + iy, minZ, maxX - minX, maxY - minY - iy, maxZ - minZ);
           axesMeshBuilder.AddBoundingBox(axis1, BoundingBoxThickness / 4);
         }
 
-        for (int iz = minZ; iz < maxZ; iz++)
+        for(int iz = minZ; iz < maxZ; iz++)
         {
           var axis1 = new Rect3D(minX, minY, minZ + iz, maxX - minX, maxY - minY, maxZ - minZ - iz);
           axesMeshBuilder.AddBoundingBox(axis1, BoundingBoxThickness / 4);

@@ -52,11 +52,11 @@
     /// <param name="height">The height.</param>
     /// <param name="center">The center.</param>
     /// <param name="textDirection">The textDirection.</param>
-    /// <param name="updirection">The updirection.</param>
+    /// <param name="upDirection">The upDirection.</param>
     /// <returns>A model.</returns>
-    public static GeometryModel3D CreateTextLabelModel3D(string text, Brush textColor, bool isDoubleSided, double height, Point3D center, Vector3D textDirection, Vector3D updirection)
+    public static GeometryModel3D CreateTextLabelModel3D(string text, Brush textColor, bool isDoubleSided, double height, Point3D center, Vector3D textDirection, Vector3D upDirection)
     {
-      // First we need a textblock containing the text of our label
+      // First we need a TextBlock containing the text of our label
       var tb = new TextBlock(new Run(text)) { Foreground = textColor, FontFamily = new FontFamily("Arial") };
 
       // Now use that TextBlock as the brush for a material
@@ -74,10 +74,10 @@
       // p1 is the upper left
       // p2 is the lower right
       // p3 is the upper right
-      var p0 = center - width / 2 * textDirection - height / 2 * updirection;
-      var p1 = p0 + updirection * 1 * height;
+      var p0 = center - width / 2 * textDirection - height / 2 * upDirection;
+      var p1 = p0 + upDirection * 1 * height;
       var p2 = p0 + textDirection * width;
-      var p3 = p0 + updirection * 1 * height + textDirection * width;
+      var p3 = p0 + upDirection * 1 * height + textDirection * width;
 
       // Now build the geometry for the sign.  It's just a
       // rectangle made of two triangles, on each side.
